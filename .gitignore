@@ -1,0 +1,27 @@
+# General
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Build output
+build/
+dist/
+out/
+
+# IDE
+.vscode/
+.idea/
+*.sublime-workspace
+*.swp
+*.swo
+
+# Test artifacts
+test-screenshots/*.png
+test-screenshots/*.jpg
+test-screenshots/*.webp

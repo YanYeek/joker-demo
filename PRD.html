@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRD · 小丑牌 Web V1.0.0</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Inter", sans-serif;
+    background: #fbfaf7;
+    color: #1a1a1a;
+    line-height: 1.6;
+    font-size: 15px;
+  }
+  .container { max-width: 880px; margin: 0 auto; padding: 0 24px 80px; }
+
+  nav {
+    position: sticky; top: 0;
+    background: rgba(251,250,247,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid #e8e5df;
+    z-index: 100; padding: 10px 0;
+  }
+  nav ul { display: flex; gap: 24px; list-style: none; max-width: 880px; margin: 0 auto; padding: 0 24px; flex-wrap: wrap; }
+  nav a { text-decoration: none; color: #666; font-size: 13px; }
+  nav a:hover { color: #e8682a; }
+
+  .header { padding: 40px 0 32px; }
+  .badge {
+    display: inline-block; background: #fef0e7; color: #c0511e;
+    font-size: 12px; font-weight: 600; padding: 4px 12px;
+    border-radius: 20px; margin-bottom: 16px; letter-spacing: 0.3px;
+  }
+  h1 { font-size: 28px; font-weight: 700; color: #111; margin-bottom: 8px; }
+  .subtitle { color: #666; font-size: 15px; }
+
+  section { margin-top: 48px; scroll-margin-top: 60px; }
+  h2 {
+    font-size: 18px; font-weight: 700; color: #111;
+    margin-bottom: 20px; padding-bottom: 10px;
+    border-bottom: 2px solid #e8682a;
+    display: flex; align-items: center; gap: 8px;
+  }
+  h2 .num {
+    background: #e8682a; color: #fff; font-size: 11px; font-weight: 700;
+    width: 22px; height: 22px; border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  h3 { font-size: 14px; font-weight: 600; color: #444; margin: 20px 0 10px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { background: #f3f1ec; text-align: left; padding: 8px 12px; font-weight: 600; color: #555; font-size: 13px; }
+  td { padding: 8px 12px; border-bottom: 1px solid #ede9e2; }
+  tr:last-child td { border-bottom: none; }
+
+  .card { background: #fff; border: 1px solid #e8e5df; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+
+  .flow { display: flex; align-items: center; gap: 0; overflow-x: auto; padding: 24px 0; }
+  .flow-step { flex-shrink: 0; text-align: center; }
+  .flow-box {
+    background: #fff; border: 1.5px solid #d4cfc6; border-radius: 10px;
+    padding: 14px 16px; min-width: 110px; font-size: 13px;
+    font-weight: 600; color: #222; line-height: 1.4;
+  }
+  .flow-box.orange { border-color: #e8682a; background: #fef6f2; color: #c0511e; }
+  .flow-box.green  { border-color: #16a34a; color: #16a34a; }
+  .flow-box.red    { border-color: #dc2626; color: #dc2626; }
+  .flow-sub { font-size: 11px; color: #888; font-weight: 400; margin-top: 4px; }
+  .flow-arrow { flex-shrink: 0; width: 32px; text-align: center; color: #bbb; font-size: 18px; }
+  .flow-branch { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .flow-branch .flow-box { min-width: 90px; font-size: 12px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  pre {
+    background: #f5f3ef; border: 1px solid #e4e1da; border-radius: 8px;
+    padding: 16px; font-size: 12.5px; line-height: 1.7; overflow-x: auto;
+    font-family: "SF Mono", "Fira Code", monospace; color: #333;
+  }
+  .key { color: #7c3aed; }
+  .val { color: #059669; }
+  .cmt { color: #9ca3af; }
+
+  .checklist { list-style: none; }
+  .checklist li { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f0eeea; font-size: 14px; }
+  .checklist li:last-child { border-bottom: none; }
+  .check-box { width: 18px; height: 18px; border: 1.5px solid #d0ccc4; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
+
+  .formula {
+    background: #fef6f2; border: 1.5px solid #f4c4a8; border-radius: 8px;
+    padding: 14px 18px; font-size: 14px; font-weight: 600; color: #b84e1a;
+    margin: 16px 0; font-family: "SF Mono", monospace;
+  }
+  .example {
+    background: #f9f8f5; border-left: 3px solid #e8682a;
+    padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: 13.5px; color: #444;
+  }
+  .example strong { color: #e8682a; }
+
+  .not-do { list-style: none; }
+  .not-do li { padding: 6px 0; font-size: 14px; color: #666; }
+  .not-do li::before { content: "✕ "; color: #ccc; font-weight: 700; }
+
+  .layout-area { border: 1.5px solid #e4e1da; border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; font-size: 14px; }
+  .layout-area .area-name { font-weight: 700; color: #e8682a; margin-bottom: 4px; font-size: 13px; }
+  .layout-area p { color: #555; }
+
+  .next-line { margin-top: 24px; padding: 14px 18px; background: #f3f1ec; border-radius: 8px; font-size: 13px; color: #666; }
+  .next-line strong { color: #333; }
+</style>
+</head>
+<body>
+
+<nav>
+  <ul>
+    <li><a href="#s1">① 是什么</a></li>
+    <li><a href="#s2">② 玩法流程</a></li>
+    <li><a href="#s3">③ 牌型&amp;计分</a></li>
+    <li><a href="#s4">④ 页面&amp;数据</a></li>
+    <li><a href="#s5">⑤ 验收</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+  <div class="header">
+    <div class="badge">Version V1.0.0 · Round 1 · 2026-05-16</div>
+    <h1>小丑牌 Web · 核心引擎</h1>
+    <p class="subtitle">Product Requirements Document — 课堂 5 分钟版</p>
+  </div>
+
+  <!-- ① 是什么 -->
+  <section id="s1">
+    <h2><span class="num">1</span>是什么 / 不是什么</h2>
+    <div class="card">
+      <p style="font-size:15px;font-weight:600;color:#111;margin-bottom:12px;">
+        基于扑克牌型的单机数值小游戏——手选 1–5 张组牌型，限 4 次出牌内累计超过 300 分即胜。
+      </p>
+      <p style="font-size:13px;color:#666;margin-bottom:16px;">
+        目标用户：零基础学员，通过亲手实现这款游戏完整体验「AI 全流程开发」的第一课。
+      </p>
+      <p style="font-size:14px;color:#444;">
+        <strong>本轮范围：</strong>标准 52 张牌 · 手牌 8 张 · 出牌 4 次 · 弃牌 3 次 · 目标 300 分 · 10 种牌型 · 胜负判定 + 重新开始
+      </p>
+    </div>
+    <h3>不做（V1.0.0 明确排除）</h3>
+    <ul class="not-do">
+      <li>小丑牌 / 星球牌 / 增益系统</li>
+      <li>商店 / 关卡 / 盲注体系</li>
+      <li>动画 / 音效 / 粒子特效</li>
+      <li>AI 教练 / 多人联机 / 移动端适配</li>
+    </ul>
+  </section>
+
+  <!-- ② 玩法流程 -->
+  <section id="s2">
+    <h2><span class="num">2</span>核心玩法一图流</h2>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-box orange">开局<div class="flow-sub">发 8 张手牌<br>from 52 张</div></div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-box">选牌<div class="flow-sub">点击选 1–5 张<br>高亮上浮</div></div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-branch">
+          <div class="flow-box orange">出牌<div class="flow-sub">消耗 1 次<br>计分累加</div></div>
+          <div class="flow-box">弃牌<div class="flow-sub">消耗 1 次<br>换牌不得分</div></div>
+        </div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-box">补牌<div class="flow-sub">从牌堆补满<br>8 张</div></div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-branch">
+          <div class="flow-box green">≥300 分<div class="flow-sub">胜利</div></div>
+          <div class="flow-box red">机会耗尽<div class="flow-sub">失败</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:0">
+      <table style="font-size:13px;">
+        <tr><th>资源</th><th>数量</th><th>耗尽后</th></tr>
+        <tr><td>出牌机会</td><td><strong>4 次</strong></td><td>不可再出牌</td></tr>
+        <tr><td>弃牌机会</td><td><strong>3 次</strong></td><td>不可再弃牌</td></tr>
+        <tr><td>目标分数</td><td><strong>300 分</strong></td><td>提前达成即胜利</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ③ 牌型&计分 -->
+  <section id="s3">
+    <h2><span class="num">3</span>牌型 &amp; 计分</h2>
+    <table>
+      <tr>
+        <th>牌型</th><th style="color:#e8682a">基础分</th><th style="color:#e8682a">倍数</th>
+        <th>牌型</th><th style="color:#e8682a">基础分</th><th style="color:#e8682a">倍数</th>
+      </tr>
+      <tr><td>高牌</td><td>5</td><td>×1</td><td>同花</td><td>35</td><td>×4</td></tr>
+      <tr><td>对子</td><td>10</td><td>×2</td><td>葫芦</td><td>40</td><td>×4</td></tr>
+      <tr><td>两对</td><td>20</td><td>×2</td><td>四条</td><td>60</td><td>×7</td></tr>
+      <tr><td>三条</td><td>30</td><td>×3</td><td>同花顺</td><td>100</td><td>×8</td></tr>
+      <tr><td>顺子</td><td>30</td><td>×4</td><td>皇家同花顺</td><td>100</td><td>×8</td></tr>
+    </table>
+    <h3>点数规则</h3>
+    <p style="font-size:14px;color:#555;margin-bottom:0;">A = 11　K / Q / J = 10　2–10 按面值</p>
+    <div class="formula">得分 = (基础分 + 入选牌点数之和) × 倍数</div>
+    <div class="example">
+      <strong>示例</strong>：红心 A · K · Q · J · 10 → 皇家同花顺<br>
+      = (100 + 11 + 10 + 10 + 10 + 10) × 8 = 151 × 8 = <strong>1208 分</strong>
+    </div>
+  </section>
+
+  <!-- ④ 页面&数据 -->
+  <section id="s4">
+    <h2><span class="num">4</span>页面 &amp; 数据模型</h2>
+    <div class="two-col">
+      <div>
+        <h3 style="margin-top:0">4 块布局</h3>
+        <div class="layout-area">
+          <div class="area-name">HUD 顶栏</div>
+          <p>当前分 / 目标 300 / 剩余出牌次数 / 剩余弃牌次数</p>
+        </div>
+        <div class="layout-area">
+          <div class="area-name">手牌区（主区域）</div>
+          <p>8 张牌横排，点击高亮选中，选中牌上浮 8px；再点取消</p>
+        </div>
+        <div class="layout-area">
+          <div class="area-name">操作栏</div>
+          <p>「出牌」橙色按钮 · 「弃牌」灰色按钮 · 当前牌型提示标签</p>
+        </div>
+        <div class="layout-area">
+          <div class="area-name">弹窗层</div>
+          <p>胜利 / 失败弹窗 + 「重新开始」按钮</p>
+        </div>
+      </div>
+      <div>
+        <h3 style="margin-top:0">前端状态字段</h3>
+        <pre><span class="cmt">// 游戏核心状态</span>
+{
+  <span class="key">"deck"</span>:         <span class="val">Card[]</span>,
+  <span class="cmt">// 剩余牌堆</span>
+  <span class="key">"hand"</span>:         <span class="val">Card[]</span>,
+  <span class="cmt">// 当前手牌 8 张</span>
+  <span class="key">"selected"</span>:     <span class="val">Card[]</span>,
+  <span class="cmt">// 已选中牌</span>
+  <span class="key">"score"</span>:        <span class="val">number</span>,
+  <span class="cmt">// 累计得分</span>
+  <span class="key">"target"</span>:       <span class="val">300</span>,
+  <span class="cmt">// 目标分(写死)</span>
+  <span class="key">"handsLeft"</span>:    <span class="val">number</span>,
+  <span class="cmt">// 剩余出牌次数</span>
+  <span class="key">"discardsLeft"</span>: <span class="val">number</span>,
+  <span class="cmt">// 剩余弃牌次数</span>
+  <span class="key">"gameStatus"</span>:   <span class="val">string</span>
+  <span class="cmt">// playing|win|lose</span>
+}
+
+<span class="cmt">// Card 结构</span>
+{
+  <span class="key">"suit"</span>:  <span class="val">"♥|♦|♣|♠"</span>,
+  <span class="key">"rank"</span>:  <span class="val">"A|2-10|J|Q|K"</span>,
+  <span class="key">"value"</span>: <span class="val">number</span>
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑤ 验收 -->
+  <section id="s5">
+    <h2><span class="num">5</span>验收 Checklist</h2>
+    <div class="card" style="padding:16px 20px;">
+      <ul class="checklist">
+        <li><div class="check-box"></div>52 张牌随机洗牌，每局不重复，初始发 8 张</li>
+        <li><div class="check-box"></div>点击手牌可选中（高亮上浮），再点取消，上限 5 张</li>
+        <li><div class="check-box"></div>出牌时正确识别 10 种牌型，按公式计算并累加分数</li>
+        <li><div class="check-box"></div>弃牌不计分，两种操作后都从剩余牌堆补至 8 张</li>
+        <li><div class="check-box"></div>HUD 实时显示：当前分 / 300 / 出牌剩余 / 弃牌剩余</li>
+        <li><div class="check-box"></div>累计分 ≥ 300 弹出胜利；出牌耗尽且分不足弹出失败</li>
+        <li><div class="check-box"></div>「重新开始」重置全部状态，重新洗牌发牌</li>
+        <li><div class="check-box"></div>操作栏实时显示当前选牌的最优牌型提示</li>
+      </ul>
+    </div>
+    <div class="next-line">
+      <strong>交班：</strong>V1.0.0 只验证核心计分引擎可行性，无视觉打磨。
+      下一步 → <strong>v1.1.0 视觉升级</strong>（暗色风格 / HUD / Toast / 进度条）
+      → <strong>v1.2.0 小丑牌系统</strong>（8 张 Joker / 槽位 / 稀有度）
+    </div>
+  </section>
+</div>
+
+</body>
+</html>

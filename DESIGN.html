@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小丑牌 V1.0.0 Design Spec</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f5f0e8;font-family:'Noto Sans SC',system-ui,sans-serif;color:#1a1a1a;font-size:14px}
+a{color:#e8682a;text-decoration:none}
+
+/* 顶部导航 */
+.topbar{position:sticky;top:0;z-index:100;background:#1a1a1a;display:flex;align-items:center;gap:24px;padding:0 24px;height:44px}
+.badge{background:#e8682a;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.5px}
+.nav-links{display:flex;gap:0;margin-left:auto}
+.nav-links a{color:#aaa;font-size:12px;padding:0 14px;line-height:44px;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
+.nav-links a:hover{color:#fff;border-color:#e8682a}
+
+/* 公共节 */
+.section{padding:40px 40px 48px;border-bottom:1px solid #e0d8cc}
+.section-title{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#e8682a;margin-bottom:24px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+
+/* 01 · Tokens 表格 */
+.token-table{width:100%;border-collapse:collapse;font-size:13px}
+.token-table th{text-align:left;padding:6px 10px;background:#ede6d8;color:#666;font-weight:600;font-size:11px;letter-spacing:.5px}
+.token-table td{padding:7px 10px;border-bottom:1px solid #e8e0d2;vertical-align:middle}
+.swatch{display:inline-block;width:16px;height:16px;border-radius:3px;border:1px solid rgba(0,0,0,.15);vertical-align:middle;margin-right:6px}
+.mono{font-family:'JetBrains Mono',monospace;font-size:12px;color:#555}
+
+/* 卡牌画 */
+.card-demo-area{display:flex;flex-direction:column;gap:20px}
+.card-states-label{font-size:11px;color:#888;margin-bottom:8px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.card-states{display:flex;gap:16px;align-items:flex-end}
+.state-item{display:flex;flex-direction:column;align-items:center;gap:8px}
+.state-label{font-size:11px;color:#888;text-align:center}
+
+/* 扑克牌 CSS */
+.poker-card{
+  width:88px;height:128px;background:#fbfaf7;border-radius:12px;position:relative;
+  box-shadow:0 2px 8px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.08);
+  transition:transform 200ms ease,box-shadow 200ms ease;
+  cursor:pointer;user-select:none;flex-shrink:0
+}
+.poker-card .corner{position:absolute;line-height:1;font-weight:700}
+.poker-card .corner.tl{top:6px;left:8px;text-align:left}
+.poker-card .corner.br{bottom:6px;right:8px;text-align:right;transform:rotate(180deg)}
+.poker-card .corner .rank{font-size:16px;display:block}
+.poker-card .corner .suit{font-size:13px;display:block}
+.poker-card .center-suit{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:48px;line-height:1
+}
+.red-card .corner,.red-card .center-suit{color:#d33f3f}
+.black-card .corner,.black-card .center-suit{color:#1a1a1a}
+
+/* 卡牌状态 */
+.card-hover{transform:translateY(-4px);box-shadow:0 6px 16px rgba(0,0,0,.22)}
+.card-selected{transform:translateY(-12px);box-shadow:0 0 0 2.5px #e8682a,0 8px 20px rgba(232,104,42,.35)}
+.card-disabled{opacity:.4;cursor:not-allowed}
+
+/* 02 · 游戏主界面 */
+.game-viewport{
+  width:1080px;height:640px;background:#2d5a3d;border-radius:16px;
+  overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 12px 48px rgba(0,0,0,.45);margin:0 auto;position:relative;
+  background-image:
+    radial-gradient(ellipse at 50% 100%,rgba(0,0,0,.25) 0%,transparent 70%),
+    repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(255,255,255,.012) 20px,rgba(255,255,255,.012) 21px)
+}
+
+/* 顶部 HUD */
+.hud{
+  display:flex;align-items:center;gap:0;padding:0 24px;height:64px;
+  background:rgba(0,0,0,.35);backdrop-filter:blur(4px);border-bottom:1px solid rgba(255,255,255,.08);
+  flex-shrink:0
+}
+.hud-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-right:1px solid rgba(255,255,255,.1);padding:0 8px
+}
+.hud-item:last-child{border-right:none}
+.hud-label{font-size:10px;color:rgba(255,255,255,.55);letter-spacing:1px;text-transform:uppercase;font-weight:600}
+.hud-value{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#fff;line-height:1.2;font-variant-numeric:tabular-nums}
+.hud-value.target{color:#d4a017}
+.hud-value.score{color:#5dd67a}
+.hud-value.plays{color:#e8682a}
+.hud-value.discards{color:#e06060}
+
+/* 出牌区 */
+.play-zone{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.15);border-bottom:1px solid rgba(255,255,255,.06);
+  position:relative;gap:10px
+}
+.hand-type-badge{
+  background:rgba(232,104,42,.85);color:#fff;font-size:13px;font-weight:700;
+  padding:5px 18px;border-radius:999px;letter-spacing:.5px;
+  box-shadow:0 2px 8px rgba(232,104,42,.4)
+}
+.play-cards{display:flex;gap:12px;align-items:center}
+.play-placeholder{
+  width:88px;height:128px;border-radius:12px;
+  border:2px dashed rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,.25);font-size:24px
+}
+.zone-hint{font-size:12px;color:rgba(255,255,255,.35);letter-spacing:.5px}
+
+/* 手牌区 */
+.hand-zone{
+  padding:16px 24px 12px;background:rgba(0,0,0,.2);border-top:1px solid rgba(255,255,255,.06);
+  flex-shrink:0
+}
+.hand-zone-label{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+.hand-cards{display:flex;gap:10px;justify-content:center}
+
+/* 操作按钮 */
+.action-bar{
+  display:flex;align-items:center;gap:12px;justify-content:center;
+  padding:14px 24px;background:rgba(0,0,0,.3);border-top:1px solid rgba(255,255,255,.06);
+  flex-shrink:0
+}
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  border:none;border-radius:999px;font-family:'Noto Sans SC',sans-serif;
+  font-size:14px;font-weight:700;cursor:pointer;padding:10px 26px;
+  transition:transform 150ms ease,box-shadow 150ms ease,opacity 150ms ease;
+  letter-spacing:.3px
+}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.btn-play{background:#e8682a;color:#fff;box-shadow:0 4px 14px rgba(232,104,42,.45)}
+.btn-play:hover{box-shadow:0 6px 18px rgba(232,104,42,.6)}
+.btn-discard{background:#a83232;color:#fff;box-shadow:0 4px 14px rgba(168,50,50,.4)}
+.btn-discard:hover{box-shadow:0 6px 18px rgba(168,50,50,.55)}
+.btn-restart{background:transparent;color:rgba(255,255,255,.7);border:1.5px solid rgba(255,255,255,.3)}
+.btn-restart:hover{border-color:rgba(255,255,255,.6);color:#fff}
+
+/* 03 · 状态库 */
+.state-cards{display:flex;gap:16px;flex-wrap:wrap}
+.state-card{
+  border-radius:12px;padding:16px 20px;min-width:180px;flex:1;
+  display:flex;flex-direction:column;gap:6px
+}
+.state-neutral{background:#ede6d8;border:1px solid #d4c9b4}
+.state-highlight{background:#1a1a1a;border:1px solid #e8682a}
+.state-win{background:#0d0d0d;border:2px solid #d4a017}
+.state-card .s-title{font-size:13px;font-weight:700}
+.state-card .s-body{font-size:13px}
+.state-neutral .s-title{color:#555}
+.state-neutral .s-body{color:#1a1a1a}
+.state-highlight .s-title{color:#e8682a}
+.state-highlight .s-body{color:#fff}
+.state-win .s-title{color:#d4a017;font-size:15px}
+.state-win .s-body{color:#fff}
+
+/* 右侧工程交班 */
+.handoff{background:#1a1a1a;border-radius:12px;padding:20px 22px}
+.handoff h4{color:#e8682a;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px}
+.handoff ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.handoff li{font-family:'JetBrains Mono',monospace;font-size:12px;color:#ccc;line-height:1.5;padding-left:12px;position:relative}
+.handoff li::before{content:'·';position:absolute;left:0;color:#e8682a}
+
+.section-scroll-anchor{scroll-margin-top:44px}
+</style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<div class="topbar">
+  <span class="badge">Version V1.0.0 · Round 1 · 2026-05-16</span>
+  <nav class="nav-links">
+    <a href="#s01">01 · Tokens + 卡牌</a>
+    <a href="#s02">02 · 游戏主界面</a>
+    <a href="#s03">03 · 状态库 + 交班</a>
+  </nav>
+</div>
+
+<!-- ══════════════════════════════════════
+     01 · Design Tokens + 卡牌组件
+══════════════════════════════════════ -->
+<section class="section section-scroll-anchor" id="s01">
+  <div class="section-title">01 · Design Tokens + 卡牌组件</div>
+  <div class="two-col">
+
+    <!-- 左：色板表格 -->
+    <div>
+      <table class="token-table">
+        <thead>
+          <tr><th>类别</th><th>Token / 值</th><th>用途</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="swatch" style="background:#2d5a3d"></span>桌面绿</td>
+            <td class="mono">--color-table: #2d5a3d</td>
+            <td>游戏背景、绒布底色</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#e8682a"></span>强调橙</td>
+            <td class="mono">--color-accent: #e8682a</td>
+            <td>出牌按钮、选中描边、高亮</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#a83232"></span>弃牌红</td>
+            <td class="mono">--color-discard: #a83232</td>
+            <td>弃牌按钮、危险状态</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#d4a017"></span>金色</td>
+            <td class="mono">--color-gold: #d4a017</td>
+            <td>目标分、胜利 Toast 边框</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#d33f3f"></span>红花色</td>
+            <td class="mono">--color-card-red: #d33f3f</td>
+            <td>红心 ♥ 方块 ♦ 点数颜色</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#fbfaf7;border:1px solid #ccc"></span>卡牌底</td>
+            <td class="mono">--color-card-bg: #fbfaf7</td>
+            <td>扑克牌底色</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#5dd67a"></span>当前分</td>
+            <td class="mono">--color-score: #5dd67a</td>
+            <td>HUD 当前分数显示</td>
+          </tr>
+          <tr>
+            <td colspan="3" style="padding:8px 10px 2px;background:#ede6d8;font-size:11px;color:#666;font-weight:600;letter-spacing:.5px">SHAPE TOKENS</td>
+          </tr>
+          <tr>
+            <td>卡牌圆角</td>
+            <td class="mono">--radius-card: 12px</td>
+            <td>扑克牌、弹窗</td>
+          </tr>
+          <tr>
+            <td>按钮圆角</td>
+            <td class="mono">--radius-btn: 999px</td>
+            <td>胶囊形按钮</td>
+          </tr>
+          <tr>
+            <td>过渡时长</td>
+            <td class="mono">--ease-card: 200ms ease</td>
+            <td>牌的 hover / 选中动效</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 右：卡牌展示 -->
+    <div class="card-demo-area">
+      <!-- 主角：红心 A -->
+      <div>
+        <div class="card-states-label">红心 A — 真实 CSS 渲染（88×128px）</div>
+        <div class="poker-card red-card">
+          <div class="corner tl"><span class="rank">A</span><span class="suit">♥</span></div>
+          <div class="center-suit">♥</div>
+          <div class="corner br"><span class="rank">A</span><span class="suit">♥</span></div>
+        </div>
+      </div>
+
+      <!-- 4 状态说明 -->
+      <div>
+        <div class="card-states-label">4 种交互状态</div>
+        <div class="card-states">
+          <div class="state-item">
+            <div class="poker-card black-card" style="width:64px;height:92px">
+              <div class="corner tl" style="top:4px;left:5px"><span class="rank" style="font-size:11px">K</span><span class="suit" style="font-size:9px">♠</span></div>
+              <div class="center-suit" style="font-size:32px">♠</div>
+              <div class="corner br" style="bottom:4px;right:5px"><span class="rank" style="font-size:11px">K</span><span class="suit" style="font-size:9px">♠</span></div>
+            </div>
+            <div class="state-label">默认</div>
+          </div>
+          <div class="state-item">
+            <div class="poker-card red-card card-hover" style="width:64px;height:92px">
+              <div class="corner tl" style="top:4px;left:5px"><span class="rank" style="font-size:11px">Q</span><span class="suit" style="font-size:9px">♥</span></div>
+              <div class="center-suit" style="font-size:32px">♥</div>
+              <div class="corner br" style="bottom:4px;right:5px"><span class="rank" style="font-size:11px">Q</span><span class="suit" style="font-size:9px">♥</span></div>
+            </div>
+            <div class="state-label">hover<br>↑4px</div>
+          </div>
+          <div class="state-item">
+            <div class="poker-card red-card card-selected" style="width:64px;height:92px">
+              <div class="corner tl" style="top:4px;left:5px"><span class="rank" style="font-size:11px">J</span><span class="suit" style="font-size:9px">♦</span></div>
+              <div class="center-suit" style="font-size:32px">♦</div>
+              <div class="corner br" style="bottom:4px;right:5px"><span class="rank" style="font-size:11px">J</span><span class="suit" style="font-size:9px">♦</span></div>
+            </div>
+            <div class="state-label">选中<br>↑12px+橙框</div>
+          </div>
+          <div class="state-item">
+            <div class="poker-card black-card card-disabled" style="width:64px;height:92px">
+              <div class="corner tl" style="top:4px;left:5px"><span class="rank" style="font-size:11px">2</span><span class="suit" style="font-size:9px">♣</span></div>
+              <div class="center-suit" style="font-size:32px">♣</div>
+              <div class="corner br" style="bottom:4px;right:5px"><span class="rank" style="font-size:11px">2</span><span class="suit" style="font-size:9px">♣</span></div>
+            </div>
+            <div class="state-label">禁用<br>opacity 40%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     02 · 完整游戏页面
+══════════════════════════════════════ -->
+<section class="section section-scroll-anchor" id="s02">
+  <div class="section-title">02 · 完整游戏页面（课堂演示主角）</div>
+
+  <div class="game-viewport">
+
+    <!-- HUD -->
+    <div class="hud">
+      <div class="hud-item">
+        <div class="hud-label">目标分</div>
+        <div class="hud-value target">300</div>
+      </div>
+      <div class="hud-item">
+        <div class="hud-label">当前分</div>
+        <div class="hud-value score">0</div>
+      </div>
+      <div class="hud-item">
+        <div class="hud-label">剩余出牌</div>
+        <div class="hud-value plays">4</div>
+      </div>
+      <div class="hud-item">
+        <div class="hud-label">剩余弃牌</div>
+        <div class="hud-value discards">3</div>
+      </div>
+    </div>
+
+    <!-- 出牌区 -->
+    <div class="play-zone">
+      <div class="hand-type-badge">同花顺</div>
+      <div class="play-cards">
+        <div class="poker-card red-card">
+          <div class="corner tl"><span class="rank">A</span><span class="suit">♥</span></div>
+          <div class="center-suit">♥</div>
+          <div class="corner br"><span class="rank">A</span><span class="suit">♥</span></div>
+        </div>
+        <div class="poker-card red-card">
+          <div class="corner tl"><span class="rank">K</span><span class="suit">♥</span></div>
+          <div class="center-suit">♥</div>
+          <div class="corner br"><span class="rank">K</span><span class="suit">♥</span></div>
+        </div>
+        <div class="poker-card red-card">
+          <div class="corner tl"><span class="rank">Q</span><span class="suit">♥</span></div>
+          <div class="center-suit">♥</div>
+          <div class="corner br"><span class="rank">Q</span><span class="suit">♥</span></div>
+        </div>
+        <div class="play-placeholder">+</div>
+        <div class="play-placeholder">+</div>
+      </div>
+      <div class="zone-hint">选中 1–5 张牌后点击「出牌」</div>
+    </div>
+
+    <!-- 手牌 -->
+    <div class="hand-zone">
+      <div class="hand-zone-label">手牌 · 8 张</div>
+      <div class="hand-cards">
+        <div class="poker-card red-card card-selected" style="width:82px;height:118px">
+          <div class="corner tl" style="top:5px;left:6px"><span class="rank" style="font-size:14px">J</span><span class="suit" style="font-size:11px">♥</span></div>
+          <div class="center-suit" style="font-size:40px">♥</div>
+          <div class="corner br" style="bottom:5px;right:6px"><span class="rank" style="font-size:14px">J</span><span class="suit" style="font-size:11px">♥</span></div>
+        </div>
+        <div class="poker-card black-card" style="width:82px;height:118px">
+          <div class="corner tl" style="top:5px;left:6px"><span class="rank" style="font-size:14px">7</span><span class="suit" style="font-size:11px">♠</span></div>
+          <div class="center-suit" style="font-size:40px">♠</div>
+          <div class="corner br" style="bottom:5px;right:6px"><span class="rank" style="font-size:14px">7</span><span class="suit" style="font-size:11px">♠</span></div>
+        </div>
+        <div class="poker-card red-card" style="width:82px;height:118px">
+          <div class="corner tl" style="top:5px;left:6px"><span class="rank" style="font-size:14px">3</span><span class="suit" style="font-size:11px">♦</span></div>
+          <div class="center-suit" style="font-size:40px">♦</div>
+          <div class="corner br" style="bottom:5px;right:6px"><span class="rank" style="font-size:14px">3</span><span class="suit" style="font-size:11px">♦</span></div>
+        </div>
+        <div class="poker-card black-card" style="width:82px;height:118px">
+          <div class="corner tl" style="top:5px;left:6px"><span class="rank" style="font-size:14px">K</span><span class="suit" style="font-size:11px">♣</span></div>
+          <div class="center-suit" style="font-size:40px">♣</div>
+          <div class="corner br" style="bottom:5px;right:6px"><span class="rank" style="font-size:14px">K</span><span class="suit" style="font-size:11px">♣</span></div>
+        </div>
+        <div class="poker-card red-card" style="width:82px;height:118px">
+          <div class="corner tl" style="top:5px;left:6px"><span class="rank" style="font-size:14px">9</span><span class="suit" style="font-size:11px">♥</span></div>
+          <div class="center-suit" style="font-size:40px">♥</div>
+          <div class="corner br" style="bottom:5px;right:6px"><span class="rank" style="font-size:14px">9</span><span class="suit" style="font-size:11px">♥</span></div>
+        </div>
+        <div class="poker-card black-card" style="width:82px;height:118px">
+          <div class="corner tl" style="top:5px;left:6px"><span class="rank" style="font-size:14px">4</span><span class="suit" style="font-size:11px">♠</span></div>
+          <div class="center-suit" style="font-size:40px">♠</div>
+          <div class="corner br" style="bottom:5px;right:6px"><span class="rank" style="font-size:14px">4</span><span class="suit" style="font-size:11px">♠</span></div>
+        </div>
+        <div class="poker-card red-card" style="width:82px;height:118px">
+          <div class="corner tl" style="top:5px;left:6px"><span class="rank" style="font-size:14px">2</span><span class="suit" style="font-size:11px">♦</span></div>
+          <div class="center-suit" style="font-size:40px">♦</div>
+          <div class="corner br" style="bottom:5px;right:6px"><span class="rank" style="font-size:14px">2</span><span class="suit" style="font-size:11px">♦</span></div>
+        </div>
+        <div class="poker-card black-card" style="width:82px;height:118px">
+          <div class="corner tl" style="top:5px;left:6px"><span class="rank" style="font-size:14px">8</span><span class="suit" style="font-size:11px">♣</span></div>
+          <div class="center-suit" style="font-size:40px">♣</div>
+          <div class="corner br" style="bottom:5px;right:6px"><span class="rank" style="font-size:14px">8</span><span class="suit" style="font-size:11px">♣</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 操作栏 -->
+    <div class="action-bar">
+      <button class="btn btn-play">出牌</button>
+      <button class="btn btn-discard">弃牌</button>
+      <button class="btn btn-restart">重新开始</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     03 · 状态库 + 工程交班
+══════════════════════════════════════ -->
+<section class="section section-scroll-anchor" id="s03">
+  <div class="section-title">03 · 状态库 + 工程交班</div>
+  <div class="two-col">
+
+    <!-- 左：3 个状态卡片 -->
+    <div>
+      <div class="state-cards">
+        <div class="state-card state-neutral">
+          <div class="s-title">等待选牌</div>
+          <div class="s-body">请选择 1–5 张牌后点击出牌</div>
+        </div>
+        <div class="state-card state-highlight">
+          <div class="s-title">同花顺</div>
+          <div class="s-body" style="font-family:'JetBrains Mono',monospace">+100 × 8 = 800</div>
+        </div>
+        <div class="state-card state-win">
+          <div class="s-title">Beat the Blind</div>
+          <div class="s-body">目标达成！进入下一关</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;font-size:12px;color:#888;line-height:1.7">
+        <strong style="color:#555">空状态：</strong>出牌区无牌时显示"请选 1–5 张"中性提示<br>
+        <strong style="color:#555">胜利：</strong>金边黑底 Toast，居中遮罩，按任意键继续<br>
+        <strong style="color:#555">失败：</strong>出牌次数耗尽时自动触发，提示"重新开始"
+      </div>
+    </div>
+
+    <!-- 右：工程交班 -->
+    <div class="handoff">
+      <h4>给开发的话</h4>
+      <ul>
+        <li>CSS 变量建议：<code style="color:#e8682a">--color-table / --color-accent / --color-card-red / --color-gold</code>，统一在 :root 定义</li>
+        <li>卡牌动效：<code style="color:#e8682a">transform: translateY(-12px)</code> + <code style="color:#e8682a">box-shadow: 0 0 0 2.5px var(--color-accent)</code></li>
+        <li>过渡统一：<code style="color:#e8682a">transition: transform 200ms ease, box-shadow 200ms ease</code></li>
+        <li>字体方案：数字/代码用 JetBrains Mono，正文用 Noto Sans SC，fallback 均为 system-ui</li>
+        <li>HUD 数字防抖：<code style="color:#e8682a">font-variant-numeric: tabular-nums</code>，防止数字变化时布局跳动</li>
+        <li>移动适配：游戏容器固定 1080×640，移动端用 <code style="color:#e8682a">transform: scale()</code> 整体缩放</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>
