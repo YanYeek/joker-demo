@@ -17,14 +17,14 @@
   --color-card-red: #d33f3f;
   --color-card-bg: #fbfaf7;
   --color-score: #5dd67a;
+  --color-joker: #a78bfa;
   --radius-card: 12px;
   --radius-btn: 999px;
   --ease-card: 200ms ease;
 
   --hud-h: 64px;
+  --joker-bar-h: 44px;
   --action-h: 72px;
-  --play-area-h: 220px;
-  --hand-h: 200px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -68,7 +68,7 @@ body {
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255,255,255,.08);
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   align-items: center;
   padding: 0 24px;
   gap: 0;
@@ -114,10 +114,63 @@ body {
   100% { transform: scale(1); }
 }
 
-.hud-target { color: var(--color-gold); }
-.hud-score  { color: var(--color-score); }
-.hud-hands  { color: var(--color-accent); }
+.hud-target   { color: var(--color-gold); }
+.hud-score    { color: var(--color-score); }
+.hud-hands    { color: var(--color-accent); }
 .hud-discards { color: #e57373; }
+.hud-round    { color: var(--color-joker); font-size: 18px; }
+
+/* ==================== JOKER BAR ==================== */
+#joker-bar {
+  height: var(--joker-bar-h);
+  background: rgba(0,0,0,.22);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.joker-bar-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.28);
+  white-space: nowrap;
+}
+
+#joker-slots {
+  display: flex;
+  gap: 8px;
+}
+
+.joker-slot {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 12px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+}
+
+.joker-slot-empty {
+  border: 1.5px dashed rgba(255,255,255,.12);
+  color: rgba(255,255,255,.18);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  padding: 3px 14px;
+}
+
+.joker-slot-filled {
+  background: rgba(167,139,250,.18);
+  border: 1.5px solid rgba(167,139,250,.35);
+  color: #c4b5fd;
+}
+
+.joker-slot-emoji { font-size: 13px; }
+.joker-slot-name  { font-size: 11px; font-weight: 600; }
 
 /* ==================== PLAY AREA ==================== */
 #play-area {
@@ -162,7 +215,6 @@ body {
   font-family: 'Noto Sans SC', sans-serif;
 }
 
-/* played card mini size */
 .card-mini {
   width: 70px;
   height: 100px;
@@ -209,7 +261,6 @@ body {
   flex-shrink: 0;
 }
 
-/* hand type badge */
 #hand-type-badge {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
@@ -232,7 +283,6 @@ body {
   box-shadow: none;
 }
 
-/* buttons */
 .btn {
   font-family: 'Noto Sans SC', sans-serif;
   font-size: 14px;
@@ -352,33 +402,21 @@ body {
 
 .card.red .card-rank,
 .card.red .card-suit-small,
-.card.red .card-center {
-  color: var(--color-card-red);
-}
+.card.red .card-center { color: var(--color-card-red); }
 
 .card.black .card-rank,
 .card.black .card-suit-small,
-.card.black .card-center {
-  color: #1a1a1a;
-}
+.card.black .card-center { color: #1a1a1a; }
 
-/* played card animation */
 @keyframes cardDeal {
-  from {
-    opacity: 0;
-    transform: translateY(-20px) scale(0.85);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(-20px) scale(0.85); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .card-deal-anim {
   animation: cardDeal 0.25s ease forwards;
 }
 
-/* score flash */
 @keyframes scoreFlash {
   0%   { background: rgba(93,214,122,.25); }
   100% { background: transparent; }
@@ -452,14 +490,14 @@ body {
   transform: scale(1);
 }
 
-#modal-card.win-modal {
-  border: 2px solid var(--color-gold);
-  box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 40px rgba(212,160,23,.2);
-}
-
 #modal-card.lose-modal {
   border: 2px solid var(--color-discard);
   box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 40px rgba(168,50,50,.2);
+}
+
+#modal-card.cleared-modal {
+  border: 2px solid var(--color-gold);
+  box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 60px rgba(212,160,23,.35);
 }
 
 .modal-title {
@@ -470,8 +508,8 @@ body {
   margin-bottom: 8px;
 }
 
-.win-modal .modal-title { color: var(--color-gold); }
-.lose-modal .modal-title { color: #e57373; }
+.lose-modal .modal-title    { color: #e57373; }
+.cleared-modal .modal-title { color: var(--color-gold); }
 
 .modal-subtitle {
   font-size: 14px;
@@ -486,8 +524,8 @@ body {
   margin: 16px 0 24px;
 }
 
-.win-modal .modal-score  { color: var(--color-score); }
-.lose-modal .modal-score { color: rgba(255,255,255,.7); }
+.lose-modal .modal-score    { color: rgba(255,255,255,.7); }
+.cleared-modal .modal-score { color: var(--color-gold); }
 
 .modal-score-label {
   font-size: 12px;
@@ -496,6 +534,91 @@ body {
   text-transform: uppercase;
   margin-top: -18px;
   margin-bottom: 20px;
+}
+
+/* ==================== JOKER SELECT OVERLAY ==================== */
+#joker-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+#joker-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#joker-panel {
+  text-align: center;
+}
+
+.joker-panel-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--color-gold);
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+
+.joker-panel-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,.4);
+  margin-bottom: 32px;
+}
+
+#joker-choices {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.joker-choice-card {
+  width: 168px;
+  background: #0d0d1e;
+  border: 2px solid rgba(167,139,250,.28);
+  border-radius: 18px;
+  padding: 28px 18px 22px;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  text-align: center;
+}
+
+.joker-choice-card:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(212,160,23,.22);
+  background: #12122a;
+}
+
+.joker-choice-emoji {
+  font-size: 52px;
+  display: block;
+  margin-bottom: 14px;
+  line-height: 1;
+}
+
+.joker-choice-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #c4b5fd;
+  margin-bottom: 10px;
+}
+
+.joker-choice-desc {
+  font-size: 11px;
+  color: rgba(255,255,255,.45);
+  line-height: 1.55;
 }
 
 /* ==================== DECORATIVE ==================== */
@@ -535,7 +658,6 @@ body {
 <body>
 
 <div id="game">
-  <!-- Decorative circle -->
   <div class="table-logo"></div>
 
   <!-- HUD -->
@@ -556,6 +678,16 @@ body {
       <span class="hud-label">剩余弃牌</span>
       <span class="hud-value hud-discards" id="hud-discards">3</span>
     </div>
+    <div class="hud-cell">
+      <span class="hud-label">当前关卡</span>
+      <span class="hud-value hud-round" id="hud-round">1 / 3</span>
+    </div>
+  </div>
+
+  <!-- Joker Bar -->
+  <div id="joker-bar">
+    <span class="joker-bar-label">小丑牌</span>
+    <div id="joker-slots"></div>
   </div>
 
   <!-- Play Area -->
@@ -582,14 +714,23 @@ body {
   <!-- Score Toast -->
   <div id="score-toast"></div>
 
-  <!-- Modal -->
+  <!-- Modal (lose / cleared) -->
   <div id="modal-overlay">
     <div id="modal-card">
-      <div class="modal-title" id="modal-title">Beat the Blind</div>
-      <div class="modal-subtitle" id="modal-subtitle">恭喜通关！</div>
+      <div class="modal-title" id="modal-title">游戏结束</div>
+      <div class="modal-subtitle" id="modal-subtitle"></div>
       <div class="modal-score" id="modal-score">0</div>
       <div class="modal-score-label">最终得分</div>
       <button class="btn btn-play" id="btn-modal-restart" style="width:100%;padding:12px 0;font-size:15px;">再来一局</button>
+    </div>
+  </div>
+
+  <!-- Joker Select Overlay -->
+  <div id="joker-overlay">
+    <div id="joker-panel">
+      <div class="joker-panel-title" id="joker-panel-title">第 1 关通过！</div>
+      <div class="joker-panel-sub">选择一张小丑牌，带入下一关持续生效</div>
+      <div id="joker-choices"></div>
     </div>
   </div>
 </div>
@@ -608,11 +749,9 @@ function cardValue(rank) {
 
 function buildDeck() {
   const deck = [];
-  for (const suit of SUITS) {
-    for (const rank of RANKS) {
+  for (const suit of SUITS)
+    for (const rank of RANKS)
       deck.push({ suit, rank, value: cardValue(rank), id: `${rank}${suit}` });
-    }
-  }
   return deck;
 }
 
@@ -625,7 +764,6 @@ function shuffle(arr) {
   return a;
 }
 
-// Hand type definitions (priority order, highest first)
 const HAND_TYPES = [
   { name: '皇家同花顺', base: 100, mult: 8 },
   { name: '同花顺',     base: 100, mult: 8 },
@@ -638,6 +776,86 @@ const HAND_TYPES = [
   { name: '对子',       base: 10,  mult: 2 },
   { name: '高牌',       base: 5,   mult: 1 },
 ];
+
+// ==================== JOKERS ====================
+
+const ALL_JOKERS = [
+  {
+    id: 'brute',
+    name: '暴力小丑',
+    emoji: '💪',
+    desc: '每次出牌固定额外 +30 分',
+  },
+  {
+    id: 'greedy',
+    name: '贪婪小丑',
+    emoji: '💰',
+    desc: '出对子或两对时，额外 +50 分',
+  },
+  {
+    id: 'wind',
+    name: '疾风小丑',
+    emoji: '🌪️',
+    desc: '出顺子或同花系列时，额外 +80 分',
+  },
+  {
+    id: 'crown',
+    name: '皇冠小丑',
+    emoji: '👑',
+    desc: '出牌含 J、Q 或 K 时，额外 +40 分',
+  },
+  {
+    id: 'extra-hand',
+    name: '多手小丑',
+    emoji: '✋',
+    desc: '每关出牌次数 +1',
+  },
+  {
+    id: 'discard-king',
+    name: '弃牌王',
+    emoji: '🃏',
+    desc: '每关弃牌次数 +2',
+  },
+];
+
+const ROUND_TARGETS = [300, 600, 1000];
+
+// ==================== STATE ====================
+
+const state = {
+  deck: [],
+  hand: [],
+  selected: [],
+  score: 0,
+  target: 300,
+  handsLeft: 4,
+  discardsLeft: 3,
+  gameStatus: 'playing', // playing | win | lose | cleared
+  round: 1,
+  jokers: [],
+};
+
+function initGame() {
+  state.round = 1;
+  state.jokers = [];
+  initRound();
+}
+
+function initRound() {
+  state.deck = shuffle(buildDeck());
+  state.hand = state.deck.splice(0, 8);
+  state.selected = [];
+  state.score = 0;
+  state.target = ROUND_TARGETS[state.round - 1];
+  state.handsLeft = 4;
+  state.discardsLeft = 3;
+  state.gameStatus = 'playing';
+
+  for (const joker of state.jokers) {
+    if (joker.id === 'extra-hand')   state.handsLeft   += 1;
+    if (joker.id === 'discard-king') state.discardsLeft += 2;
+  }
+}
 
 function rankOrder(rank) {
   return ['2','3','4','5','6','7','8','9','10','J','Q','K','A'].indexOf(rank);
@@ -653,16 +871,13 @@ function identifyHand(cards) {
 
   const isFlush = n === 5 && suits.every(s => s === suits[0]);
 
-  // Check straight (including A-low: A,2,3,4,5)
   let isStraight = false;
   if (n === 5) {
     const isSequential = orders[4] - orders[0] === 4 && new Set(orders).size === 5;
-    // A-low straight: A,2,3,4,5 => orders would be [0,1,2,3,12]
     const isWheelStraight = JSON.stringify(orders) === JSON.stringify([0,1,2,3,12]);
     isStraight = isSequential || isWheelStraight;
   }
 
-  // Count rank frequencies
   const freq = {};
   for (const r of ranks) freq[r] = (freq[r] || 0) + 1;
   const counts = Object.values(freq).sort((a, b) => b - a);
@@ -670,13 +885,8 @@ function identifyHand(cards) {
   let handName = '高牌';
 
   if (n === 5 && isFlush && isStraight) {
-    // Royal flush: 10,J,Q,K,A of same suit
     const rankSet = new Set(ranks);
-    if (['10','J','Q','K','A'].every(r => rankSet.has(r))) {
-      handName = '皇家同花顺';
-    } else {
-      handName = '同花顺';
-    }
+    handName = ['10','J','Q','K','A'].every(r => rankSet.has(r)) ? '皇家同花顺' : '同花顺';
   } else if (counts[0] === 4) {
     handName = '四条';
   } else if (counts[0] === 3 && counts[1] === 2) {
@@ -695,33 +905,26 @@ function identifyHand(cards) {
 
   const typeInfo = HAND_TYPES.find(t => t.name === handName);
   const cardSum = cards.reduce((s, c) => s + c.value, 0);
-  const score = (typeInfo.base + cardSum) * typeInfo.mult;
+  const baseScore = (typeInfo.base + cardSum) * typeInfo.mult;
 
-  return { name: handName, base: typeInfo.base, mult: typeInfo.mult, cardSum, score };
+  return { name: handName, base: typeInfo.base, mult: typeInfo.mult, cardSum, score: baseScore, jokerBonus: 0 };
 }
 
-// ==================== STATE ====================
-
-const state = {
-  deck: [],
-  hand: [],
-  selected: [],
-  score: 0,
-  target: 300,
-  handsLeft: 4,
-  discardsLeft: 3,
-  gameStatus: 'playing', // playing | win | lose
-};
-
-function initGame() {
-  state.deck = shuffle(buildDeck());
-  state.hand = state.deck.splice(0, 8);
-  state.selected = [];
-  state.score = 0;
-  state.target = 300;
-  state.handsLeft = 4;
-  state.discardsLeft = 3;
-  state.gameStatus = 'playing';
+function applyJokers(result, played) {
+  let bonus = 0;
+  for (const joker of state.jokers) {
+    if (joker.id === 'brute') {
+      bonus += 30;
+    } else if (joker.id === 'greedy' && ['对子', '两对'].includes(result.name)) {
+      bonus += 50;
+    } else if (joker.id === 'wind' && ['顺子', '同花', '同花顺', '皇家同花顺'].includes(result.name)) {
+      bonus += 80;
+    } else if (joker.id === 'crown' && played.some(c => ['J','Q','K'].includes(c.rank))) {
+      bonus += 40;
+    }
+  }
+  result.jokerBonus = bonus;
+  result.score += bonus;
 }
 
 // ==================== RENDERING ====================
@@ -732,7 +935,6 @@ function createCardEl(card, { mini = false, animDelay = 0 } = {}) {
   el.className = `card ${isRed ? 'red' : 'black'}${mini ? ' card-mini' : ''} card-deal-anim`;
   el.dataset.id = card.id;
   el.style.animationDelay = `${animDelay}ms`;
-
   el.innerHTML = `
     <div class="card-corner">
       <span class="card-rank">${card.rank}</span>
@@ -744,33 +946,25 @@ function createCardEl(card, { mini = false, animDelay = 0 } = {}) {
       <span class="card-suit-small">${card.suit}</span>
     </div>
   `;
-
   return el;
 }
 
 function renderHand() {
   const container = document.getElementById('hand-cards');
   container.innerHTML = '';
-
   state.hand.forEach((card, i) => {
     const el = createCardEl(card, { animDelay: i * 30 });
-    const isSelected = state.selected.some(s => s.id === card.id);
-
-    if (isSelected) el.classList.add('card-selected');
-
+    if (state.selected.some(s => s.id === card.id)) el.classList.add('card-selected');
     el.addEventListener('click', () => handleCardClick(card));
     container.appendChild(el);
   });
-
   document.getElementById('hand-count').textContent = state.hand.length;
 }
 
 function renderPlayedCards(cards) {
   const container = document.getElementById('played-cards');
   container.innerHTML = '';
-
   if (!cards || cards.length === 0) {
-    // Show 5 placeholders
     for (let i = 0; i < 5; i++) {
       const ph = document.createElement('div');
       ph.className = 'played-placeholder';
@@ -778,7 +972,6 @@ function renderPlayedCards(cards) {
     }
     return;
   }
-
   cards.forEach((card, i) => {
     const el = createCardEl(card, { mini: true, animDelay: i * 60 });
     el.style.cursor = 'default';
@@ -787,9 +980,29 @@ function renderPlayedCards(cards) {
 }
 
 function renderHUD() {
+  document.getElementById('hud-target').textContent = state.target;
   document.getElementById('hud-score').textContent = state.score;
   document.getElementById('hud-hands').textContent = state.handsLeft;
   document.getElementById('hud-discards').textContent = state.discardsLeft;
+  document.getElementById('hud-round').textContent = `${state.round} / 3`;
+}
+
+function renderJokers() {
+  const container = document.getElementById('joker-slots');
+  container.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'joker-slot';
+    if (state.jokers[i]) {
+      slot.classList.add('joker-slot-filled');
+      slot.title = state.jokers[i].desc;
+      slot.innerHTML = `<span class="joker-slot-emoji">${state.jokers[i].emoji}</span><span class="joker-slot-name">${state.jokers[i].name}</span>`;
+    } else {
+      slot.classList.add('joker-slot-empty');
+      slot.textContent = '空';
+    }
+    container.appendChild(slot);
+  }
 }
 
 function updateBadge() {
@@ -816,20 +1029,20 @@ function updateButtons() {
 
 function showModal(type) {
   const overlay = document.getElementById('modal-overlay');
-  const card = document.getElementById('modal-card');
-  const title = document.getElementById('modal-title');
+  const card    = document.getElementById('modal-card');
+  const title   = document.getElementById('modal-title');
   const subtitle = document.getElementById('modal-subtitle');
   const scoreEl = document.getElementById('modal-score');
 
-  card.className = type === 'win' ? 'win-modal' : 'lose-modal';
-
-  if (type === 'win') {
-    title.textContent = 'Beat the Blind';
-    subtitle.textContent = '恭喜通关！目标已达成';
-    scoreEl.style.color = 'var(--color-score)';
+  if (type === 'cleared') {
+    card.className = 'cleared-modal';
+    title.textContent = '全部通关！';
+    subtitle.textContent = '三关全胜，你是真正的小丑王！';
+    scoreEl.style.color = 'var(--color-gold)';
   } else {
+    card.className = 'lose-modal';
     title.textContent = '游戏结束';
-    subtitle.textContent = '出牌机会已耗尽，未能达成目标';
+    subtitle.textContent = `第 ${state.round} 关出牌机会耗尽，未达目标`;
     scoreEl.style.color = 'rgba(255,255,255,.7)';
   }
 
@@ -841,11 +1054,48 @@ function hideModal() {
   document.getElementById('modal-overlay').classList.remove('show');
 }
 
+function showJokerSelect() {
+  const available = ALL_JOKERS.filter(j => !state.jokers.some(o => o.id === j.id));
+  const choices = shuffle(available).slice(0, Math.min(3, available.length));
+
+  document.getElementById('joker-panel-title').textContent = `第 ${state.round} 关通过！`;
+
+  const container = document.getElementById('joker-choices');
+  container.innerHTML = '';
+  choices.forEach(joker => {
+    const el = document.createElement('div');
+    el.className = 'joker-choice-card';
+    el.innerHTML = `
+      <span class="joker-choice-emoji">${joker.emoji}</span>
+      <div class="joker-choice-name">${joker.name}</div>
+      <div class="joker-choice-desc">${joker.desc}</div>
+    `;
+    el.addEventListener('click', () => selectJoker(joker));
+    container.appendChild(el);
+  });
+
+  document.getElementById('joker-overlay').classList.add('show');
+}
+
+function selectJoker(joker) {
+  if (state.jokers.length < 3) state.jokers.push(joker);
+  document.getElementById('joker-overlay').classList.remove('show');
+
+  state.round++;
+  renderPlayedCards(null);
+  document.getElementById('play-hint').textContent = '选中 1–5 张牌后点击「出牌」';
+  initRound();
+  renderHUD();
+  renderJokers();
+  renderHand();
+  updateBadge();
+  updateButtons();
+}
+
 function showScoreToast(points) {
   const el = document.getElementById('score-toast');
   el.textContent = `+${points}`;
   el.classList.remove('toast-show');
-  // Force reflow
   void el.offsetWidth;
   el.classList.add('toast-show');
 }
@@ -861,17 +1111,13 @@ function popHudValue(id) {
 
 function handleCardClick(card) {
   if (state.gameStatus !== 'playing') return;
-
   const idx = state.selected.findIndex(s => s.id === card.id);
   if (idx !== -1) {
-    // Deselect
     state.selected.splice(idx, 1);
   } else {
-    // Select (max 5)
     if (state.selected.length >= 5) return;
     state.selected.push(card);
   }
-
   renderHand();
   updateBadge();
   updateButtons();
@@ -883,37 +1129,36 @@ function playHand() {
 
   const played = [...state.selected];
   const result = identifyHand(played);
+  applyJokers(result, played);
 
-  // Show played cards
   renderPlayedCards(played);
-  document.getElementById('play-hint').textContent =
-    `${result.name}  →  (${result.base} + ${result.cardSum}) × ${result.mult} = ${result.score} 分`;
 
-  // Update score
+  let hintText = `${result.name}  →  (${result.base} + ${result.cardSum}) × ${result.mult} = ${result.score - result.jokerBonus} 分`;
+  if (result.jokerBonus > 0) hintText += `  + 小丑 +${result.jokerBonus} = ${result.score} 分`;
+  document.getElementById('play-hint').textContent = hintText;
+
   state.score += result.score;
   state.handsLeft--;
 
-  // Remove played cards from hand
   state.hand = state.hand.filter(c => !played.some(p => p.id === c.id));
   state.selected = [];
 
-  // Draw up to 8
   const toDraw = 8 - state.hand.length;
   const drawn = state.deck.splice(0, Math.min(toDraw, state.deck.length));
   state.hand = [...state.hand, ...drawn];
 
-  // Show toast
   showScoreToast(result.score);
-
-  // Update HUD with animation
   renderHUD();
   popHudValue('hud-score');
   popHudValue('hud-hands');
 
-  // Check win/lose
   if (state.score >= state.target) {
     state.gameStatus = 'win';
-    setTimeout(() => showModal('win'), 800);
+    if (state.round < 3) {
+      setTimeout(() => showJokerSelect(), 900);
+    } else {
+      setTimeout(() => showModal('cleared'), 900);
+    }
   } else if (state.handsLeft <= 0) {
     state.gameStatus = 'lose';
     setTimeout(() => showModal('lose'), 800);
@@ -928,20 +1173,14 @@ function discardCards() {
   if (state.selected.length === 0 || state.discardsLeft <= 0) return;
   if (state.gameStatus !== 'playing') return;
 
-  const discarded = [...state.selected];
-
   state.discardsLeft--;
-
-  // Remove discarded from hand
-  state.hand = state.hand.filter(c => !discarded.some(d => d.id === c.id));
+  state.hand = state.hand.filter(c => !state.selected.some(d => d.id === c.id));
   state.selected = [];
 
-  // Draw up to 8
   const toDraw = 8 - state.hand.length;
   const drawn = state.deck.splice(0, Math.min(toDraw, state.deck.length));
   state.hand = [...state.hand, ...drawn];
 
-  // Clear played area hint
   document.getElementById('play-hint').textContent = '选中 1–5 张牌后点击「出牌」';
 
   renderHUD();
@@ -953,10 +1192,12 @@ function discardCards() {
 
 function restart() {
   hideModal();
+  document.getElementById('joker-overlay').classList.remove('show');
   renderPlayedCards(null);
   document.getElementById('play-hint').textContent = '选中 1–5 张牌后点击「出牌」';
   initGame();
   renderHUD();
+  renderJokers();
   renderHand();
   updateBadge();
   updateButtons();
@@ -969,19 +1210,14 @@ document.getElementById('btn-discard').addEventListener('click', discardCards);
 document.getElementById('btn-restart').addEventListener('click', restart);
 document.getElementById('btn-modal-restart').addEventListener('click', restart);
 
-// Responsive scale
 function scaleGame() {
   const game = document.getElementById('game');
   const vw = window.innerWidth;
   const vh = window.innerHeight;
-  const scaleX = vw / 1080;
-  const scaleY = vh / 640;
-  const scale = Math.min(scaleX, scaleY, 1);
+  const scale = Math.min(vw / 1080, vh / 640, 1);
   game.style.transform = scale < 1 ? `scale(${scale})` : '';
-  // Vertical centering when scaled
   if (scale < 1) {
-    const scaledH = 640 * scale;
-    const marginTop = Math.max(0, (vh - scaledH) / 2);
+    const marginTop = Math.max(0, (vh - 640 * scale) / 2);
     game.style.marginTop = marginTop + 'px';
   } else {
     game.style.marginTop = '';
@@ -991,10 +1227,10 @@ function scaleGame() {
 window.addEventListener('resize', scaleGame);
 scaleGame();
 
-// Start game
 initGame();
 renderPlayedCards(null);
 renderHUD();
+renderJokers();
 renderHand();
 updateBadge();
 updateButtons();
