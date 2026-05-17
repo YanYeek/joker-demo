@@ -210,6 +210,15 @@ body {
   100% { transform: scale(1); }
 }
 
+/* 高价值牌型脉冲提示 */
+#hand-type-badge.hot {
+  animation: badgePulse 0.8s ease-in-out infinite alternate;
+}
+@keyframes badgePulse {
+  0%   { box-shadow: 0 2px 10px rgba(251,114,153,0.4); transform: scale(1); }
+  100% { box-shadow: 0 4px 24px rgba(251,114,153,0.7), 0 0 12px rgba(0,255,255,0.3); transform: scale(1.06); }
+}
+
 .hud-target   {
   color: var(--color-gold);
   /* 中辉光：金色变体，仅目标分数数字发光 */
@@ -2050,6 +2059,9 @@ function createCardEl(card, { mini = false, animDelay = 0 } = {}) {
 }
 
 function renderHand() {
+  // 每次渲染前按点数从大到小排序（A → K → Q → ... → 2）
+  state.hand.sort((a, b) => rankOrder(b.rank) - rankOrder(a.rank));
+
   const container = document.getElementById('hand-cards');
   container.innerHTML = '';
   state.hand.forEach((card, i) => {
@@ -2115,12 +2127,19 @@ function updateBadge() {
   if (state.selected.length === 0) {
     badge.textContent = '先选张牌吧~';
     badge.classList.add('empty');
+    badge.classList.remove('hot');
     return;
   }
   const result = identifyHand(state.selected);
   if (result) {
     badge.textContent = result.badge;
     badge.classList.remove('empty');
+    // 三条及以上（mult >= 3）触发脉冲提示
+    if (result.mult >= 3) {
+      badge.classList.add('hot');
+    } else {
+      badge.classList.remove('hot');
+    }
   }
 }
 
