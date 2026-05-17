@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PRD · 小丑牌 Web V1.0.0</title>
+<title>PRD · 小丑牌 Web V2.1.0</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -51,7 +51,7 @@
 
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
   th { background: #f3f1ec; text-align: left; padding: 8px 12px; font-weight: 600; color: #555; font-size: 13px; }
-  td { padding: 8px 12px; border-bottom: 1px solid #ede9e2; }
+  td { padding: 8px 12px; border-bottom: 1px solid #ede9e2; vertical-align: top; }
   tr:last-child td { border-bottom: none; }
 
   .card { background: #fff; border: 1px solid #e8e5df; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
@@ -109,187 +109,791 @@
 
   .next-line { margin-top: 24px; padding: 14px 18px; background: #f3f1ec; border-radius: 8px; font-size: 13px; color: #666; }
   .next-line strong { color: #333; }
+
+  .priority-tag {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 8px; border-radius: 4px; margin-right: 6px; vertical-align: middle;
+  }
+  .p0 { background: #fee2e2; color: #b91c1c; }
+  .p1 { background: #fef3c7; color: #92400e; }
+  .p2 { background: #e0f2fe; color: #0369a1; }
+
+  .us-card {
+    border: 1px solid #e8e5df; border-radius: 10px; padding: 16px 20px;
+    margin-bottom: 14px; background: #fff;
+  }
+  .us-card h4 {
+    font-size: 14px; font-weight: 700; color: #111; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .us-card p { font-size: 13.5px; color: #444; margin-bottom: 8px; }
+  .us-card ul { padding-left: 18px; font-size: 13px; color: #555; }
+  .us-card ul li { margin-bottom: 4px; }
+
+  .flow-text {
+    background: #f5f3ef; border: 1px solid #e4e1da; border-radius: 8px;
+    padding: 16px 20px; font-size: 13.5px; color: #444; line-height: 2;
+  }
+  .flow-text strong { color: #e8682a; }
+
+  /* V2.1 像素科技背景章节专用样式 */
+  .pixel-badge {
+    display: inline-block; background: linear-gradient(135deg, #7c3aed, #db2777);
+    color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px;
+    border-radius: 4px; margin-right: 6px; letter-spacing: 0.5px;
+    font-family: "SF Mono", monospace;
+  }
+  .pixel-new { color: #7c3aed; font-weight: 700; font-size: 12px; margin-left: 6px; }
+
+  .layer-card {
+    border: 1.5px solid #e4d9f5; border-radius: 10px;
+    padding: 16px 20px; margin-bottom: 12px; background: #faf7ff;
+  }
+  .layer-card .layer-name {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.8px;
+    text-transform: uppercase; color: #7c3aed; margin-bottom: 8px;
+  }
+  .layer-card .layer-desc { font-size: 13.5px; color: #444; }
+  .layer-card .layer-tag {
+    display: inline-block; background: #f3effe; color: #6d28d9;
+    font-size: 11px; padding: 2px 8px; border-radius: 4px;
+    margin: 4px 4px 0 0; font-family: "SF Mono", monospace;
+  }
+
+  .scheme-table th { background: #f0ebff; }
+  .scheme-row-selected { background: #faf7ff; font-weight: 600; }
+  .scheme-row-selected td:first-child { color: #7c3aed; }
+
+  .neon-demo {
+    display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0;
+  }
+  .neon-item {
+    padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600;
+    font-family: "SF Mono", monospace;
+  }
+  .neon-cyan  { background: #001a1a; color: #00ffff; border: 1px solid #00ffff; box-shadow: 0 0 8px #00ffff66; }
+  .neon-pink  { background: #1a0010; color: #ff2d78; border: 1px solid #ff2d78; box-shadow: 0 0 8px #ff2d7866; }
+  .neon-purple{ background: #0d001a; color: #bf5fff; border: 1px solid #bf5fff; box-shadow: 0 0 8px #bf5fff66; }
+  .neon-blue  { background: #00101a; color: #00a1d6; border: 1px solid #00a1d6; box-shadow: 0 0 8px #00a1d666; }
+
+  .fusion-rule {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 10px 0; border-bottom: 1px solid #f0eeea; font-size: 13.5px;
+  }
+  .fusion-rule:last-child { border-bottom: none; }
+  .fusion-icon { font-size: 16px; flex-shrink: 0; width: 24px; }
+  .fusion-keep { color: #16a34a; font-weight: 700; }
+  .fusion-adjust { color: #92400e; font-weight: 700; }
+  .fusion-nobreak { color: #dc2626; font-weight: 700; }
 </style>
 </head>
 <body>
 
 <nav>
   <ul>
-    <li><a href="#s1">① 是什么</a></li>
-    <li><a href="#s2">② 玩法流程</a></li>
-    <li><a href="#s3">③ 牌型&amp;计分</a></li>
-    <li><a href="#s4">④ 页面&amp;数据</a></li>
-    <li><a href="#s5">⑤ 验收</a></li>
+    <li><a href="#s1">① 改造目标</a></li>
+    <li><a href="#s2">② 目标用户</a></li>
+    <li><a href="#s3">③ 价值主张</a></li>
+    <li><a href="#s4">④ 功能清单</a></li>
+    <li><a href="#s4b">⑤ 像素科技背景 <span style="color:#7c3aed;font-size:11px;font-weight:700;">NEW</span></a></li>
+    <li><a href="#s5">⑥ 吉祥物脚本</a></li>
+    <li><a href="#s6">⑦ 弹幕文案</a></li>
+    <li><a href="#s7">⑧ 文案改造</a></li>
+    <li><a href="#s8">⑨ 核心流程</a></li>
+    <li><a href="#s9">⑩ 数据&amp;状态</a></li>
+    <li><a href="#s10">⑪ 不做什么</a></li>
+    <li><a href="#s11">⑫ 验收标准</a></li>
+    <li><a href="#s12">⑬ 开放问题</a></li>
   </ul>
 </nav>
 
 <div class="container">
   <div class="header">
-    <div class="badge">Version V1.0.0 · Round 1 · 2026-05-16</div>
-    <h1>小丑牌 Web · 核心引擎</h1>
-    <p class="subtitle">Product Requirements Document — 课堂 5 分钟版</p>
+    <div class="badge">Version V2.1.0 · 像素科技背景增强版 · 2026-05-17</div>
+    <h1>小丑牌 Web · 像素科技背景增强</h1>
+    <p class="subtitle">Product Requirements Document — 基准：index.html（单文件，GitHub Pages 已上线）&nbsp;&nbsp;|&nbsp;&nbsp;在 V2.0.0 二次元改造基础上，新增 Synthwave×16-bit 像素科技背景层</p>
   </div>
 
-  <!-- ① 是什么 -->
+  <!-- ① 改造目标 -->
   <section id="s1">
-    <h2><span class="num">1</span>是什么 / 不是什么</h2>
+    <h2><span class="num">1</span>改造目标</h2>
     <div class="card">
       <p style="font-size:15px;font-weight:600;color:#111;margin-bottom:12px;">
-        基于扑克牌型的单机数值小游戏——手选 1–5 张组牌型，限 4 次出牌内累计超过 300 分即胜。
+        把现有西方扑克风格的小丑牌游戏，换上 B站双色调 + 萌系角色美学，让二次元向玩家在第一眼就感受到"这是为我做的游戏"，同时保留全部游戏规则和算分逻辑不变。
       </p>
-      <p style="font-size:13px;color:#666;margin-bottom:16px;">
-        目标用户：零基础学员，通过亲手实现这款游戏完整体验「AI 全流程开发」的第一课。
-      </p>
-      <p style="font-size:14px;color:#444;">
-        <strong>本轮范围：</strong>标准 52 张牌 · 手牌 8 张 · 出牌 4 次 · 弃牌 3 次 · 目标 300 分 · 10 种牌型 · 胜负判定 + 重新开始
+      <p style="font-size:13px;color:#666;">
+        <strong>改造范围：</strong>视觉主色 / 卡牌标记 / 吉祥物对话 / 弹幕飘字 / 文案萌化 / 胜利粒子 / Web Audio 音效<br>
+        <strong>不碰的部分：</strong>游戏规则 / 算分公式 / 关卡进程逻辑 / 小丑牌效果数值
       </p>
     </div>
-    <h3>不做（V1.0.0 明确排除）</h3>
-    <ul class="not-do">
-      <li>小丑牌 / 星球牌 / 增益系统</li>
-      <li>商店 / 关卡 / 盲注体系</li>
-      <li>动画 / 音效 / 粒子特效</li>
-      <li>AI 教练 / 多人联机 / 移动端适配</li>
-    </ul>
   </section>
 
-  <!-- ② 玩法流程 -->
+  <!-- ② 目标用户与场景 -->
   <section id="s2">
-    <h2><span class="num">2</span>核心玩法一图流</h2>
-    <div class="flow">
-      <div class="flow-step">
-        <div class="flow-box orange">开局<div class="flow-sub">发 8 张手牌<br>from 52 张</div></div>
-      </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step">
-        <div class="flow-box">选牌<div class="flow-sub">点击选 1–5 张<br>高亮上浮</div></div>
-      </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step">
-        <div class="flow-branch">
-          <div class="flow-box orange">出牌<div class="flow-sub">消耗 1 次<br>计分累加</div></div>
-          <div class="flow-box">弃牌<div class="flow-sub">消耗 1 次<br>换牌不得分</div></div>
-        </div>
-      </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step">
-        <div class="flow-box">补牌<div class="flow-sub">从牌堆补满<br>8 张</div></div>
-      </div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step">
-        <div class="flow-branch">
-          <div class="flow-box green">≥300 分<div class="flow-sub">胜利</div></div>
-          <div class="flow-box red">机会耗尽<div class="flow-sub">失败</div></div>
-        </div>
+    <h2><span class="num">2</span>目标用户与场景</h2>
+    <table>
+      <tr><th>维度</th><th>描述</th></tr>
+      <tr>
+        <td><strong>目标用户</strong></td>
+        <td>18–28 岁、日常刷 B站/看番/玩 Galgame 的轻度玩家；对 Balatro 原版不熟悉，但被"卡牌养成"类型吸引</td>
+      </tr>
+      <tr>
+        <td><strong>核心场景</strong></td>
+        <td>下课/下班后打开浏览器，想打发 5–10 分钟；看到萌系界面，心情变好，愿意多玩几局</td>
+      </tr>
+      <tr>
+        <td><strong>当前替代方案</strong></td>
+        <td>原版界面视觉沉重（暗绿赌桌 + 橙色 CTA），对二次元用户缺乏亲切感；用户流失在第一印象</td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- ③ 核心价值主张 -->
+  <section id="s3">
+    <h2><span class="num">3</span>核心价值主张</h2>
+    <div class="card">
+      <p style="font-size:14px;color:#444;">
+        原版用"硬核牌局美学"留人；改造后用<strong>萌感 + 社区感</strong>（弹幕、吉祥物、樱花）留人。
+        对二次元玩家来说，界面本身就是内容，他们愿意为"好看好玩"多刷一局。
+      </p>
+    </div>
+  </section>
+
+  <!-- ④ 功能清单（MVP） -->
+  <section id="s4">
+    <h2><span class="num">4</span>功能清单（MVP）</h2>
+    <p style="font-size:13px;color:#666;margin-bottom:20px;">
+      所有功能均在单文件 <code>index.html</code> 内实现，不引入外部图片资源，不改动游戏逻辑。
+    </p>
+
+    <h3>P0 · 必须上线</h3>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p0">P0</span>US-01 视觉底色改造</h4>
+      <p>作为玩家，当我打开游戏时，我会看到 B 站粉（#FB7299）和 B 站蓝（#00A1D6）主导的界面，背景变为深樱花色渐变，整体不再是暗绿赌桌风格，让我一眼感受到二次元氛围。</p>
+      <ul>
+        <li><code>--color-table</code> 替换为深粉紫渐变（<code>#1a0a1e → #0d1a2e</code>）</li>
+        <li>HUD 背景用半透明磨砂粉紫，而非纯黑</li>
+        <li>主 CTA 按钮（出牌）改为 B 站蓝 <code>#00A1D6</code>；弃牌按钮改为 B 站粉 <code>#FB7299</code></li>
+        <li>小丑栏高亮色从紫色改为 B 站粉</li>
+      </ul>
+    </div>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p0">P0</span>US-02 萌系 emoji 小丑牌替换</h4>
+      <p>作为玩家，当我查看已装备的小丑牌时，我会看到萌系 emoji 图标，不再是原来的写实风格 emoji，风格更可爱。</p>
+      <table style="margin-top:8px;">
+        <tr><th>小丑牌名</th><th>原 emoji</th><th>新 emoji</th></tr>
+        <tr><td>暴力小丑</td><td>💪</td><td>🐰（兔兔拳）</td></tr>
+        <tr><td>贪婪小丑</td><td>💰</td><td>🍡（团子贪吃）</td></tr>
+        <tr><td>疾风小丑</td><td>🌪️</td><td>🌸（樱花飞散）</td></tr>
+        <tr><td>皇冠小丑</td><td>👑</td><td>⭐（星星加冕）</td></tr>
+        <tr><td>多手小丑</td><td>✋</td><td>💖（爱心多手）</td></tr>
+        <tr><td>弃牌王</td><td>🃏</td><td>🎀（蝴蝶结）</td></tr>
+      </table>
+    </div>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p0">P0</span>US-03 J/Q/K 卡牌二次元角色标记</h4>
+      <p>作为玩家，当我看到手牌中出现 J、Q、K 时，我会在牌面中心看到一个萌系角色 emoji，让这三张特殊牌比普通数字牌更有辨识度和趣味感。</p>
+      <ul>
+        <li>K → 骑士 ⚔️（中心显示 ⚔️）</li>
+        <li>Q → 魔法少女 🌹（中心显示 🌹）</li>
+        <li>J → 学妹 🎓（中心显示 🎓）</li>
+        <li>A → 保留花色 emoji，不加人物标记（以示区分高牌）</li>
+        <li>2–10 → 保持原花色，不改动</li>
+      </ul>
+    </div>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p0">P0</span>US-04 Chibi 吉祥物 + 对话气泡</h4>
+      <p>作为玩家，当我在游戏中执行各类操作时，我会在游戏界面右下角看到一个 chibi 小人（SVG 绘制，约 80×80px），并且气泡里会根据当前状态显示不同的萌系对话，让我感觉有人陪着玩。</p>
+      <ul>
+        <li>chibi 用纯 SVG 绘制：圆头（大眼睛用椭圆 + 高光点）、简笔身体、两种表情（开心 / 担忧），不依赖外部图片</li>
+        <li>对话气泡固定在 chibi 左上方，宽约 160px，白底圆角，B 站粉描边</li>
+        <li>状态切换时气泡淡入淡出（0.3s opacity 过渡）</li>
+        <li>对话脚本见第 5 章</li>
+      </ul>
+    </div>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p0">P0</span>US-05 大牌弹幕飘字</h4>
+      <p>作为玩家，当我打出同花顺/四条/葫芦/同花/顺子等强力手牌时，我会看到 3–5 条弹幕文字从屏幕右侧飘向左侧，模拟 B 站视频弹幕效果，让出大牌的瞬间更有仪式感。</p>
+      <ul>
+        <li>触发条件：皇家同花顺、同花顺、四条、葫芦、同花、顺子 中任意一种</li>
+        <li>每次随机从弹幕文案池（见第 6 章）中抽 3–5 条</li>
+        <li>动画：从 <code>right: -200px</code> 到 <code>left: -200px</code>，持续 3.5s，linear；每条随机 y 轴位置（避开 HUD 和 Action Bar）</li>
+        <li>字体：白色字体 + 1px 黑色描边（text-shadow 模拟），字号 15px，Noto Sans SC</li>
+        <li>多条弹幕之间有 200–500ms 随机延迟，避免全部同时出现</li>
+        <li>弹幕层 z-index 高于牌面但低于 Modal/Joker 覆盖层</li>
+      </ul>
+    </div>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p0">P0</span>US-06 胜利樱花粒子</h4>
+      <p>作为玩家，当我通关全部 3 关后，我会看到屏幕上撒下樱花粒子，粒子飘落过程约 2.5 秒，让胜利时刻更有庆祝感。</p>
+      <ul>
+        <li>粒子数量：20–30 个</li>
+        <li>形态：用 SVG path 或 Unicode 字符 🌸 实现，每个粒子随机大小（12–24px）、随机初始 x 位置</li>
+        <li>动画：从顶部自由落下 + 微小左右摆动（keyframe sin 曲线模拟），持续 2–2.5s</li>
+        <li>粒子颜色：樱花粉 <code>#FFB7C5</code>、白色 <code>#FFFFFF</code>、浅粉 <code>#FFDDEA</code> 三色随机</li>
+        <li>胜利 Modal 弹出时同步触发，粒子层在 Modal 背后（z-index 介于游戏层和 Modal 之间）</li>
+      </ul>
+    </div>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p0">P0</span>US-07 Web Audio 音效</h4>
+      <p>作为玩家，当我执行出牌、选中牌、弃牌、胜利等操作时，我会听到轻快的提示音效，增强操作反馈感。全部通过 AudioContext + OscillatorNode + GainNode 合成，不依赖外部音频文件。</p>
+      <table style="margin-top:8px;">
+        <tr><th>触发事件</th><th>音效描述</th><th>合成方式</th></tr>
+        <tr><td>选中手牌</td><td>短促清脆高音，约 0.08s</td><td>OscillatorNode，正弦波，880Hz，快速 decay</td></tr>
+        <tr><td>取消选中</td><td>略低的短音，约 0.08s</td><td>OscillatorNode，正弦波，660Hz</td></tr>
+        <tr><td>点击出牌</td><td>上扬双音（do-mi），约 0.2s</td><td>两个 Oscillator 序列，523Hz → 659Hz</td></tr>
+        <tr><td>出大牌（触发弹幕）</td><td>欢快三连音，约 0.4s</td><td>三个 Oscillator 序列，523→659→784Hz</td></tr>
+        <tr><td>弃牌</td><td>下滑短音，约 0.15s</td><td>OscillatorNode，从 440Hz 线性滑至 220Hz</td></tr>
+        <tr><td>关卡通过</td><td>上扬五音阶，约 0.6s</td><td>五音序列，do-re-mi-sol-la</td></tr>
+        <tr><td>全部通关</td><td>欢庆长音，约 1s</td><td>和弦（523+659+784Hz 同时，加混响）</td></tr>
+        <tr><td>游戏失败</td><td>下沉短音序列，约 0.5s</td><td>从 440Hz 分段下滑至 200Hz</td></tr>
+      </table>
+    </div>
+
+    <h3>P1 · 第一个迭代版本后补充</h3>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p1">P1</span>US-08 选中牌高亮改色</h4>
+      <p>作为玩家，当我选中一张手牌时，我会看到选中态的描边从橙色变为 B 站粉，整体配色统一。</p>
+    </div>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p1">P1</span>US-09 小丑牌选择界面美化</h4>
+      <p>作为玩家，当我通关一关后进入小丑牌选择界面时，我会看到面板背景换成樱花粉渐变，标题字改成 B 站粉，整体不再是深黑赌场风。</p>
+    </div>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p1">P1</span>US-10 小丑牌改名</h4>
+      <p>作为玩家，当我看到小丑牌名称时，我会看到更符合二次元调性的名称（例如「弃牌王」→「佛系少女」），让小丑牌文案整体萌化。详见第 7 章文案表。</p>
+    </div>
+
+    <h3>P2 · 可选 / 二期评估</h3>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p2">P2</span>US-11 卡牌背面花纹</h4>
+      <p>作为玩家，当我抽到新牌时，如果有翻牌动画（从背面翻正），我能看到背面印有樱花图案（SVG）。需要实现翻转动画，目前版本无此动画，复杂度高，暂列二期。</p>
+    </div>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p2">P2</span>US-12 Chibi 表情动画</h4>
+      <p>作为玩家，当吉祥物切换状态时，我会看到 chibi 有简单的弹跳动画（2帧），而不是静止贴图。需要 JS 驱动 SVG 关键帧，暂列二期。</p>
+    </div>
+  </section>
+
+  <!-- ⑤ 像素科技背景需求（V2.1 新增） -->
+  <section id="s4b">
+    <h2><span class="num">5</span>像素科技背景需求 <span class="pixel-new">V2.1 NEW</span></h2>
+
+    <!-- 5.1 风格定调 -->
+    <h3>5.1 风格定调：选用方案 E（C + B 混合）</h3>
+    <div class="card" style="margin-bottom:16px;">
+      <p style="font-size:14px;color:#444;margin-bottom:14px;">
+        在五个候选方案中，<strong>方案 E（Synthwave×16-bit 混合）</strong>与现有 V2.0 的 B站粉蓝主调、萌系二次元气质契合度最高——远景用 Synthwave 透视网格制造科技纵深感，近景保留 16-bit 像素颗粒与像素化樱花，两者叠加后既有"赛博未来"的酷感，又不丢失二次元的温度。
+      </p>
+      <table class="scheme-table">
+        <tr><th>方案</th><th>风格关键词</th><th>代表作</th><th>与 V2.0 契合度</th></tr>
+        <tr><td>A</td><td>8-bit 复古 FC 风</td><td>马里奥、FC 坦克</td><td>低——色彩太少，萌感不足</td></tr>
+        <tr><td>B</td><td>16-bit 现代像素</td><td>Celeste、Hyper Light Drifter</td><td>中——颜色丰富，但缺少科技感</td></tr>
+        <tr><td>C</td><td>Synthwave 霓虹网格</td><td>OutRun、Hotline Miami</td><td>高——紫粉霓虹与 B站粉高度吻合</td></tr>
+        <tr><td>D</td><td>赛博朋克字符雨</td><td>黑客帝国、《2077》UI</td><td>中——绿色调与 B站粉冲突</td></tr>
+        <tr class="scheme-row-selected"><td><strong>E ✓</strong></td><td><strong>C×B 混合：远景 Synthwave + 近景 16-bit 像素</strong></td><td>—</td><td><strong>最高——两层分工明确，互不干扰</strong></td></tr>
+      </table>
+    </div>
+
+    <div class="neon-demo">
+      <div class="neon-item neon-purple">紫粉网格 #bf5fff</div>
+      <div class="neon-item neon-pink">霓虹粉红 #ff2d78</div>
+      <div class="neon-item neon-cyan">青蓝扫描 #00ffff</div>
+      <div class="neon-item neon-blue">B站蓝辉光 #00a1d6</div>
+    </div>
+    <p style="font-size:12px;color:#888;margin-top:4px;margin-bottom:0;">以上为背景层霓虹色板，不替换 HUD/按钮现有色板。</p>
+
+    <!-- 5.2 背景层次结构 -->
+    <h3 style="margin-top:28px;">5.2 背景层次结构（由远至近）</h3>
+
+    <div class="layer-card">
+      <div class="layer-name">Layer 0 · 底色渐变（保留自 V2.0）</div>
+      <div class="layer-desc">
+        深空底色 <code>#0d0520 → #0a1628</code>，从紫黑过渡到深海蓝，作为全局最底层。不做动画，纯 CSS 渐变。
+        <br><span class="layer-tag">z-index: 0</span><span class="layer-tag">position: fixed</span><span class="layer-tag">CSS linear-gradient</span>
       </div>
     </div>
-    <div class="card" style="margin-top:0">
-      <table style="font-size:13px;">
-        <tr><th>资源</th><th>数量</th><th>耗尽后</th></tr>
-        <tr><td>出牌机会</td><td><strong>4 次</strong></td><td>不可再出牌</td></tr>
-        <tr><td>弃牌机会</td><td><strong>3 次</strong></td><td>不可再弃牌</td></tr>
-        <tr><td>目标分数</td><td><strong>300 分</strong></td><td>提前达成即胜利</td></tr>
+
+    <div class="layer-card">
+      <div class="layer-name">Layer 1 · 远景：Synthwave 透视网格</div>
+      <div class="layer-desc">
+        经典 Synthwave 透视地平线网格，从画面底部向上汇聚，营造无限延伸的科技纵深感。网格线颜色为紫粉霓虹 <code>#bf5fff</code>（约 20% opacity），线宽 1px，用 Canvas 2D 或纯 CSS repeating-linear-gradient 绘制。
+        <br>动画：整体向玩家缓慢推进，周期约 8s，loop，产生行驶感。
+        <br><span class="layer-tag">z-index: 1</span><span class="layer-tag">Canvas 2D 或 CSS</span><span class="layer-tag">性能轻量</span>
+      </div>
+    </div>
+
+    <div class="layer-card">
+      <div class="layer-name">Layer 2 · 中景：像素化粒子（星点 + 像素樱花）</div>
+      <div class="layer-desc">
+        由两类元素构成：① <strong>像素星点</strong>：20–30 个 2×2px 的正方形 div 随机分布，以随机周期（2–4s）在 0.2→1→0.2 opacity 之间闪烁，颜色为白色/青色/粉色随机。② <strong>像素化樱花</strong>：将 V2.0 的 emoji 🌸 替换为 16×16px 的内联 SVG 像素花瓣（4色块拼合），从顶部缓慢飘落，左右微摆，持续循环。数量控制在 8–12 片，避免过密。
+        <br><span class="layer-tag">z-index: 2</span><span class="layer-tag">CSS animation</span><span class="layer-tag">内联 SVG</span>
+      </div>
+    </div>
+
+    <div class="layer-card">
+      <div class="layer-name">Layer 3 · 近景：CRT 扫描线 + 像素噪点膜</div>
+      <div class="layer-desc">
+        覆盖在背景最上层（UI 层之下）的半透明纹理层：① <strong>扫描线</strong>：用 CSS <code>repeating-linear-gradient</code> 生成 2px 周期的水平条纹，opacity ≤ 8%，模拟 CRT 显示器效果，增加像素感而不抢眼。② <strong>像素噪点</strong>：用 SVG feTurbulence filter 或 CSS 背景生成静态颗粒感，opacity ≤ 5%，仅在背景层可见，不叠加到卡牌/HUD。
+        <br><span class="layer-tag">z-index: 3</span><span class="layer-tag">CSS only</span><span class="layer-tag">pointer-events: none</span>
+      </div>
+    </div>
+
+    <div class="layer-card" style="border-color:#e0f2fe;background:#f0f9ff;">
+      <div class="layer-name" style="color:#0369a1;">Layer 4+ · UI 层（chibi / 弹幕 / HUD / 卡牌）</div>
+      <div class="layer-desc">
+        所有 V2.0 已有 UI 元素保持原有 z-index 层级不变，背景层只在其下方工作。背景层的最大 z-index 不超过 4，UI 层从 10 起始。弹幕层（z-index: 50）和 Modal（z-index: 100+）维持现状。
+        <br><span class="layer-tag" style="background:#dbeafe;color:#1d4ed8;">z-index: 10+（现有 UI 不变）</span>
+      </div>
+    </div>
+
+    <!-- 5.3 现代科技感具体表现 -->
+    <h3 style="margin-top:28px;">5.3 现代科技感的具体表现</h3>
+    <table>
+      <tr><th>效果</th><th>实现方案</th><th>强度控制</th><th>是否采用</th></tr>
+      <tr>
+        <td><strong>霓虹辉光（Neon Glow）</strong></td>
+        <td>CSS <code>box-shadow</code> / <code>text-shadow</code> 多层叠加（模糊半径 4px/8px/16px，颜色 #bf5fff / #ff2d78）</td>
+        <td>仅用于透视网格边缘线 + 像素樱花高光，不用于卡牌/HUD</td>
+        <td>采用</td>
+      </tr>
+      <tr>
+        <td><strong>网格透视（Perspective Grid）</strong></td>
+        <td>CSS <code>perspective</code> + <code>rotateX</code> 变换，或 Canvas drawLine 绘制汇聚线，配合 CSS <code>animation</code> 缓慢推进</td>
+        <td>整体 opacity ≤ 25%，不影响前景可读性</td>
+        <td>采用（Layer 1 核心实现）</td>
+      </tr>
+      <tr>
+        <td><strong>CRT 扫描线（Scanlines）</strong></td>
+        <td>CSS <code>repeating-linear-gradient(transparent, transparent 1px, rgba(0,0,0,0.08) 1px, rgba(0,0,0,0.08) 2px)</code></td>
+        <td>opacity ≤ 8%，全局覆盖</td>
+        <td>采用（Layer 3）</td>
+      </tr>
+      <tr>
+        <td><strong>像素闪烁动画</strong></td>
+        <td>CSS <code>@keyframes</code> 控制 opacity 跳变（非渐变，产生像素 blink 感），用于星点粒子</td>
+        <td>闪烁频率 0.5–2Hz，不超过 3Hz（避免视觉疲劳）</td>
+        <td>采用（Layer 2 星点）</td>
+      </tr>
+      <tr>
+        <td><strong>全息光斑（Holographic Flare）</strong></td>
+        <td>CSS radial-gradient 叠加，伪随机位置，颜色为青蓝/紫粉渐变</td>
+        <td>仅在胜利/大牌触发时短暂出现（0.5s），opacity ≤ 15%</td>
+        <td>采用（条件触发，非常驻）</td>
+      </tr>
+      <tr>
+        <td><strong>故障艺术（Glitch）</strong></td>
+        <td>CSS transform: translateX 微小随机偏移 + 色差（R/B 通道偏移模拟）</td>
+        <td>仅用于大牌命中瞬间的短暂特效（≤0.3s），不常驻</td>
+        <td>可选（P2 评估，不纳入 MVP）</td>
+      </tr>
+      <tr>
+        <td><strong>WebGL / 3D 渲染</strong></td>
+        <td>—</td>
+        <td>—</td>
+        <td>不采用（性能考虑，见第 11 章）</td>
+      </tr>
+    </table>
+
+    <!-- 5.4 与 V2.0 融合规则 -->
+    <h3 style="margin-top:28px;">5.4 与 V2.0 设计的融合规则</h3>
+
+    <div class="card" style="padding:16px 20px;">
+      <div class="fusion-rule">
+        <div class="fusion-icon">✓</div>
+        <div><span class="fusion-keep">必须保留</span>：chibi 吉祥物（SVG，右下角定位）、弹幕飘字（z-index 层级不变）、胜利樱花粒子、萌化文案（HUD / 按钮 / 小丑牌名）、6 张小丑牌及其 emoji、B 站粉（#FB7299）和 B 站蓝（#00A1D6）主调色</div>
+      </div>
+      <div class="fusion-rule">
+        <div class="fusion-icon">~</div>
+        <div><span class="fusion-adjust">可调整</span>：胜利时樱花粒子的渲染从 Unicode emoji 🌸 替换为像素风 16×16px 内联 SVG，与背景像素化风格统一。调整后动画逻辑不变，只改 DOM 内容</div>
+      </div>
+      <div class="fusion-rule">
+        <div class="fusion-icon">✓</div>
+        <div><span class="fusion-adjust">可微调</span>：背景底色从 V2.0 的 <code>#1a0a1e → #0d1a2e</code> 加深至 <code>#0d0520 → #0a1628</code>，使透视网格对比度更清晰，但整体色调方向不变（深紫→深蓝）</div>
+      </div>
+      <div class="fusion-rule">
+        <div class="fusion-icon">✕</div>
+        <div><span class="fusion-nobreak">绝对不破</span>：游戏可读性——卡牌白底黑字在背景层上的对比度 ≥ 4.5:1（WCAG AA）；HUD 数值区域在背景层上方加不透明度 ≥ 85% 的磨砂遮罩，确保数字始终清晰；弹幕文字不被背景颗粒干扰（弹幕 z-index 高于背景所有层）</div>
+      </div>
+      <div class="fusion-rule">
+        <div class="fusion-icon">✕</div>
+        <div><span class="fusion-nobreak">绝对不破</span>：chibi 与背景的关系——chibi SVG 区域不叠加扫描线/噪点（通过 CSS 隔离），确保吉祥物图形清晰可见，不被纹理层覆盖干扰</div>
+      </div>
+      <div class="fusion-rule">
+        <div class="fusion-icon">✕</div>
+        <div><span class="fusion-nobreak">绝对不破</span>：FPS 与首屏加载——背景层所有动画必须使用 CSS animation 或 requestAnimationFrame，不允许 setInterval 驱动 DOM 操作；帧率 ≥ 50fps（Chrome DevTools Performance 面板验证）</div>
+      </div>
+    </div>
+
+    <!-- 5.5 User Stories -->
+    <h3 style="margin-top:28px;">5.5 用户故事（背景层专项）</h3>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p0">P0</span>US-B1 远景透视网格沉浸感</h4>
+      <p>作为玩家，当我打开游戏时，我会在背景最深处看到一张向地平线延伸的霓虹紫粉色透视网格，它缓慢向我推进，让我感受到"置身于某个赛博世界边缘"的科技氛围，而不是普通的棋牌室。</p>
+      <ul>
+        <li>实现方式：CSS perspective grid 或 Canvas 2D，8s 周期 loop</li>
+        <li>颜色：<code>#bf5fff</code> 20% opacity，整体不喧宾夺主</li>
+        <li>在 1080×640 游戏窗口内，网格地平线在垂直中点约 40% 处</li>
+      </ul>
+    </div>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p0">P0</span>US-B2 像素星点闪烁氛围</h4>
+      <p>作为玩家，在游戏过程中，我会在背景中景区域看到稀疏的 2×2px 方形像素星点以随机频率闪烁，它们让整个画面有"活的"感觉，像是深空中的星星在呼吸，但不分散我对牌局的注意力。</p>
+      <ul>
+        <li>数量：20–30 个，随机分布，避开 HUD 和操作区</li>
+        <li>颜色随机：白 / 青 / 粉三色，形态为 2×2px div（image-rendering: pixelated）</li>
+        <li>闪烁动画：opacity 在 0.2–1 之间跳变（非渐变），频率 0.5–1.5Hz</li>
+      </ul>
+    </div>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p0">P0</span>US-B3 扫描线增强像素质感</h4>
+      <p>作为玩家，当我仔细看游戏背景时，我能隐约感受到一层细密的水平扫描线纹理，像是在 CRT 显示器上游玩一款复古游戏，整个画面多了一丝"像素时代滤镜"，既复古又有现代科技感的反差萌。</p>
+      <ul>
+        <li>实现：CSS repeating-linear-gradient，2px 条纹周期，opacity ≤ 8%</li>
+        <li>覆盖全屏背景层，但不覆盖卡牌/HUD/chibi 等 UI 元素</li>
+        <li>静态，不做动画（滚动扫描线对性能影响大，且视觉易疲劳）</li>
+      </ul>
+    </div>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p0">P0</span>US-B4 像素化樱花与背景融合</h4>
+      <p>作为玩家，当我看到背景中飘落的樱花时，我会看到它们以像素风格渲染（方块拼合的 SVG 花瓣），而不是圆润的 emoji，这与赛博像素风格的背景无缝融合，让游戏的整体美术风格统一。</p>
+      <ul>
+        <li>像素花瓣：16×16px 内联 SVG，用 4–6 个像素方块拼合花瓣形态</li>
+        <li>颜色：樱花粉 <code>#FFB7C5</code> + 高光白 <code>#fff</code></li>
+        <li>飘落动画复用 V2.0 逻辑，只替换 DOM 内容，数量 8–12 片（背景常驻版，轻于胜利版的 20–30 片）</li>
+      </ul>
+    </div>
+
+    <div class="us-card">
+      <h4><span class="priority-tag p1">P1</span>US-B5 大牌触发全息光斑</h4>
+      <p>作为玩家，当我打出同花顺/四条等强力手牌时，除了弹幕飘字之外，我会在背景层看到一个短暂的青蓝色全息光斑向四周扩散（约 0.5s），让出大牌的瞬间有一次视觉冲击波，增强仪式感。</p>
+      <ul>
+        <li>实现：CSS radial-gradient 配合 scale(0)→scale(1.5) + opacity(0.15→0) 动画</li>
+        <li>颜色：<code>rgba(0,255,255,0.15)</code> 到透明</li>
+        <li>触发时机与弹幕同步，持续 ≤ 0.5s，不阻塞操作</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ⑥ 吉祥物对话脚本 -->
+  <section id="s5">
+    <h2><span class="num">6</span>吉祥物对话脚本</h2>
+    <div class="card" style="margin-bottom:20px;">
+      <p style="font-size:14px;color:#444;">
+        <strong>吉祥物命名：小丑酱（Joker-chan）</strong><br>
+        定位：元气系学妹，喜欢给玩家加油，偶尔毒舌。<br>
+        表情：开心（默认）/ 担忧（手牌不足、弃牌快用完时切换）
+      </p>
+    </div>
+    <table>
+      <tr><th>触发状态</th><th>对话文案（≤15字）</th></tr>
+      <tr><td>游戏开局</td><td>"来！今天也要赢哦~"</td></tr>
+      <tr><td>选中 1 张牌</td><td>"嗯…再选几张？"</td></tr>
+      <tr><td>选中 3–5 张牌（普通牌型）</td><td>"出牌吧，加油！"</td></tr>
+      <tr><td>选中 5 张牌（大牌型）</td><td>"哇！这手好强！！"</td></tr>
+      <tr><td>取消选中所有牌</td><td>"重新选一下吗~"</td></tr>
+      <tr><td>弃牌</td><td>"换掉它，下一张更好！"</td></tr>
+      <tr><td>弃牌次数 = 1（最后一次）</td><td>"最后一次弃牌了！"</td></tr>
+      <tr><td>出牌后得分大涨</td><td>"耶！分数飞起来啦！"</td></tr>
+      <tr><td>出牌后得分不足目标 50%</td><td>"还差一点点，冲鸭！"</td></tr>
+      <tr><td>出牌后得分超过目标 80%</td><td>"快到了快到了！！"</td></tr>
+      <tr><td>关卡通过（进入小丑选择）</td><td>"选一个小伙伴带上~"</td></tr>
+      <tr><td>选中小丑牌后</td><td>"好耶！它会帮你的！"</td></tr>
+      <tr><td>手牌出完（牌库将空）</td><td>"牌要不够了哦…"</td></tr>
+      <tr><td>全部通关</td><td>"三关全过！你超棒！"</td></tr>
+      <tr><td>游戏失败</td><td>"没事的…下次一定！"</td></tr>
+      <tr><td>重新开始</td><td>"再来！这次必赢！"</td></tr>
+    </table>
+  </section>
+
+  <!-- ⑥ 弹幕文案池 -->
+  <section id="s6">
+    <h2><span class="num">7</span>弹幕文案池</h2>
+    <p style="font-size:13px;color:#666;margin-bottom:16px;">
+      触发条件：出牌类型为 皇家同花顺/同花顺/四条/葫芦/同花/顺子，每次随机抽 3–5 条同时飘过。
+    </p>
+    <table>
+      <tr><th>#</th><th>弹幕文字</th></tr>
+      <tr><td>1</td><td>"牛啊牛啊！！"</td></tr>
+      <tr><td>2</td><td>"强者风范"</td></tr>
+      <tr><td>3</td><td>"すごい！！！"</td></tr>
+      <tr><td>4</td><td>"这手我没见过"</td></tr>
+      <tr><td>5</td><td>"前排膜拜大佬"</td></tr>
+      <tr><td>6</td><td>"出了出了！！"</td></tr>
+      <tr><td>7</td><td>"OMG这也行？？"</td></tr>
+      <tr><td>8</td><td>"厉害厉害！"</td></tr>
+      <tr><td>9</td><td>"やばいやばい！"</td></tr>
+      <tr><td>10</td><td>"大神请收下我的膝盖"</td></tr>
+      <tr><td>11</td><td>"这把我在！"</td></tr>
+      <tr><td>12</td><td>"什么运气！！"</td></tr>
+      <tr><td>13</td><td>"かっこいい！！"</td></tr>
+      <tr><td>14</td><td>"好家伙好家伙"</td></tr>
+      <tr><td>15</td><td>"我就知道你能行！"</td></tr>
+    </table>
+  </section>
+
+  <!-- ⑦ 文案改造表 -->
+  <section id="s7">
+    <h2><span class="num">8</span>文案改造表</h2>
+    <p style="font-size:13px;color:#666;margin-bottom:16px;">所有文案改动对照，覆盖 HUD、按钮、弹窗、提示语、小丑牌名。</p>
+
+    <h3>HUD 标签</h3>
+    <table>
+      <tr><th>原文案</th><th>新文案</th></tr>
+      <tr><td>目标分数</td><td>♡ 今日目标</td></tr>
+      <tr><td>当前得分</td><td>✦ 已攒积分</td></tr>
+      <tr><td>剩余出牌</td><td>🃏 出牌次数</td></tr>
+      <tr><td>剩余弃牌</td><td>🔄 弃牌次数</td></tr>
+      <tr><td>当前关卡</td><td>⭐ 第 X 关</td></tr>
+    </table>
+
+    <h3>小丑栏</h3>
+    <table>
+      <tr><th>原文案</th><th>新文案</th></tr>
+      <tr><td>小丑牌（栏标签）</td><td>我的小伙伴</td></tr>
+      <tr><td>空（空槽位）</td><td>待召唤</td></tr>
+    </table>
+
+    <h3>操作按钮</h3>
+    <table>
+      <tr><th>原文案</th><th>新文案</th></tr>
+      <tr><td>出　牌</td><td>出牌！</td></tr>
+      <tr><td>弃　牌</td><td>换掉它</td></tr>
+      <tr><td>重新开始</td><td>重来一局</td></tr>
+      <tr><td>再来一局（Modal）</td><td>再战一局！</td></tr>
+    </table>
+
+    <h3>游戏区域提示</h3>
+    <table>
+      <tr><th>原文案</th><th>新文案</th></tr>
+      <tr><td>上一手出牌</td><td>刚才出的牌</td></tr>
+      <tr><td>选中 1–5 张牌后点击「出牌」</td><td>选 1–5 张，然后出牌吧~</td></tr>
+      <tr><td>手牌 · X 张</td><td>手里的牌 · X 张</td></tr>
+      <tr><td>请选 1–5 张（badge 空态）</td><td>先选张牌吧~</td></tr>
+    </table>
+
+    <h3>手牌类型徽章（badge）</h3>
+    <table>
+      <tr><th>原文案</th><th>新文案</th></tr>
+      <tr><td>高牌 ×1</td><td>高牌 ×1 ⬆</td></tr>
+      <tr><td>对子 ×2</td><td>对子 ×2 💕</td></tr>
+      <tr><td>两对 ×2</td><td>双对 ×2 🌸</td></tr>
+      <tr><td>三条 ×3</td><td>三条 ×3 ✨</td></tr>
+      <tr><td>顺子 ×4</td><td>顺子 ×4 💫</td></tr>
+      <tr><td>同花 ×4</td><td>同花 ×4 🌈</td></tr>
+      <tr><td>葫芦 ×4</td><td>葫芦 ×4 🔥</td></tr>
+      <tr><td>四条 ×7</td><td>四条 ×7 💥</td></tr>
+      <tr><td>同花顺 ×8</td><td>同花顺 ×8 🌟</td></tr>
+      <tr><td>皇家同花顺 ×8</td><td>皇家同花顺 ×8 👑</td></tr>
+    </table>
+
+    <h3>得分计算提示（play-hint 区域）</h3>
+    <div class="card" style="padding:14px 18px;">
+      <p style="font-size:13px;color:#666;margin-bottom:6px;"><strong>原格式：</strong></p>
+      <p style="font-family:monospace;font-size:13px;color:#444;">同花顺 → (100 + 35) × 8 = 1080 分 + 小丑 +30 = 1110 分</p>
+      <p style="font-size:13px;color:#666;margin-top:10px;margin-bottom:6px;"><strong>新格式：</strong></p>
+      <p style="font-family:monospace;font-size:13px;color:#c0511e;">✨ 同花顺 🌟 → (100 + 35) × 8 = 1080 + 小伙伴加成 +30 = 1110 分！</p>
+    </div>
+
+    <h3>小丑牌名改造</h3>
+    <table>
+      <tr><th>原名</th><th>新名</th><th>emoji</th></tr>
+      <tr><td>暴力小丑</td><td>兔兔战士</td><td>🐰</td></tr>
+      <tr><td>贪婪小丑</td><td>贪嘴团子</td><td>🍡</td></tr>
+      <tr><td>疾风小丑</td><td>樱花飞雪</td><td>🌸</td></tr>
+      <tr><td>皇冠小丑</td><td>星光少女</td><td>⭐</td></tr>
+      <tr><td>多手小丑</td><td>爱心魔法</td><td>💖</td></tr>
+      <tr><td>弃牌王</td><td>佛系少女</td><td>🎀</td></tr>
+    </table>
+
+    <h3>小丑牌选择界面</h3>
+    <table>
+      <tr><th>原文案</th><th>新文案</th></tr>
+      <tr><td>第 X 关通过！</td><td>第 X 关 · 通关啦！✨</td></tr>
+      <tr><td>选择一张小丑牌，带入下一关持续生效</td><td>选一位小伙伴，一起挑战下一关吧～</td></tr>
+    </table>
+
+    <h3>结算弹窗</h3>
+    <table>
+      <tr><th>场景</th><th>原文案</th><th>新文案</th></tr>
+      <tr><td>全部通关 · 标题</td><td>全部通关！</td><td>三关全过！👑</td></tr>
+      <tr><td>全部通关 · 副标题</td><td>三关全胜，你是真正的小丑王！</td><td>你就是今天最闪耀的星星！🌟</td></tr>
+      <tr><td>失败 · 标题</td><td>游戏结束</td><td>这次没成功…</td></tr>
+      <tr><td>失败 · 副标题</td><td>第 X 关出牌机会耗尽，未达目标</td><td>第 X 关积分差一点点，下次一定！</td></tr>
+      <tr><td>分数标签</td><td>最终得分</td><td>本次积分</td></tr>
+    </table>
+  </section>
+
+  <!-- ⑧ 核心流程 -->
+  <section id="s8">
+    <h2><span class="num">9</span>核心流程（改造后）</h2>
+    <div class="flow-text">
+      <strong>打开游戏</strong><br>
+      &nbsp;&nbsp;→ chibi 出现，气泡："来！今天也要赢哦~"<br>
+      &nbsp;&nbsp;→ HUD 显示 ♡ 今日目标 / ✦ 已攒积分 / 出牌次数 / 弃牌次数<br>
+      <br>
+      <strong>玩家选牌</strong><br>
+      &nbsp;&nbsp;→ 选中时发选中音效（高音）<br>
+      &nbsp;&nbsp;→ chibi 根据选中张数和牌型更新对话气泡<br>
+      <br>
+      <strong>玩家出牌</strong><br>
+      &nbsp;&nbsp;→ 发出牌音效（上扬双音）<br>
+      &nbsp;&nbsp;→ 若为强力手牌：发大牌音效（三连音）+ 弹幕飘字（3–5 条，3.5s 飘过）<br>
+      &nbsp;&nbsp;→ chibi 根据当前积分与目标的差距说不同的话<br>
+      &nbsp;&nbsp;→ play-hint 显示萌化计分公式<br>
+      <br>
+      <strong>关卡通关</strong><br>
+      &nbsp;&nbsp;→ 发关卡通过音效（五音阶）<br>
+      &nbsp;&nbsp;→ chibi："选一个小伙伴带上~"<br>
+      &nbsp;&nbsp;→ 小丑牌选择界面（樱花粉背景 + 萌化文案）<br>
+      &nbsp;&nbsp;→ 玩家选完小丑牌，chibi："好耶！它会帮你的！"<br>
+      <br>
+      <strong>全部三关通关</strong><br>
+      &nbsp;&nbsp;→ 发全通关音效（和弦长音）<br>
+      &nbsp;&nbsp;→ 樱花粒子从顶部撒下（20–30 个，2.5s）<br>
+      &nbsp;&nbsp;→ chibi："三关全过！你超棒！"<br>
+      &nbsp;&nbsp;→ 胜利 Modal 弹出（B站粉描边 + 金色文字）<br>
+      <br>
+      <strong>失败</strong><br>
+      &nbsp;&nbsp;→ 发失败音效（下沉音）<br>
+      &nbsp;&nbsp;→ chibi："没事的…下次一定！"<br>
+      &nbsp;&nbsp;→ 失败 Modal 弹出<br>
+      <br>
+      <strong>重新开始</strong><br>
+      &nbsp;&nbsp;→ chibi："再来！这次必赢！"
+    </div>
+  </section>
+
+  <!-- ⑨ 数据与状态 -->
+  <section id="s9">
+    <h2><span class="num">10</span>数据与状态</h2>
+    <div class="card">
+      <p style="font-size:14px;color:#444;margin-bottom:14px;">
+        改造不涉及新增持久化数据，所有状态沿用现有 <code>state</code> 对象。
+      </p>
+      <h3 style="margin-top:0;">新增内部状态（纯 JS 变量，不持久化）</h3>
+      <pre><span class="key">audioCtx</span>:     <span class="val">AudioContext</span>   <span class="cmt">// 首次用户交互后初始化，全局单例</span>
+<span class="key">chibiState</span>:   <span class="val">'happy' | 'worried'</span>  <span class="cmt">// 驱动 chibi SVG 表情切换</span>
+<span class="key">lastHandType</span>: <span class="val">string</span>         <span class="cmt">// 用于判断是否触发弹幕</span></pre>
+    </div>
+  </section>
+
+  <!-- ⑪ 不做什么 -->
+  <section id="s10">
+    <h2><span class="num">11</span>不做什么</h2>
+    <table>
+      <tr><th>排除项</th><th>原因</th></tr>
+      <tr><td>真人立绘 / 图片角色</td><td>不引入外部图片资源，技术约束</td></tr>
+      <tr><td>BGM 背景音乐</td><td>Web Audio 合成循环音乐复杂度高，与本次改造 ROI 不符；只做音效</td></tr>
+      <tr><td>移动端适配</td><td>游戏固定 1080×640，移动端体验待二期评估</td></tr>
+      <tr><td>卡牌翻转动画</td><td>需要重构发牌逻辑，影响游戏流稳定性，列二期</td></tr>
+      <tr><td>游戏规则/算分修改</td><td>本次纯视觉/体验改造，不碰核心逻辑</td></tr>
+      <tr><td>登录/排行榜/存档</td><td>无后端，纯静态，不在范围内</td></tr>
+      <tr><td>多语言</td><td>当前仅服务简中用户</td></tr>
+      <tr><td>无障碍（a11y）优化</td><td>本次不系统处理，仅保证不破坏原有键盘操作</td></tr>
+      <tr style="background:#faf7ff;"><td><strong>WebGL / Three.js 渲染</strong> <span class="pixel-new">V2.1 新增</span></td><td>引入 WebGL 会带来额外依赖，增加首屏加载时间，且超出"纯静态无构建"约束；所有背景效果必须用 CSS / Canvas 2D / SVG 实现</td></tr>
+      <tr style="background:#faf7ff;"><td><strong>全屏 Canvas 粒子系统</strong> <span class="pixel-new">V2.1 新增</span></td><td>大量 Canvas 粒子（>100 个）会在低端设备上造成明显掉帧；背景粒子总数控制在 30 个以内，优先 CSS animation</td></tr>
+      <tr style="background:#faf7ff;"><td><strong>外部图片/纹理文件引入</strong> <span class="pixel-new">V2.1 新增</span></td><td>所有像素风元素必须通过内联 SVG 或纯 CSS 实现，不允许 &lt;img src&gt; 或 url() 引用外部文件，确保单文件纯静态部署</td></tr>
+      <tr style="background:#faf7ff;"><td><strong>常驻 Glitch 故障艺术动画</strong> <span class="pixel-new">V2.1 新增</span></td><td>Glitch 特效若常驻会严重干扰游戏可读性，仅允许作为大牌触发的瞬时特效（≤0.3s），MVP 阶段列为 P2 可选</td></tr>
+      <tr style="background:#faf7ff;"><td><strong>滚动扫描线（动态）</strong> <span class="pixel-new">V2.1 新增</span></td><td>动态滚动扫描线对 GPU 的合成层开销较大，且长时间观看易造成视觉疲劳；扫描线必须为静态 CSS 纹理</td></tr>
+    </table>
+  </section>
+
+  <!-- ⑫ 验收标准 -->
+  <section id="s11">
+    <h2><span class="num">12</span>验收标准</h2>
+    <div class="card" style="padding:16px 20px;">
+      <table>
+        <tr><th>#</th><th>验收项</th><th>验收方式</th></tr>
+        <tr><td>A1</td><td>打开游戏，主色调为 B 站粉/蓝，无暗绿赌桌残留</td><td>截图对比设计 token</td></tr>
+        <tr><td>A2</td><td>chibi 吉祥物可见于右下角，气泡文字随状态切换</td><td>手动操作覆盖 10 种状态</td></tr>
+        <tr><td>A3</td><td>出同花顺/四条/葫芦/同花/顺子时，弹幕从右向左飘过，至少 3 条</td><td>手动打出对应牌型验证</td></tr>
+        <tr><td>A4</td><td>全部 3 关通关后，樱花粒子从顶部落下</td><td>打通游戏后截图/录屏</td></tr>
+        <tr><td>A5</td><td>出牌/选牌/弃牌/胜利有声音反馈（需开系统音量）</td><td>操作后主观听觉判断</td></tr>
+        <tr><td>A6</td><td>J 牌中心显示 🎓，Q 显示 🌹，K 显示 ⚔️</td><td>翻看手牌截图对比</td></tr>
+        <tr><td>A7</td><td>小丑牌 emoji 全部替换为萌系 emoji，名称按文案表更新</td><td>打到关卡通过界面截图</td></tr>
+        <tr><td>A8</td><td>HUD 所有标签按文案表更新（♡ 今日目标 等）</td><td>截图核对</td></tr>
+        <tr><td>A9</td><td>游戏逻辑完全不变：算分、小丑效果、关卡进程正常</td><td>打通三关，验证分数计算正确</td></tr>
+        <tr><td>A10</td><td>页面在 1080px 宽度下无布局溢出，chibi 和弹幕不超出游戏窗口边界</td><td>Chrome DevTools 1080×640 视口截图</td></tr>
+        <tr style="background:#faf7ff;"><td><strong>A11</strong> <span class="pixel-new">V2.1</span></td><td>背景透视网格可见，颜色为紫粉霓虹（#bf5fff 系），缓慢向玩家推进，周期约 8s</td><td>目视确认动画存在且流畅；DevTools Performance 面板确认无 forced reflow</td></tr>
+        <tr style="background:#faf7ff;"><td><strong>A12</strong> <span class="pixel-new">V2.1</span></td><td>卡牌白底区域与背景的文字对比度 ≥ 4.5:1（WCAG AA）；HUD 数字区域在背景层上可读</td><td>Chrome DevTools → Accessibility → Contrast ratio 检查；或 WebAIM Contrast Checker 截图验证</td></tr>
+        <tr style="background:#faf7ff;"><td><strong>A13</strong> <span class="pixel-new">V2.1</span></td><td>游戏运行帧率 ≥ 50fps（含背景动画），在 MacBook / 普通 Windows 笔记本上均满足</td><td>Chrome DevTools Performance 面板录制 5s，帧率面板确认无持续低于 50fps 的区间</td></tr>
+        <tr style="background:#faf7ff;"><td><strong>A14</strong> <span class="pixel-new">V2.1</span></td><td>chibi 吉祥物区域不被扫描线/噪点层覆盖，图形清晰无纹理干扰；弹幕文字在背景粒子/网格上方清晰可读</td><td>截图放大 200% 确认 chibi 区域无扫描线纹理；弹幕出现时截图确认文字无干扰</td></tr>
+        <tr style="background:#faf7ff;"><td><strong>A15</strong> <span class="pixel-new">V2.1</span></td><td>页面首屏加载时间 ≤ 1s（单文件 index.html，本地 file:// 协议打开）</td><td>Chrome DevTools → Network 面板，DOMContentLoaded 时间 ≤ 1000ms</td></tr>
+        <tr style="background:#faf7ff;"><td><strong>A16</strong> <span class="pixel-new">V2.1</span></td><td>背景层在 2560×1440（2K）分辨率屏幕下，透视网格线条清晰不模糊，无明显像素锯齿（扫描线除外，扫描线本身需呈现像素感）</td><td>在 2K 显示器上打开游戏，放大截图确认网格线质量；或 DevTools 模拟高 DPR 设备</td></tr>
       </table>
     </div>
   </section>
 
-  <!-- ③ 牌型&计分 -->
-  <section id="s3">
-    <h2><span class="num">3</span>牌型 &amp; 计分</h2>
+  <!-- ⑬ 开放问题 -->
+  <section id="s12">
+    <h2><span class="num">13</span>开放问题</h2>
     <table>
+      <tr><th>#</th><th>问题</th><th>需决策方</th><th>影响范围</th></tr>
       <tr>
-        <th>牌型</th><th style="color:#e8682a">基础分</th><th style="color:#e8682a">倍数</th>
-        <th>牌型</th><th style="color:#e8682a">基础分</th><th style="color:#e8682a">倍数</th>
+        <td>Q1</td>
+        <td>chibi 的发型/装扮风格（马尾？双马尾？猫耳？）应在 SVG 设计前确认，影响整体气质定调</td>
+        <td>产品/视觉</td>
+        <td>US-04</td>
       </tr>
-      <tr><td>高牌</td><td>5</td><td>×1</td><td>同花</td><td>35</td><td>×4</td></tr>
-      <tr><td>对子</td><td>10</td><td>×2</td><td>葫芦</td><td>40</td><td>×4</td></tr>
-      <tr><td>两对</td><td>20</td><td>×2</td><td>四条</td><td>60</td><td>×7</td></tr>
-      <tr><td>三条</td><td>30</td><td>×3</td><td>同花顺</td><td>100</td><td>×8</td></tr>
-      <tr><td>顺子</td><td>30</td><td>×4</td><td>皇家同花顺</td><td>100</td><td>×8</td></tr>
+      <tr>
+        <td>Q2</td>
+        <td>弹幕是否需要"过滤机制"——同一局重复出大牌时，弹幕是否会重复？是否需要去重？</td>
+        <td>产品</td>
+        <td>US-05</td>
+      </tr>
+      <tr>
+        <td>Q3</td>
+        <td>音效音量是否需要提供设置入口（静音按钮）？部分用户可能在公共场所玩</td>
+        <td>产品</td>
+        <td>US-07</td>
+      </tr>
+      <tr>
+        <td>Q4</td>
+        <td>全通关胜利时，Modal 弹出和樱花粒子之间的时序：樱花先飘还是 Modal 先出，需要对齐</td>
+        <td>产品/开发</td>
+        <td>US-06</td>
+      </tr>
+      <tr>
+        <td>Q5</td>
+        <td>chibi 对话中部分文案涉及日文（例如「すごい」）是否在吉祥物对话中也使用中日混合，还是仅弹幕使用？</td>
+        <td>产品</td>
+        <td>US-04</td>
+      </tr>
+      <tr style="background:#faf7ff;">
+        <td>Q6</td>
+        <td>透视网格的实现方式：CSS perspective + rotateX（纯 CSS，无 JS 依赖）还是 Canvas 2D drawLine（更精细，可控）？CSS 方案在高 DPR 屏上可能出现锯齿，需测试后定夺</td>
+        <td>开发</td>
+        <td>US-B1</td>
+      </tr>
+      <tr style="background:#faf7ff;">
+        <td>Q7</td>
+        <td>背景层动画与游戏主循环的线程隔离：是否需要把背景动画独立放入 Web Worker？目前预估不需要，但高帧率设备上 will-change: transform 提示是否足够，待性能测试后确认</td>
+        <td>开发</td>
+        <td>A13</td>
+      </tr>
     </table>
-    <h3>点数规则</h3>
-    <p style="font-size:14px;color:#555;margin-bottom:0;">A = 11　K / Q / J = 10　2–10 按面值</p>
-    <div class="formula">得分 = (基础分 + 入选牌点数之和) × 倍数</div>
-    <div class="example">
-      <strong>示例</strong>：红心 A · K · Q · J · 10 → 皇家同花顺<br>
-      = (100 + 11 + 10 + 10 + 10 + 10) × 8 = 151 × 8 = <strong>1208 分</strong>
-    </div>
-  </section>
 
-  <!-- ④ 页面&数据 -->
-  <section id="s4">
-    <h2><span class="num">4</span>页面 &amp; 数据模型</h2>
-    <div class="two-col">
-      <div>
-        <h3 style="margin-top:0">4 块布局</h3>
-        <div class="layout-area">
-          <div class="area-name">HUD 顶栏</div>
-          <p>当前分 / 目标 300 / 剩余出牌次数 / 剩余弃牌次数</p>
-        </div>
-        <div class="layout-area">
-          <div class="area-name">手牌区（主区域）</div>
-          <p>8 张牌横排，点击高亮选中，选中牌上浮 8px；再点取消</p>
-        </div>
-        <div class="layout-area">
-          <div class="area-name">操作栏</div>
-          <p>「出牌」橙色按钮 · 「弃牌」灰色按钮 · 当前牌型提示标签</p>
-        </div>
-        <div class="layout-area">
-          <div class="area-name">弹窗层</div>
-          <p>胜利 / 失败弹窗 + 「重新开始」按钮</p>
-        </div>
-      </div>
-      <div>
-        <h3 style="margin-top:0">前端状态字段</h3>
-        <pre><span class="cmt">// 游戏核心状态</span>
-{
-  <span class="key">"deck"</span>:         <span class="val">Card[]</span>,
-  <span class="cmt">// 剩余牌堆</span>
-  <span class="key">"hand"</span>:         <span class="val">Card[]</span>,
-  <span class="cmt">// 当前手牌 8 张</span>
-  <span class="key">"selected"</span>:     <span class="val">Card[]</span>,
-  <span class="cmt">// 已选中牌</span>
-  <span class="key">"score"</span>:        <span class="val">number</span>,
-  <span class="cmt">// 累计得分</span>
-  <span class="key">"target"</span>:       <span class="val">300</span>,
-  <span class="cmt">// 目标分(写死)</span>
-  <span class="key">"handsLeft"</span>:    <span class="val">number</span>,
-  <span class="cmt">// 剩余出牌次数</span>
-  <span class="key">"discardsLeft"</span>: <span class="val">number</span>,
-  <span class="cmt">// 剩余弃牌次数</span>
-  <span class="key">"gameStatus"</span>:   <span class="val">string</span>
-  <span class="cmt">// playing|win|lose</span>
-}
-
-<span class="cmt">// Card 结构</span>
-{
-  <span class="key">"suit"</span>:  <span class="val">"♥|♦|♣|♠"</span>,
-  <span class="key">"rank"</span>:  <span class="val">"A|2-10|J|Q|K"</span>,
-  <span class="key">"value"</span>: <span class="val">number</span>
-}</pre>
-      </div>
-    </div>
-  </section>
-
-  <!-- ⑤ 验收 -->
-  <section id="s5">
-    <h2><span class="num">5</span>验收 Checklist</h2>
-    <div class="card" style="padding:16px 20px;">
-      <ul class="checklist">
-        <li><div class="check-box"></div>52 张牌随机洗牌，每局不重复，初始发 8 张</li>
-        <li><div class="check-box"></div>点击手牌可选中（高亮上浮），再点取消，上限 5 张</li>
-        <li><div class="check-box"></div>出牌时正确识别 10 种牌型，按公式计算并累加分数</li>
-        <li><div class="check-box"></div>弃牌不计分，两种操作后都从剩余牌堆补至 8 张</li>
-        <li><div class="check-box"></div>HUD 实时显示：当前分 / 300 / 出牌剩余 / 弃牌剩余</li>
-        <li><div class="check-box"></div>累计分 ≥ 300 弹出胜利；出牌耗尽且分不足弹出失败</li>
-        <li><div class="check-box"></div>「重新开始」重置全部状态，重新洗牌发牌</li>
-        <li><div class="check-box"></div>操作栏实时显示当前选牌的最优牌型提示</li>
-      </ul>
-    </div>
     <div class="next-line">
-      <strong>交班：</strong>V1.0.0 只验证核心计分引擎可行性，无视觉打磨。
-      下一步 → <strong>v1.1.0 视觉升级</strong>（暗色风格 / HUD / Toast / 进度条）
-      → <strong>v1.2.0 小丑牌系统</strong>（8 张 Joker / 槽位 / 稀有度）
+      <strong>交班：</strong>V2.1.0 在 V2.0.0 二次元改造基础上新增 Synthwave×16-bit 像素科技背景层（方案 E），核心算分引擎及游戏逻辑不变。
+      下一步 → <strong>UI 设计师更新 DESIGN.html（V2.1.0 像素科技背景设计规范）</strong>
+      → <strong>工程师按 PRD + DESIGN 在 index.html 中实现背景层</strong>
     </div>
   </section>
 </div>

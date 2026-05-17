@@ -3,460 +3,2381 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>小丑牌 V1.0.0 Design Spec</title>
+<title>小丑牌 V2.1.0 Design Spec · 像素科技背景增强版</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#f5f0e8;font-family:'Noto Sans SC',system-ui,sans-serif;color:#1a1a1a;font-size:14px}
-a{color:#e8682a;text-decoration:none}
+body{background:#0D0510;font-family:'Noto Sans SC',system-ui,sans-serif;color:#e8e0f0;font-size:14px}
+a{color:#FB7299;text-decoration:none}
 
 /* 顶部导航 */
-.topbar{position:sticky;top:0;z-index:100;background:#1a1a1a;display:flex;align-items:center;gap:24px;padding:0 24px;height:44px}
-.badge{background:#e8682a;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.5px}
-.nav-links{display:flex;gap:0;margin-left:auto}
-.nav-links a{color:#aaa;font-size:12px;padding:0 14px;line-height:44px;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
-.nav-links a:hover{color:#fff;border-color:#e8682a}
+.topbar{position:sticky;top:0;z-index:100;background:#1A0A1E;display:flex;align-items:center;gap:24px;padding:0 24px;height:44px;border-bottom:1px solid rgba(251,114,153,0.15)}
+.badge{background:#FB7299;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.5px;white-space:nowrap}
+.nav-links{display:flex;gap:0;margin-left:auto;overflow-x:auto}
+.nav-links a{color:rgba(255,255,255,0.45);font-size:11px;padding:0 11px;line-height:44px;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;white-space:nowrap}
+.nav-links a:hover{color:#fff;border-color:#FB7299}
 
 /* 公共节 */
-.section{padding:40px 40px 48px;border-bottom:1px solid #e0d8cc}
-.section-title{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#e8682a;margin-bottom:24px}
+.section{padding:40px 40px 48px;border-bottom:1px solid rgba(251,114,153,0.10)}
+.section-title{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#FB7299;margin-bottom:24px}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;align-items:start}
+.section-scroll-anchor{scroll-margin-top:44px}
 
-/* 01 · Tokens 表格 */
+/* Token 表格 */
 .token-table{width:100%;border-collapse:collapse;font-size:13px}
-.token-table th{text-align:left;padding:6px 10px;background:#ede6d8;color:#666;font-weight:600;font-size:11px;letter-spacing:.5px}
-.token-table td{padding:7px 10px;border-bottom:1px solid #e8e0d2;vertical-align:middle}
-.swatch{display:inline-block;width:16px;height:16px;border-radius:3px;border:1px solid rgba(0,0,0,.15);vertical-align:middle;margin-right:6px}
-.mono{font-family:'JetBrains Mono',monospace;font-size:12px;color:#555}
+.token-table th{text-align:left;padding:6px 10px;background:rgba(251,114,153,0.10);color:rgba(255,255,255,0.55);font-weight:600;font-size:11px;letter-spacing:.5px}
+.token-table td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,0.06);vertical-align:middle;color:#e8e0f0}
+.swatch{display:inline-block;width:16px;height:16px;border-radius:3px;border:1px solid rgba(255,255,255,.15);vertical-align:middle;margin-right:6px;flex-shrink:0}
+.mono{font-family:'JetBrains Mono',monospace;font-size:12px;color:#FFAAC4}
+.token-tag{display:inline-block;background:rgba(251,114,153,0.12);border:1px solid rgba(251,114,153,0.28);border-radius:4px;padding:1px 6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#FFAAC4}
 
-/* 卡牌画 */
-.card-demo-area{display:flex;flex-direction:column;gap:20px}
-.card-states-label{font-size:11px;color:#888;margin-bottom:8px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
-.card-states{display:flex;gap:16px;align-items:flex-end}
-.state-item{display:flex;flex-direction:column;align-items:center;gap:8px}
-.state-label{font-size:11px;color:#888;text-align:center}
+/* 色板卡片网格 */
+.swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:24px}
+.swatch-card{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.08)}
+.swatch-color{height:52px;width:100%}
+.swatch-info{background:#1A0A1E;padding:8px 10px}
+.swatch-token{font-family:'JetBrains Mono',monospace;font-size:10px;color:#FFAAC4;margin-bottom:2px;word-break:break-all}
+.swatch-hex{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.70);margin-bottom:4px}
+.swatch-desc{font-size:11px;color:rgba(255,255,255,0.45);line-height:1.4}
+
+/* 分组标题 */
+.sub-title{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(251,114,153,0.70);margin:28px 0 12px;padding-bottom:6px;border-bottom:1px solid rgba(251,114,153,0.12)}
+
+/* 代码块 */
+.code-block{background:#0D0510;border:1px solid rgba(251,114,153,0.15);border-radius:10px;padding:16px 18px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#e0d8f0;line-height:1.7;overflow-x:auto;white-space:pre}
+
+/* ASCII 线框 */
+.wireframe{background:#0D0510;border:1px solid rgba(251,114,153,0.15);border-radius:10px;padding:20px 18px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#B8B0CC;line-height:1.5;overflow-x:auto;white-space:pre}
+
+/* 组件规范块 */
+.spec-block{background:#1A0A1E;border:1px solid rgba(251,114,153,0.12);border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.spec-block h4{font-size:12px;font-weight:700;letter-spacing:1px;color:#FFAAC4;margin-bottom:12px}
 
 /* 扑克牌 CSS */
 .poker-card{
-  width:88px;height:128px;background:#fbfaf7;border-radius:12px;position:relative;
-  box-shadow:0 2px 8px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.08);
-  transition:transform 200ms ease,box-shadow 200ms ease;
+  width:82px;height:118px;background:#FEFCFF;border-radius:14px;position:relative;
+  box-shadow:0 2px 8px rgba(0,0,0,.20),0 0 0 1px rgba(0,0,0,.06);
+  transition:transform 200ms cubic-bezier(0.34,1.56,0.64,1),box-shadow 200ms ease;
   cursor:pointer;user-select:none;flex-shrink:0
 }
 .poker-card .corner{position:absolute;line-height:1;font-weight:700}
 .poker-card .corner.tl{top:6px;left:8px;text-align:left}
 .poker-card .corner.br{bottom:6px;right:8px;text-align:right;transform:rotate(180deg)}
-.poker-card .corner .rank{font-size:16px;display:block}
-.poker-card .corner .suit{font-size:13px;display:block}
-.poker-card .center-suit{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  font-size:48px;line-height:1
-}
-.red-card .corner,.red-card .center-suit{color:#d33f3f}
-.black-card .corner,.black-card .center-suit{color:#1a1a1a}
+.poker-card .corner .rank{font-size:14px;display:block}
+.poker-card .corner .suit{font-size:11px;display:block}
+.poker-card .center-suit{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:40px;line-height:1}
+.red-card .corner,.red-card .center-suit{color:#E8425A}
+.black-card .corner,.black-card .center-suit{color:#1A0A1E}
 
 /* 卡牌状态 */
-.card-hover{transform:translateY(-4px);box-shadow:0 6px 16px rgba(0,0,0,.22)}
-.card-selected{transform:translateY(-12px);box-shadow:0 0 0 2.5px #e8682a,0 8px 20px rgba(232,104,42,.35)}
-.card-disabled{opacity:.4;cursor:not-allowed}
+.card-hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,.24),0 0 0 1px rgba(251,114,153,0.12)}
+.card-selected{transform:translateY(-14px);box-shadow:0 0 0 2.5px #FB7299,0 10px 28px rgba(251,114,153,.40),0 2px 8px rgba(0,0,0,.20)}
+.card-disabled{opacity:.38;filter:grayscale(20%);cursor:not-allowed}
 
-/* 02 · 游戏主界面 */
-.game-viewport{
-  width:1080px;height:640px;background:#2d5a3d;border-radius:16px;
-  overflow:hidden;display:flex;flex-direction:column;
-  box-shadow:0 12px 48px rgba(0,0,0,.45);margin:0 auto;position:relative;
-  background-image:
-    radial-gradient(ellipse at 50% 100%,rgba(0,0,0,.25) 0%,transparent 70%),
-    repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(255,255,255,.012) 20px,rgba(255,255,255,.012) 21px)
-}
+.card-states{display:flex;gap:20px;align-items:flex-end;flex-wrap:wrap}
+.state-item{display:flex;flex-direction:column;align-items:center;gap:10px}
+.state-label{font-size:11px;color:rgba(255,255,255,0.50);text-align:center;line-height:1.4}
 
-/* 顶部 HUD */
-.hud{
-  display:flex;align-items:center;gap:0;padding:0 24px;height:64px;
-  background:rgba(0,0,0,.35);backdrop-filter:blur(4px);border-bottom:1px solid rgba(255,255,255,.08);
-  flex-shrink:0
-}
-.hud-item{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  border-right:1px solid rgba(255,255,255,.1);padding:0 8px
-}
-.hud-item:last-child{border-right:none}
-.hud-label{font-size:10px;color:rgba(255,255,255,.55);letter-spacing:1px;text-transform:uppercase;font-weight:600}
-.hud-value{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#fff;line-height:1.2;font-variant-numeric:tabular-nums}
-.hud-value.target{color:#d4a017}
-.hud-value.score{color:#5dd67a}
-.hud-value.plays{color:#e8682a}
-.hud-value.discards{color:#e06060}
+/* 按钮演示 */
+.btn-demo-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:none;border-radius:999px;font-family:'Noto Sans SC',sans-serif;font-size:14px;font-weight:700;cursor:pointer;padding:10px 28px;transition:transform 150ms cubic-bezier(0.34,1.56,0.64,1),box-shadow 150ms ease;letter-spacing:.3px}
+.btn-play{background:linear-gradient(135deg,#00A1D6 0%,#0088B8 100%);color:#fff;box-shadow:0 4px 16px rgba(0,161,214,.50)}
+.btn-play:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,161,214,.70)}
+.btn-discard{background:linear-gradient(135deg,#FB7299 0%,#E85580 100%);color:#fff;box-shadow:0 4px 16px rgba(251,114,153,.45)}
+.btn-discard:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(251,114,153,.65)}
+.btn-ghost{background:transparent;color:rgba(255,255,255,.60);border:1.5px solid rgba(255,255,255,.24)}
+.btn-ghost:hover{color:#fff;border-color:rgba(251,114,153,.50)}
 
-/* 出牌区 */
-.play-zone{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:rgba(0,0,0,.15);border-bottom:1px solid rgba(255,255,255,.06);
-  position:relative;gap:10px
-}
-.hand-type-badge{
-  background:rgba(232,104,42,.85);color:#fff;font-size:13px;font-weight:700;
-  padding:5px 18px;border-radius:999px;letter-spacing:.5px;
-  box-shadow:0 2px 8px rgba(232,104,42,.4)
-}
-.play-cards{display:flex;gap:12px;align-items:center}
-.play-placeholder{
-  width:88px;height:128px;border-radius:12px;
-  border:2px dashed rgba(255,255,255,.18);
-  display:flex;align-items:center;justify-content:center;
-  color:rgba(255,255,255,.25);font-size:24px
-}
-.zone-hint{font-size:12px;color:rgba(255,255,255,.35);letter-spacing:.5px}
+/* 标注行 */
+.note-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px}
+.note-dot{color:#FB7299;flex-shrink:0;margin-top:1px}
+.note-text{font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6}
+.note-text strong{color:#FFAAC4}
+.note-text code{font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(251,114,153,0.10);border:1px solid rgba(251,114,153,0.20);border-radius:3px;padding:1px 5px;color:#FFAAC4}
 
-/* 手牌区 */
-.hand-zone{
-  padding:16px 24px 12px;background:rgba(0,0,0,.2);border-top:1px solid rgba(255,255,255,.06);
-  flex-shrink:0
-}
-.hand-zone-label{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
-.hand-cards{display:flex;gap:10px;justify-content:center}
+/* HUD 演示 */
+.hud-demo{display:flex;background:rgba(26,10,30,0.72);backdrop-filter:blur(16px);border-bottom:1px solid rgba(251,114,153,0.12);height:64px;border-radius:12px;overflow:hidden}
+.hud-cell{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-left:1px solid rgba(255,255,255,0.06);padding:0 8px}
+.hud-cell:first-child{border-left:none}
+.hud-lbl{font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:0.10em;margin-bottom:2px}
+.hud-val{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
 
-/* 操作按钮 */
-.action-bar{
-  display:flex;align-items:center;gap:12px;justify-content:center;
-  padding:14px 24px;background:rgba(0,0,0,.3);border-top:1px solid rgba(255,255,255,.06);
-  flex-shrink:0
-}
-.btn{
-  display:inline-flex;align-items:center;gap:6px;
-  border:none;border-radius:999px;font-family:'Noto Sans SC',sans-serif;
-  font-size:14px;font-weight:700;cursor:pointer;padding:10px 26px;
-  transition:transform 150ms ease,box-shadow 150ms ease,opacity 150ms ease;
-  letter-spacing:.3px
-}
-.btn:hover{transform:translateY(-2px)}
-.btn:active{transform:translateY(0)}
-.btn-play{background:#e8682a;color:#fff;box-shadow:0 4px 14px rgba(232,104,42,.45)}
-.btn-play:hover{box-shadow:0 6px 18px rgba(232,104,42,.6)}
-.btn-discard{background:#a83232;color:#fff;box-shadow:0 4px 14px rgba(168,50,50,.4)}
-.btn-discard:hover{box-shadow:0 6px 18px rgba(168,50,50,.55)}
-.btn-restart{background:transparent;color:rgba(255,255,255,.7);border:1.5px solid rgba(255,255,255,.3)}
-.btn-restart:hover{border-color:rgba(255,255,255,.6);color:#fff}
+/* 气泡演示 */
+.bubble-demo{background:#fff;border:2px solid #FB7299;border-radius:16px;padding:10px 14px;font-size:12px;color:#1A0A1E;line-height:1.55;display:inline-block;position:relative;box-shadow:0 4px 16px rgba(251,114,153,0.20)}
 
-/* 03 · 状态库 */
-.state-cards{display:flex;gap:16px;flex-wrap:wrap}
-.state-card{
-  border-radius:12px;padding:16px 20px;min-width:180px;flex:1;
-  display:flex;flex-direction:column;gap:6px
-}
-.state-neutral{background:#ede6d8;border:1px solid #d4c9b4}
-.state-highlight{background:#1a1a1a;border:1px solid #e8682a}
-.state-win{background:#0d0d0d;border:2px solid #d4a017}
-.state-card .s-title{font-size:13px;font-weight:700}
-.state-card .s-body{font-size:13px}
-.state-neutral .s-title{color:#555}
-.state-neutral .s-body{color:#1a1a1a}
-.state-highlight .s-title{color:#e8682a}
-.state-highlight .s-body{color:#fff}
-.state-win .s-title{color:#d4a017;font-size:15px}
-.state-win .s-body{color:#fff}
+/* 对比度表格 */
+.contrast-ok{color:#34D399;font-weight:700}
+.contrast-warn{color:#FBBF24;font-weight:700}
+.contrast-fail{color:#FB7299}
 
-/* 右侧工程交班 */
-.handoff{background:#1a1a1a;border-radius:12px;padding:20px 22px}
-.handoff h4{color:#e8682a;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px}
-.handoff ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-.handoff li{font-family:'JetBrains Mono',monospace;font-size:12px;color:#ccc;line-height:1.5;padding-left:12px;position:relative}
-.handoff li::before{content:'·';position:absolute;left:0;color:#e8682a}
+/* 动效表格 */
+.anim-table{width:100%;border-collapse:collapse;font-size:12px}
+.anim-table th{text-align:left;padding:6px 10px;background:rgba(251,114,153,0.08);color:rgba(255,255,255,0.50);font-weight:600;font-size:11px;letter-spacing:.5px}
+.anim-table td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,0.05);color:#e8e0f0;vertical-align:top}
+.anim-table .curve{font-family:'JetBrains Mono',monospace;font-size:10px;color:#FFAAC4}
 
-.section-scroll-anchor{scroll-margin-top:44px}
+/* 音效卡片 */
+.sfx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.sfx-card{background:#1A0A1E;border:1px solid rgba(251,114,153,0.12);border-radius:10px;padding:14px 16px}
+.sfx-card h5{font-size:12px;color:#FB7299;margin-bottom:8px;font-weight:700}
+.sfx-row{display:flex;gap:6px;margin-bottom:4px;font-size:11px;color:rgba(255,255,255,0.55)}
+.sfx-key{color:rgba(255,255,255,0.35);width:72px;flex-shrink:0}
+.sfx-val{color:#FFAAC4;font-family:'JetBrains Mono',monospace}
+
+/* Token 对照表 */
+.diff-table{width:100%;border-collapse:collapse;font-size:12px}
+.diff-table th{text-align:left;padding:6px 10px;background:rgba(251,114,153,0.08);color:rgba(255,255,255,0.50);font-weight:600;font-size:11px;letter-spacing:.5px}
+.diff-table td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,0.05);vertical-align:top}
+.diff-old{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.40);text-decoration:line-through}
+.diff-new{font-family:'JetBrains Mono',monospace;font-size:11px;color:#FFAAC4}
+
+/* 交班卡片 */
+.handoff{background:#1A0A1E;border:1px solid rgba(251,114,153,0.15);border-radius:12px;padding:20px 22px}
+.handoff h4{color:#FB7299;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px}
+.handoff ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.handoff li{font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;padding-left:14px;position:relative}
+.handoff li::before{content:'·';position:absolute;left:0;color:#FB7299}
+.handoff li strong{color:#FFAAC4}
+.handoff li code{font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(251,114,153,0.10);border:1px solid rgba(251,114,153,0.20);border-radius:3px;padding:1px 5px;color:#FFAAC4}
+
+/* 行内标签 */
+.pill{display:inline-block;background:rgba(0,161,214,0.12);border:1px solid rgba(0,161,214,0.28);border-radius:999px;padding:1px 8px;font-size:10px;color:#00A1D6;font-family:'JetBrains Mono',monospace}
+.pill-pink{background:rgba(251,114,153,0.12);border-color:rgba(251,114,153,0.28);color:#FFAAC4}
+.pill-gold{background:rgba(240,192,64,0.12);border-color:rgba(240,192,64,0.28);color:#F0C040}
+
+/* ─── V2.1 新增：像素科技背景章节专用样式 ─── */
+
+/* 像素色板卡片（限定 16 色调色板） */
+.pixel-swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:20px}
+.pixel-swatch-card{border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.10)}
+.pixel-swatch-color{height:48px;width:100%;image-rendering:pixelated}
+.pixel-swatch-info{background:#110820;padding:8px 10px}
+.pixel-swatch-token{font-family:'JetBrains Mono',monospace;font-size:10px;color:#BF5FFF;margin-bottom:2px;word-break:break-all}
+.pixel-swatch-hex{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.65);margin-bottom:2px}
+.pixel-swatch-rel{font-size:10px;color:rgba(255,255,255,0.35);line-height:1.4}
+
+/* 图层卡片 */
+.layer-stack-card{background:#110820;border:1px solid rgba(191,95,255,0.20);border-radius:10px;padding:14px 18px;margin-bottom:10px;display:grid;grid-template-columns:72px 1fr;gap:12px;align-items:start}
+.layer-z{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#BF5FFF;line-height:1.1}
+.layer-z-label{font-size:10px;color:rgba(191,95,255,0.55);letter-spacing:.5px}
+.layer-desc-title{font-size:12px;font-weight:700;color:#E8E0F0;margin-bottom:4px}
+.layer-desc-body{font-size:12px;color:rgba(255,255,255,0.55);line-height:1.65}
+.layer-tags{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px}
+.layer-tag{display:inline-block;background:rgba(191,95,255,0.12);border:1px solid rgba(191,95,255,0.25);border-radius:4px;padding:1px 6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#BF5FFF}
+.layer-tag.cyan{background:rgba(0,255,255,0.08);border-color:rgba(0,255,255,0.20);color:#00FFFF}
+.layer-tag.pink{background:rgba(255,45,120,0.10);border-color:rgba(255,45,120,0.22);color:#FF2D78}
+.layer-tag.blue{background:rgba(0,161,214,0.10);border-color:rgba(0,161,214,0.22);color:#00A1D6}
+
+/* 霓虹辉光演示 */
+.neon-glow-demo{display:flex;gap:16px;flex-wrap:wrap;margin:16px 0;align-items:center}
+.neon-sample{padding:8px 18px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700}
+.neon-weak  {background:#0d001a;color:#BF5FFF;border:1px solid #BF5FFF;box-shadow:0 0 4px rgba(191,95,255,0.40)}
+.neon-mid   {background:#0d001a;color:#BF5FFF;border:1px solid #BF5FFF;box-shadow:0 0 8px rgba(191,95,255,0.60),0 0 16px rgba(191,95,255,0.25)}
+.neon-strong{background:#0d001a;color:#BF5FFF;border:1px solid #BF5FFF;box-shadow:0 0 8px rgba(191,95,255,0.80),0 0 20px rgba(191,95,255,0.50),0 0 40px rgba(191,95,255,0.20)}
+
+/* 像素 SVG 预览盒 */
+.pixel-svg-showcase{display:flex;gap:20px;flex-wrap:wrap;margin:16px 0;align-items:flex-end}
+.pixel-svg-item{display:flex;flex-direction:column;align-items:center;gap:8px;background:#110820;border:1px solid rgba(191,95,255,0.15);border-radius:8px;padding:16px 18px}
+.pixel-svg-item svg{image-rendering:pixelated;image-rendering:crisp-edges;shape-rendering:crispEdges}
+.pixel-svg-label{font-size:10px;color:rgba(255,255,255,0.40);text-align:center;line-height:1.4;font-family:'JetBrains Mono',monospace}
+
+/* 决策块 */
+.decision-block{background:#0D0020;border:1.5px solid rgba(0,255,255,0.25);border-radius:10px;padding:18px 20px;margin:16px 0}
+.decision-block .decision-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#00FFFF;margin-bottom:10px}
+.decision-block .decision-body{font-size:13px;color:rgba(255,255,255,0.65);line-height:1.7}
+.decision-block code{font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(0,255,255,0.08);border:1px solid rgba(0,255,255,0.18);border-radius:3px;padding:1px 5px;color:#00FFFF}
+
+/* 不采用清单 */
+.reject-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.reject-list li{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;font-size:12px;color:rgba(255,255,255,0.55);line-height:1.6}
+.reject-list li::before{content:'✕';color:rgba(255,45,120,0.60);font-weight:700;flex-shrink:0;margin-top:1px}
+
+/* 性能表格 */
+.perf-table{width:100%;border-collapse:collapse;font-size:12px}
+.perf-table th{text-align:left;padding:6px 10px;background:rgba(0,255,255,0.06);color:rgba(0,255,255,0.55);font-weight:600;font-size:11px;letter-spacing:.5px}
+.perf-table td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,0.05);color:#e8e0f0;vertical-align:top}
+.perf-ok{color:#34D399;font-weight:700}
+.perf-warn{color:#FBBF24;font-weight:700}
+
+/* 动效清单卡片 */
+.anim-card{background:#1A0A1E;border:1px solid rgba(191,95,255,0.15);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.anim-card h5{font-size:11px;font-weight:700;letter-spacing:1px;color:#BF5FFF;margin-bottom:8px;text-transform:uppercase}
+.anim-row{display:flex;gap:6px;margin-bottom:4px;font-size:11px}
+.anim-key{color:rgba(255,255,255,0.35);width:80px;flex-shrink:0}
+.anim-val{color:#FFAAC4;font-family:'JetBrains Mono',monospace;font-size:11px;word-break:break-all}
+
+/* V2.1 NEW 徽章 */
+.new-badge{display:inline-block;background:linear-gradient(90deg,#7c3aed,#db2777);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;letter-spacing:.5px;font-family:'JetBrains Mono',monospace;vertical-align:middle;margin-left:6px}
 </style>
 </head>
 <body>
 
 <!-- 顶部导航 -->
 <div class="topbar">
-  <span class="badge">Version V1.0.0 · Round 1 · 2026-05-16</span>
+  <span class="badge">V2.1.0 · 像素科技背景增强版 · 2026-05-17</span>
   <nav class="nav-links">
-    <a href="#s01">01 · Tokens + 卡牌</a>
-    <a href="#s02">02 · 游戏主界面</a>
-    <a href="#s03">03 · 状态库 + 交班</a>
+    <a href="#s01">01 · Tokens</a>
+    <a href="#s02">02 · 字体</a>
+    <a href="#s03">03 · 圆角阴影</a>
+    <a href="#s04">04 · 核心组件</a>
+    <a href="#s05">05 · 二次元装饰</a>
+    <a href="#s06">06 · 动效</a>
+    <a href="#s07">07 · 音效</a>
+    <a href="#s08">08 · 线框图</a>
+    <a href="#s09">09 · 响应式 &amp; 无障碍</a>
+    <a href="#s10">10 · Token 对照 &amp; 交班</a>
+    <a href="#s11" style="color:#BF5FFF">11 · 像素艺术规范</a>
+    <a href="#s12" style="color:#BF5FFF">12 · 科技装饰元素</a>
+    <a href="#s13" style="color:#BF5FFF">13 · 背景层次 &amp; z-index</a>
+    <a href="#s14" style="color:#BF5FFF">14 · 动效 &amp; 性能预算</a>
   </nav>
 </div>
 
+<!-- 设计气质说明 -->
+<div style="background:linear-gradient(135deg,#1A0A1E 0%,#0D1A2E 100%);padding:32px 40px 28px;border-bottom:1px solid rgba(251,114,153,0.10)">
+  <div style="display:flex;gap:16px;align-items:center;margin-bottom:12px">
+    <span class="pill-pink pill">温柔</span>
+    <span class="pill-pink pill">元气</span>
+    <span class="pill-pink pill">樱花感</span>
+    <span style="background:rgba(191,95,255,0.14);border:1px solid rgba(191,95,255,0.35);color:#BF5FFF;border-radius:999px;padding:1px 10px;font-size:10px;font-family:'JetBrains Mono',monospace">赛博像素</span>
+    <span style="background:rgba(191,95,255,0.14);border:1px solid rgba(191,95,255,0.35);color:#BF5FFF;border-radius:999px;padding:1px 10px;font-size:10px;font-family:'JetBrains Mono',monospace">Synthwave</span>
+  </div>
+  <p style="font-size:14px;color:rgba(255,255,255,0.65);line-height:1.75;max-width:780px">
+    目标用户是 18–28 岁二次元轻度玩家。B 站品牌色（粉 <span style="color:#FB7299">#FB7299</span> + 蓝 <span style="color:#00A1D6">#00A1D6</span>）是潜意识中的"安全感"色彩，直接复用可降低陌生感。<br>
+    V2.1.0 在温柔元气基调上叠加「Synthwave×16-bit 像素」双层背景：远景透视霓虹网格制造赛博纵深感，近景像素樱花和像素星点延续萌系温度。两层分工明确，chibi 和卡牌始终是视觉焦点，背景仅作氛围渲染。圆润大圆角 + 粉调是萌系美学标配；spring curve 动效让每次出牌都有被回应的愉悦感；配合吉祥物"学妹"人设，整体气质自洽。
+  </p>
+</div>
+
 <!-- ══════════════════════════════════════
-     01 · Design Tokens + 卡牌组件
+     01 · Design Tokens（色板）
 ══════════════════════════════════════ -->
 <section class="section section-scroll-anchor" id="s01">
-  <div class="section-title">01 · Design Tokens + 卡牌组件</div>
-  <div class="two-col">
+  <div class="section-title">01 · Design Tokens · 色板</div>
 
-    <!-- 左：色板表格 -->
+  <!-- 1.1 主色系 -->
+  <div class="sub-title">1.1 主色系</div>
+  <div class="swatch-grid">
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#FB7299"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-primary</div>
+        <div class="swatch-hex">#FB7299</div>
+        <div class="swatch-desc">B 站粉 · 出牌/描边/激活态主色</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#E85580"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-primary-dark</div>
+        <div class="swatch-hex">#E85580</div>
+        <div class="swatch-desc">粉色 hover 加深态 / 胜利描边</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#FFAAC4"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-primary-light</div>
+        <div class="swatch-hex">#FFAAC4</div>
+        <div class="swatch-desc">樱花粒子色 / 选中光晕</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#FFDDEA"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-primary-ultra</div>
+        <div class="swatch-hex">#FFDDEA</div>
+        <div class="swatch-desc">樱花浅粒子 / HUD 背景微染</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#00A1D6"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-blue</div>
+        <div class="swatch-hex">#00A1D6</div>
+        <div class="swatch-desc">B 站蓝 · 主 CTA 出牌按钮</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#007FAB"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-blue-dark</div>
+        <div class="swatch-hex">#007FAB</div>
+        <div class="swatch-desc">蓝色 hover/pressed 态</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1.2 辅助色 -->
+  <div class="sub-title">1.2 辅助色</div>
+  <div class="swatch-grid">
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#F0C040"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-gold</div>
+        <div class="swatch-hex">#F0C040</div>
+        <div class="swatch-desc">目标分数值 / 全通关 Modal / 星级</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#C084FC"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-purple</div>
+        <div class="swatch-hex">#C084FC</div>
+        <div class="swatch-desc">小丑槽位文字 / 弃牌次数数值</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#34D399"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-mint</div>
+        <div class="swatch-hex">#34D399</div>
+        <div class="swatch-desc">薄荷绿 · 已攒积分值</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1.3 中性色 -->
+  <div class="sub-title">1.3 中性色（9 阶）</div>
+  <div class="swatch-grid">
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#0D0510;border:1px solid rgba(255,255,255,0.10)"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--neutral-900</div>
+        <div class="swatch-hex">#0D0510</div>
+        <div class="swatch-desc">最深背景基底（body）</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#1A0A1E"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--neutral-800</div>
+        <div class="swatch-hex">#1A0A1E</div>
+        <div class="swatch-desc">游戏背景渐变起点（暗粉紫）</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#0D1A2E"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--neutral-750</div>
+        <div class="swatch-hex">#0D1A2E</div>
+        <div class="swatch-desc">游戏背景渐变终点（暗蓝）</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#1E1028"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--neutral-700</div>
+        <div class="swatch-hex">#1E1028</div>
+        <div class="swatch-desc">Modal / Joker 选择卡片背景</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#2A1640"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--neutral-600</div>
+        <div class="swatch-hex">#2A1640</div>
+        <div class="swatch-desc">弃牌区域 / play-area 背景叠层</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:rgba(255,255,255,0.28)"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--neutral-400</div>
+        <div class="swatch-hex">rgba(255,255,255,0.28)</div>
+        <div class="swatch-desc">分割线 / 边框</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:rgba(255,255,255,0.45)"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--neutral-300</div>
+        <div class="swatch-hex">rgba(255,255,255,0.45)</div>
+        <div class="swatch-desc">HUD 标签文字</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:rgba(255,255,255,0.65)"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--neutral-200</div>
+        <div class="swatch-hex">rgba(255,255,255,0.65)</div>
+        <div class="swatch-desc">次要正文 / 弃牌按钮文字</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#ffffff;border:1px solid rgba(255,255,255,0.15)"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--neutral-100</div>
+        <div class="swatch-hex">#FFFFFF</div>
+        <div class="swatch-desc">主文字 / 按钮文字 / 弹幕</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1.4 语义色 -->
+  <div class="sub-title">1.4 语义色</div>
+  <div class="swatch-grid">
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#34D399"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-success</div>
+        <div class="swatch-hex">#34D399</div>
+        <div class="swatch-desc">关卡通过 / 积分超标绿</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#FBBF24"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-warning</div>
+        <div class="swatch-hex">#FBBF24</div>
+        <div class="swatch-desc">剩余次数 ≤1 时警告色</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#FB7299"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-danger</div>
+        <div class="swatch-hex">#FB7299</div>
+        <div class="swatch-desc">失败 Modal 描边（粉色复用）</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#00A1D6"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-info</div>
+        <div class="swatch-hex">#00A1D6</div>
+        <div class="swatch-desc">信息提示蓝</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1.5 像素扩展色板（V2.1 新增） -->
+  <div class="sub-title">1.5 像素扩展色板 <span class="new-badge">V2.1 NEW</span></div>
+  <p style="font-size:12px;color:rgba(255,255,255,0.40);margin-bottom:14px">专用于背景像素层（Layer 0–3）的限定 token，不替换现有主色板，仅作叠加使用。与现有 V2.0 token 关系注明于下方。</p>
+  <div class="pixel-swatch-grid">
+    <div class="pixel-swatch-card">
+      <div class="pixel-swatch-color" style="background:#0D0520"></div>
+      <div class="pixel-swatch-info">
+        <div class="pixel-swatch-token">--pixel-bg-deep</div>
+        <div class="pixel-swatch-hex">#0D0520</div>
+        <div class="pixel-swatch-rel">底色渐变起点（V2.0 --neutral-900 加深版）</div>
+      </div>
+    </div>
+    <div class="pixel-swatch-card">
+      <div class="pixel-swatch-color" style="background:#0A1628"></div>
+      <div class="pixel-swatch-info">
+        <div class="pixel-swatch-token">--pixel-bg-ocean</div>
+        <div class="pixel-swatch-hex">#0A1628</div>
+        <div class="pixel-swatch-rel">底色渐变终点（V2.0 --neutral-750 加深版）</div>
+      </div>
+    </div>
+    <div class="pixel-swatch-card">
+      <div class="pixel-swatch-color" style="background:#BF5FFF"></div>
+      <div class="pixel-swatch-info">
+        <div class="pixel-swatch-token">--pixel-neon-purple</div>
+        <div class="pixel-swatch-hex">#BF5FFF</div>
+        <div class="pixel-swatch-rel">透视网格主色（V2.0 --color-purple #C084FC 近色，更偏霓虹）</div>
+      </div>
+    </div>
+    <div class="pixel-swatch-card">
+      <div class="pixel-swatch-color" style="background:#FF2D78"></div>
+      <div class="pixel-swatch-info">
+        <div class="pixel-swatch-token">--pixel-neon-pink</div>
+        <div class="pixel-swatch-hex">#FF2D78</div>
+        <div class="pixel-swatch-rel">网格地平线高亮 / 樱花辉光（V2.0 --color-primary #FB7299 饱和度增强版）</div>
+      </div>
+    </div>
+    <div class="pixel-swatch-card">
+      <div class="pixel-swatch-color" style="background:#00FFFF"></div>
+      <div class="pixel-swatch-info">
+        <div class="pixel-swatch-token">--pixel-grid-cyan</div>
+        <div class="pixel-swatch-hex">#00FFFF</div>
+        <div class="pixel-swatch-rel">像素星点青色 / 全息光斑（独立新增，无 V2.0 对应）</div>
+      </div>
+    </div>
+    <div class="pixel-swatch-card">
+      <div class="pixel-swatch-color" style="background:#00A1D6"></div>
+      <div class="pixel-swatch-info">
+        <div class="pixel-swatch-token">--pixel-glow-bilibili</div>
+        <div class="pixel-swatch-hex">#00A1D6</div>
+        <div class="pixel-swatch-rel">B 站蓝辉光（复用 V2.0 --color-blue，在像素层用作辉光色）</div>
+      </div>
+    </div>
+    <div class="pixel-swatch-card">
+      <div class="pixel-swatch-color" style="background:#FFB7C5"></div>
+      <div class="pixel-swatch-info">
+        <div class="pixel-swatch-token">--pixel-sakura-petal</div>
+        <div class="pixel-swatch-hex">#FFB7C5</div>
+        <div class="pixel-swatch-rel">像素樱花主色（沿用 V2.0 胜利粒子色）</div>
+      </div>
+    </div>
+    <div class="pixel-swatch-card">
+      <div class="pixel-swatch-color" style="background:#FFFFFF"></div>
+      <div class="pixel-swatch-info">
+        <div class="pixel-swatch-token">--pixel-star-white</div>
+        <div class="pixel-swatch-hex">#FFFFFF</div>
+        <div class="pixel-swatch-rel">像素星点白（复用 V2.0 --neutral-100）</div>
+      </div>
+    </div>
+    <div class="pixel-swatch-card">
+      <div class="pixel-swatch-color" style="background:#7B2FBE"></div>
+      <div class="pixel-swatch-info">
+        <div class="pixel-swatch-token">--pixel-grid-line</div>
+        <div class="pixel-swatch-hex">#7B2FBE</div>
+        <div class="pixel-swatch-rel">透视网格普通线（--pixel-neon-purple 降饱和度 + 更深，非地平线线用）</div>
+      </div>
+    </div>
+    <div class="pixel-swatch-card">
+      <div class="pixel-swatch-color" style="background:rgba(0,0,0,0.06)"></div>
+      <div class="pixel-swatch-info">
+        <div class="pixel-swatch-token">--pixel-scanline-dark</div>
+        <div class="pixel-swatch-hex">rgba(0,0,0,0.06)</div>
+        <div class="pixel-swatch-rel">CRT 扫描线条纹色（透明叠加，无对应主色 token）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1.6 背景层 -->
+  <div class="sub-title">1.6 背景层 Token</div>
+  <table class="token-table">
+    <thead><tr><th>Token</th><th>值</th><th>用途</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">--bg-body</td><td class="mono" style="word-break:break-all">radial-gradient(ellipse at 50% 30%, #1E0A2E 0%, #0D0510 100%)</td><td>body 背景</td></tr>
+      <tr><td class="mono">--bg-table</td><td class="mono" style="word-break:break-all">linear-gradient(145deg, #1A0A1E 0%, #0D1A2E 100%)</td><td>#game 主背景</td></tr>
+      <tr><td class="mono">--bg-table-overlay</td><td class="mono" style="word-break:break-all">radial-gradient(ellipse at 50% 110%, rgba(251,114,153,0.08) 0%, transparent 60%)</td><td>游戏区域底部粉光晕</td></tr>
+      <tr><td class="mono">--bg-hud</td><td class="mono">rgba(26,10,30,0.72)</td><td>HUD 磨砂背景</td></tr>
+      <tr><td class="mono">--bg-hud-blur</td><td class="mono">blur(16px)</td><td>HUD backdrop-filter</td></tr>
+      <tr><td class="mono">--bg-card</td><td class="mono">#FEFCFF</td><td>扑克牌正面底色（微粉白）</td></tr>
+      <tr><td class="mono">--bg-modal</td><td class="mono">rgba(13,5,16,0.80)</td><td>Modal 遮罩</td></tr>
+      <tr><td class="mono">--bg-modal-blur</td><td class="mono">blur(8px)</td><td>Modal 遮罩模糊</td></tr>
+      <tr><td class="mono">--bg-joker-overlay</td><td class="mono">rgba(10,4,20,0.88)</td><td>小丑选择遮罩</td></tr>
+      <tr><td class="mono">--bg-joker-card</td><td class="mono" style="word-break:break-all">linear-gradient(135deg, #16082A 0%, #0A1424 100%)</td><td>小丑选择卡片背景</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 1.6 卡牌颜色 -->
+  <div class="sub-title">1.6 卡牌颜色 Token</div>
+  <div class="swatch-grid">
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#E8425A"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-card-red</div>
+        <div class="swatch-hex">#E8425A</div>
+        <div class="swatch-desc">红色花色 ♥♦</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#1A0A1E"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-card-black</div>
+        <div class="swatch-hex">#1A0A1E</div>
+        <div class="swatch-desc">黑色花色 ♣♠</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#FB7299"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-card-selected</div>
+        <div class="swatch-hex">#FB7299</div>
+        <div class="swatch-desc">选中态描边（B 站粉）</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:rgba(251,114,153,0.35)"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--color-card-selected-glow</div>
+        <div class="swatch-hex">rgba(251,114,153,0.35)</div>
+        <div class="swatch-desc">选中态光晕</div>
+      </div>
+    </div>
+    <div class="swatch-card">
+      <div class="swatch-color" style="background:#FEFCFF;border:1px solid rgba(255,255,255,0.2)"></div>
+      <div class="swatch-info">
+        <div class="swatch-token">--bg-card</div>
+        <div class="swatch-hex">#FEFCFF</div>
+        <div class="swatch-desc">牌面底色（微粉白）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 卡牌状态展示 -->
+  <div class="sub-title">卡牌 4 种交互状态（CSS 真实渲染）</div>
+  <div class="card-states">
+    <div class="state-item">
+      <div class="poker-card black-card">
+        <div class="corner tl"><span class="rank">K</span><span class="suit">♠</span></div>
+        <div class="center-suit">♠</div>
+        <div class="corner br"><span class="rank">K</span><span class="suit">♠</span></div>
+      </div>
+      <div class="state-label">默认<br>box-shadow 双层</div>
+    </div>
+    <div class="state-item">
+      <div class="poker-card red-card card-hover">
+        <div class="corner tl"><span class="rank">Q</span><span class="suit">♥</span></div>
+        <div class="center-suit">♥</div>
+        <div class="corner br"><span class="rank">Q</span><span class="suit">♥</span></div>
+      </div>
+      <div class="state-label">hover<br>↑4px + 微粉描边</div>
+    </div>
+    <div class="state-item">
+      <div class="poker-card red-card card-selected">
+        <div class="corner tl"><span class="rank">J</span><span class="suit">♦</span></div>
+        <div class="center-suit">♦</div>
+        <div class="corner br"><span class="rank">J</span><span class="suit">♦</span></div>
+      </div>
+      <div class="state-label">选中<br>↑14px + 粉框 + 光晕</div>
+    </div>
+    <div class="state-item">
+      <div class="poker-card black-card card-disabled">
+        <div class="corner tl"><span class="rank">2</span><span class="suit">♣</span></div>
+        <div class="center-suit">♣</div>
+        <div class="corner br"><span class="rank">2</span><span class="suit">♣</span></div>
+      </div>
+      <div class="state-label">禁用<br>opacity 38% + grayscale</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     02 · 字体规范
+══════════════════════════════════════ -->
+<section class="section section-scroll-anchor" id="s02">
+  <div class="section-title">02 · 字体规范</div>
+  <div class="two-col">
     <div>
+      <div class="sub-title" style="margin-top:0">2.1 字族定义</div>
+      <div class="code-block">/* 中文圆体（标题/标签/按钮/气泡文字）*/
+@import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
+--font-cn: 'ZCOOL KuaiLe', 'Noto Sans SC', -apple-system, sans-serif;
+
+/* 数字等宽（HUD 数值/得分/Toast）*/
+--font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+/* 弹幕/正文（延迟字体，fallback 先渲染）*/
+--font-ui: 'Noto Sans SC', 'PingFang SC', -apple-system, sans-serif;</div>
+      <div class="note-row" style="margin-top:12px">
+        <span class="note-dot">·</span>
+        <span class="note-text"><strong>重要：</strong>ZCOOL KuaiLe 只有 Regular（400）一个字重，<strong>不支持 bold</strong>。凡需要粗体感的场景，用更大字号 + 颜色对比代替字重。数字区域继续使用 JetBrains Mono 700/800。</span>
+      </div>
+    </div>
+    <div>
+      <div class="sub-title" style="margin-top:0">2.2 字号阶梯</div>
       <table class="token-table">
-        <thead>
-          <tr><th>类别</th><th>Token / 值</th><th>用途</th></tr>
-        </thead>
+        <thead><tr><th>Token</th><th>px</th><th>用途</th><th>字族</th></tr></thead>
         <tbody>
-          <tr>
-            <td><span class="swatch" style="background:#2d5a3d"></span>桌面绿</td>
-            <td class="mono">--color-table: #2d5a3d</td>
-            <td>游戏背景、绒布底色</td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#e8682a"></span>强调橙</td>
-            <td class="mono">--color-accent: #e8682a</td>
-            <td>出牌按钮、选中描边、高亮</td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#a83232"></span>弃牌红</td>
-            <td class="mono">--color-discard: #a83232</td>
-            <td>弃牌按钮、危险状态</td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#d4a017"></span>金色</td>
-            <td class="mono">--color-gold: #d4a017</td>
-            <td>目标分、胜利 Toast 边框</td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#d33f3f"></span>红花色</td>
-            <td class="mono">--color-card-red: #d33f3f</td>
-            <td>红心 ♥ 方块 ♦ 点数颜色</td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#fbfaf7;border:1px solid #ccc"></span>卡牌底</td>
-            <td class="mono">--color-card-bg: #fbfaf7</td>
-            <td>扑克牌底色</td>
-          </tr>
-          <tr>
-            <td><span class="swatch" style="background:#5dd67a"></span>当前分</td>
-            <td class="mono">--color-score: #5dd67a</td>
-            <td>HUD 当前分数显示</td>
-          </tr>
-          <tr>
-            <td colspan="3" style="padding:8px 10px 2px;background:#ede6d8;font-size:11px;color:#666;font-weight:600;letter-spacing:.5px">SHAPE TOKENS</td>
-          </tr>
-          <tr>
-            <td>卡牌圆角</td>
-            <td class="mono">--radius-card: 12px</td>
-            <td>扑克牌、弹窗</td>
-          </tr>
-          <tr>
-            <td>按钮圆角</td>
-            <td class="mono">--radius-btn: 999px</td>
-            <td>胶囊形按钮</td>
-          </tr>
-          <tr>
-            <td>过渡时长</td>
-            <td class="mono">--ease-card: 200ms ease</td>
-            <td>牌的 hover / 选中动效</td>
-          </tr>
+          <tr><td class="mono">--text-xs</td><td>10px</td><td>HUD 标签、区域标签</td><td>--font-cn</td></tr>
+          <tr><td class="mono">--text-sm</td><td>12px</td><td>play-hint、弹幕、徽章辅助</td><td>--font-ui</td></tr>
+          <tr><td class="mono">--text-base</td><td>14px</td><td>按钮文字、joker 名、气泡</td><td>--font-cn</td></tr>
+          <tr><td class="mono">--text-md</td><td>16px</td><td>小丑卡片名、Modal 副标题</td><td>--font-cn</td></tr>
+          <tr><td class="mono">--text-lg</td><td>22px</td><td>HUD 数值（非分数）</td><td>--font-mono</td></tr>
+          <tr><td class="mono">--text-xl</td><td>28px</td><td>Joker 面板标题</td><td>--font-cn</td></tr>
+          <tr><td class="mono">--text-2xl</td><td>32px</td><td>Modal 标题</td><td>--font-cn</td></tr>
+          <tr><td class="mono">--text-3xl</td><td>42px</td><td>得分 Toast</td><td>--font-mono 800</td></tr>
+          <tr><td class="mono">--text-4xl</td><td>48px</td><td>Modal 大分数</td><td>--font-mono 800</td></tr>
         </tbody>
       </table>
     </div>
-
-    <!-- 右：卡牌展示 -->
-    <div class="card-demo-area">
-      <!-- 主角：红心 A -->
-      <div>
-        <div class="card-states-label">红心 A — 真实 CSS 渲染（88×128px）</div>
-        <div class="poker-card red-card">
-          <div class="corner tl"><span class="rank">A</span><span class="suit">♥</span></div>
-          <div class="center-suit">♥</div>
-          <div class="corner br"><span class="rank">A</span><span class="suit">♥</span></div>
-        </div>
-      </div>
-
-      <!-- 4 状态说明 -->
-      <div>
-        <div class="card-states-label">4 种交互状态</div>
-        <div class="card-states">
-          <div class="state-item">
-            <div class="poker-card black-card" style="width:64px;height:92px">
-              <div class="corner tl" style="top:4px;left:5px"><span class="rank" style="font-size:11px">K</span><span class="suit" style="font-size:9px">♠</span></div>
-              <div class="center-suit" style="font-size:32px">♠</div>
-              <div class="corner br" style="bottom:4px;right:5px"><span class="rank" style="font-size:11px">K</span><span class="suit" style="font-size:9px">♠</span></div>
-            </div>
-            <div class="state-label">默认</div>
-          </div>
-          <div class="state-item">
-            <div class="poker-card red-card card-hover" style="width:64px;height:92px">
-              <div class="corner tl" style="top:4px;left:5px"><span class="rank" style="font-size:11px">Q</span><span class="suit" style="font-size:9px">♥</span></div>
-              <div class="center-suit" style="font-size:32px">♥</div>
-              <div class="corner br" style="bottom:4px;right:5px"><span class="rank" style="font-size:11px">Q</span><span class="suit" style="font-size:9px">♥</span></div>
-            </div>
-            <div class="state-label">hover<br>↑4px</div>
-          </div>
-          <div class="state-item">
-            <div class="poker-card red-card card-selected" style="width:64px;height:92px">
-              <div class="corner tl" style="top:4px;left:5px"><span class="rank" style="font-size:11px">J</span><span class="suit" style="font-size:9px">♦</span></div>
-              <div class="center-suit" style="font-size:32px">♦</div>
-              <div class="corner br" style="bottom:4px;right:5px"><span class="rank" style="font-size:11px">J</span><span class="suit" style="font-size:9px">♦</span></div>
-            </div>
-            <div class="state-label">选中<br>↑12px+橙框</div>
-          </div>
-          <div class="state-item">
-            <div class="poker-card black-card card-disabled" style="width:64px;height:92px">
-              <div class="corner tl" style="top:4px;left:5px"><span class="rank" style="font-size:11px">2</span><span class="suit" style="font-size:9px">♣</span></div>
-              <div class="center-suit" style="font-size:32px">♣</div>
-              <div class="corner br" style="bottom:4px;right:5px"><span class="rank" style="font-size:11px">2</span><span class="suit" style="font-size:9px">♣</span></div>
-            </div>
-            <div class="state-label">禁用<br>opacity 40%</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </section>
 
 <!-- ══════════════════════════════════════
-     02 · 完整游戏页面
-══════════════════════════════════════ -->
-<section class="section section-scroll-anchor" id="s02">
-  <div class="section-title">02 · 完整游戏页面（课堂演示主角）</div>
-
-  <div class="game-viewport">
-
-    <!-- HUD -->
-    <div class="hud">
-      <div class="hud-item">
-        <div class="hud-label">目标分</div>
-        <div class="hud-value target">300</div>
-      </div>
-      <div class="hud-item">
-        <div class="hud-label">当前分</div>
-        <div class="hud-value score">0</div>
-      </div>
-      <div class="hud-item">
-        <div class="hud-label">剩余出牌</div>
-        <div class="hud-value plays">4</div>
-      </div>
-      <div class="hud-item">
-        <div class="hud-label">剩余弃牌</div>
-        <div class="hud-value discards">3</div>
-      </div>
-    </div>
-
-    <!-- 出牌区 -->
-    <div class="play-zone">
-      <div class="hand-type-badge">同花顺</div>
-      <div class="play-cards">
-        <div class="poker-card red-card">
-          <div class="corner tl"><span class="rank">A</span><span class="suit">♥</span></div>
-          <div class="center-suit">♥</div>
-          <div class="corner br"><span class="rank">A</span><span class="suit">♥</span></div>
-        </div>
-        <div class="poker-card red-card">
-          <div class="corner tl"><span class="rank">K</span><span class="suit">♥</span></div>
-          <div class="center-suit">♥</div>
-          <div class="corner br"><span class="rank">K</span><span class="suit">♥</span></div>
-        </div>
-        <div class="poker-card red-card">
-          <div class="corner tl"><span class="rank">Q</span><span class="suit">♥</span></div>
-          <div class="center-suit">♥</div>
-          <div class="corner br"><span class="rank">Q</span><span class="suit">♥</span></div>
-        </div>
-        <div class="play-placeholder">+</div>
-        <div class="play-placeholder">+</div>
-      </div>
-      <div class="zone-hint">选中 1–5 张牌后点击「出牌」</div>
-    </div>
-
-    <!-- 手牌 -->
-    <div class="hand-zone">
-      <div class="hand-zone-label">手牌 · 8 张</div>
-      <div class="hand-cards">
-        <div class="poker-card red-card card-selected" style="width:82px;height:118px">
-          <div class="corner tl" style="top:5px;left:6px"><span class="rank" style="font-size:14px">J</span><span class="suit" style="font-size:11px">♥</span></div>
-          <div class="center-suit" style="font-size:40px">♥</div>
-          <div class="corner br" style="bottom:5px;right:6px"><span class="rank" style="font-size:14px">J</span><span class="suit" style="font-size:11px">♥</span></div>
-        </div>
-        <div class="poker-card black-card" style="width:82px;height:118px">
-          <div class="corner tl" style="top:5px;left:6px"><span class="rank" style="font-size:14px">7</span><span class="suit" style="font-size:11px">♠</span></div>
-          <div class="center-suit" style="font-size:40px">♠</div>
-          <div class="corner br" style="bottom:5px;right:6px"><span class="rank" style="font-size:14px">7</span><span class="suit" style="font-size:11px">♠</span></div>
-        </div>
-        <div class="poker-card red-card" style="width:82px;height:118px">
-          <div class="corner tl" style="top:5px;left:6px"><span class="rank" style="font-size:14px">3</span><span class="suit" style="font-size:11px">♦</span></div>
-          <div class="center-suit" style="font-size:40px">♦</div>
-          <div class="corner br" style="bottom:5px;right:6px"><span class="rank" style="font-size:14px">3</span><span class="suit" style="font-size:11px">♦</span></div>
-        </div>
-        <div class="poker-card black-card" style="width:82px;height:118px">
-          <div class="corner tl" style="top:5px;left:6px"><span class="rank" style="font-size:14px">K</span><span class="suit" style="font-size:11px">♣</span></div>
-          <div class="center-suit" style="font-size:40px">♣</div>
-          <div class="corner br" style="bottom:5px;right:6px"><span class="rank" style="font-size:14px">K</span><span class="suit" style="font-size:11px">♣</span></div>
-        </div>
-        <div class="poker-card red-card" style="width:82px;height:118px">
-          <div class="corner tl" style="top:5px;left:6px"><span class="rank" style="font-size:14px">9</span><span class="suit" style="font-size:11px">♥</span></div>
-          <div class="center-suit" style="font-size:40px">♥</div>
-          <div class="corner br" style="bottom:5px;right:6px"><span class="rank" style="font-size:14px">9</span><span class="suit" style="font-size:11px">♥</span></div>
-        </div>
-        <div class="poker-card black-card" style="width:82px;height:118px">
-          <div class="corner tl" style="top:5px;left:6px"><span class="rank" style="font-size:14px">4</span><span class="suit" style="font-size:11px">♠</span></div>
-          <div class="center-suit" style="font-size:40px">♠</div>
-          <div class="corner br" style="bottom:5px;right:6px"><span class="rank" style="font-size:14px">4</span><span class="suit" style="font-size:11px">♠</span></div>
-        </div>
-        <div class="poker-card red-card" style="width:82px;height:118px">
-          <div class="corner tl" style="top:5px;left:6px"><span class="rank" style="font-size:14px">2</span><span class="suit" style="font-size:11px">♦</span></div>
-          <div class="center-suit" style="font-size:40px">♦</div>
-          <div class="corner br" style="bottom:5px;right:6px"><span class="rank" style="font-size:14px">2</span><span class="suit" style="font-size:11px">♦</span></div>
-        </div>
-        <div class="poker-card black-card" style="width:82px;height:118px">
-          <div class="corner tl" style="top:5px;left:6px"><span class="rank" style="font-size:14px">8</span><span class="suit" style="font-size:11px">♣</span></div>
-          <div class="center-suit" style="font-size:40px">♣</div>
-          <div class="corner br" style="bottom:5px;right:6px"><span class="rank" style="font-size:14px">8</span><span class="suit" style="font-size:11px">♣</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 操作栏 -->
-    <div class="action-bar">
-      <button class="btn btn-play">出牌</button>
-      <button class="btn btn-discard">弃牌</button>
-      <button class="btn btn-restart">重新开始</button>
-    </div>
-
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════
-     03 · 状态库 + 工程交班
+     03 · 圆角与阴影
 ══════════════════════════════════════ -->
 <section class="section section-scroll-anchor" id="s03">
-  <div class="section-title">03 · 状态库 + 工程交班</div>
+  <div class="section-title">03 · 圆角与阴影</div>
   <div class="two-col">
-
-    <!-- 左：3 个状态卡片 -->
     <div>
-      <div class="state-cards">
-        <div class="state-card state-neutral">
-          <div class="s-title">等待选牌</div>
-          <div class="s-body">请选择 1–5 张牌后点击出牌</div>
-        </div>
-        <div class="state-card state-highlight">
-          <div class="s-title">同花顺</div>
-          <div class="s-body" style="font-family:'JetBrains Mono',monospace">+100 × 8 = 800</div>
-        </div>
-        <div class="state-card state-win">
-          <div class="s-title">Beat the Blind</div>
-          <div class="s-body">目标达成！进入下一关</div>
-        </div>
+      <div class="sub-title" style="margin-top:0">3.1 圆角阶梯</div>
+      <table class="token-table">
+        <thead><tr><th>Token</th><th>值</th><th>适用场景</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">--radius-sm</td><td class="mono">8px</td><td>小型徽章、占位框</td></tr>
+          <tr><td class="mono">--radius-card</td><td class="mono">14px</td><td>扑克牌、手牌、已出牌</td></tr>
+          <tr><td class="mono">--radius-slot</td><td class="mono">22px</td><td>小丑槽位胶囊</td></tr>
+          <tr><td class="mono">--radius-btn</td><td class="mono">999px</td><td>所有按钮（全圆角）</td></tr>
+          <tr><td class="mono">--radius-modal</td><td class="mono">24px</td><td>结算 Modal 卡片</td></tr>
+          <tr><td class="mono">--radius-joker-card</td><td class="mono">20px</td><td>小丑选择卡片</td></tr>
+          <tr><td class="mono">--radius-bubble</td><td class="mono">16px</td><td>吉祥物对话气泡</td></tr>
+          <tr><td class="mono">--radius-badge</td><td class="mono">999px</td><td>hand-type-badge</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="sub-title" style="margin-top:0">3.2 阴影规范</div>
+      <div class="spec-block">
+        <h4>卡片默认阴影</h4>
+        <div class="code-block">box-shadow:
+  0 2px 8px rgba(0, 0, 0, 0.20),
+  0 0 0 1px rgba(0, 0, 0, 0.06);</div>
       </div>
-      <div style="margin-top:16px;font-size:12px;color:#888;line-height:1.7">
-        <strong style="color:#555">空状态：</strong>出牌区无牌时显示"请选 1–5 张"中性提示<br>
-        <strong style="color:#555">胜利：</strong>金边黑底 Toast，居中遮罩，按任意键继续<br>
-        <strong style="color:#555">失败：</strong>出牌次数耗尽时自动触发，提示"重新开始"
+      <div class="spec-block">
+        <h4>卡片 hover 阴影（微粉描边呼应主色）</h4>
+        <div class="code-block">box-shadow:
+  0 8px 20px rgba(0, 0, 0, 0.24),
+  0 0 0 1px rgba(251, 114, 153, 0.12);</div>
+      </div>
+      <div class="spec-block">
+        <h4>卡片选中阴影（上移 14px）</h4>
+        <div class="code-block">box-shadow:
+  0 0 0 2.5px #FB7299,
+  0 10px 28px rgba(251, 114, 153, 0.40),
+  0 2px 8px rgba(0, 0, 0, 0.20);</div>
+      </div>
+      <div class="spec-block">
+        <h4>出牌按钮发光（B 站蓝）</h4>
+        <div class="code-block">/* 默认 */
+box-shadow: 0 4px 16px rgba(0, 161, 214, 0.50);
+/* hover */
+box-shadow: 0 6px 24px rgba(0, 161, 214, 0.70),
+            0 0 40px rgba(0, 161, 214, 0.25);</div>
+      </div>
+      <div class="spec-block">
+        <h4>弃牌按钮发光（B 站粉）</h4>
+        <div class="code-block">/* 默认 */
+box-shadow: 0 4px 16px rgba(251, 114, 153, 0.45);
+/* hover */
+box-shadow: 0 6px 24px rgba(251, 114, 153, 0.65),
+            0 0 36px rgba(251, 114, 153, 0.22);</div>
+      </div>
+      <div class="spec-block">
+        <h4>Modal 投影</h4>
+        <div class="code-block">/* 失败 Modal */
+box-shadow:
+  0 24px 64px rgba(0, 0, 0, 0.85),
+  0 0 48px rgba(251, 114, 153, 0.18);
+
+/* 胜利 Modal */
+box-shadow:
+  0 24px 64px rgba(0, 0, 0, 0.85),
+  0 0 72px rgba(240, 192, 64, 0.30);</div>
+      </div>
+      <div class="spec-block">
+        <h4>游戏窗口外框阴影</h4>
+        <div class="code-block">box-shadow:
+  0 0 0 1px rgba(251, 114, 153, 0.08),
+  0 8px 40px rgba(0, 0, 0, 0.65),
+  0 32px 80px rgba(0, 0, 0, 0.40),
+  inset 0 1px 0 rgba(255, 255, 255, 0.06);</div>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- 右：工程交班 -->
-    <div class="handoff">
-      <h4>给开发的话</h4>
-      <ul>
-        <li>CSS 变量建议：<code style="color:#e8682a">--color-table / --color-accent / --color-card-red / --color-gold</code>，统一在 :root 定义</li>
-        <li>卡牌动效：<code style="color:#e8682a">transform: translateY(-12px)</code> + <code style="color:#e8682a">box-shadow: 0 0 0 2.5px var(--color-accent)</code></li>
-        <li>过渡统一：<code style="color:#e8682a">transition: transform 200ms ease, box-shadow 200ms ease</code></li>
-        <li>字体方案：数字/代码用 JetBrains Mono，正文用 Noto Sans SC，fallback 均为 system-ui</li>
-        <li>HUD 数字防抖：<code style="color:#e8682a">font-variant-numeric: tabular-nums</code>，防止数字变化时布局跳动</li>
-        <li>移动适配：游戏容器固定 1080×640，移动端用 <code style="color:#e8682a">transform: scale()</code> 整体缩放</li>
-      </ul>
+<!-- ══════════════════════════════════════
+     04 · 核心组件视觉规范
+══════════════════════════════════════ -->
+<section class="section section-scroll-anchor" id="s04">
+  <div class="section-title">04 · 核心组件视觉规范</div>
+
+  <!-- 4.1 HUD -->
+  <div class="sub-title" style="margin-top:0">4.1 HUD（5 格）</div>
+  <div style="margin-bottom:16px">
+    <div class="hud-demo">
+      <div class="hud-cell"><div class="hud-lbl">♡ 今日目标</div><div class="hud-val" style="color:#F0C040">300</div></div>
+      <div class="hud-cell"><div class="hud-lbl">✦ 已攒积分</div><div class="hud-val" style="color:#34D399">142</div></div>
+      <div class="hud-cell"><div class="hud-lbl">🃏 出牌次数</div><div class="hud-val" style="color:#00A1D6">4</div></div>
+      <div class="hud-cell"><div class="hud-lbl">🔄 弃牌次数</div><div class="hud-val" style="color:#C084FC">3</div></div>
+      <div class="hud-cell"><div class="hud-lbl">⭐ 当前关</div><div class="hud-val" style="color:#FB7299;font-size:18px">Round 2</div></div>
+    </div>
+  </div>
+  <div class="code-block">布局：grid-template-columns: repeat(5, 1fr)
+高度：64px
+背景：rgba(26,10,30,0.72), backdrop-filter: blur(16px)
+下边框：1px solid rgba(251, 114, 153, 0.12)
+
+数值颜色：
+  ♡ 今日目标  → --color-gold    #F0C040
+  ✦ 已攒积分  → --color-mint    #34D399
+  🃏 出牌次数 → --color-blue    #00A1D6
+  🔄 弃牌次数 → --color-purple  #C084FC
+  ⭐ 第 X 关  → --color-primary #FB7299, font-size: 18px</div>
+
+  <!-- 4.2 小丑栏 -->
+  <div class="sub-title">4.2 小丑栏（"我的小伙伴"）</div>
+  <div class="code-block">高度：44px
+背景：rgba(26,10,30,0.30)
+下边框：1px solid rgba(251,114,153,0.08)
+
+.joker-slot-empty：
+  border: 1.5px dashed rgba(251,114,153,0.20)  /* 粉色虚线 */
+  color: rgba(255,255,255,0.20)
+  文字："待召唤"
+
+.joker-slot-filled：
+  background: rgba(251,114,153,0.14)
+  border: 1.5px solid rgba(251,114,153,0.40)
+  color: #FFAAC4（浅粉文字）
+  border-radius: 22px</div>
+
+  <!-- 4.3 扑克牌 -->
+  <div class="sub-title">4.3 扑克牌（82×118px）</div>
+  <div class="code-block">/* 正常态 */
+width: 82px; height: 118px;
+background: #FEFCFF;
+border-radius: 14px;
+box-shadow: 0 2px 8px rgba(0,0,0,.20), 0 0 0 1px rgba(0,0,0,.06);
+transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
+            box-shadow 200ms ease;
+
+/* hover */
+transform: translateY(-4px);
+
+/* 选中 */
+transform: translateY(-14px);
+
+/* 禁用 */
+opacity: 0.38; filter: grayscale(20%); cursor: not-allowed;</div>
+
+  <!-- 4.4 J/Q/K 角色化 -->
+  <div class="sub-title">4.4 J / Q / K 卡牌角色化角标</div>
+  <div class="code-block">J → 🎓  字号: 32px  绝对居中
+Q → 🌹  字号: 32px  绝对居中
+K → ⚔️  字号: 32px  绝对居中
+
+角标底色徽章（可选）：
+  position: absolute; bottom: 20px; right: 6px;
+  background: rgba(251,114,153,0.12);
+  border: 1px solid rgba(251,114,153,0.30);
+  border-radius: 4px; padding: 1px 3px;
+  font-size: 9px; color: #FB7299;</div>
+
+  <!-- 4.5 按钮 -->
+  <div class="sub-title">4.5 按钮三态</div>
+  <div class="btn-demo-row">
+    <button class="btn btn-play">出牌！</button>
+    <button class="btn btn-discard">换掉它</button>
+    <button class="btn btn-ghost">重来一局</button>
+  </div>
+  <div class="code-block">/* 出牌！—— B 站蓝渐变 */
+background: linear-gradient(135deg, #00A1D6 0%, #0088B8 100%);
+box-shadow: 0 4px 16px rgba(0, 161, 214, 0.50);
+transition: transform 150ms cubic-bezier(0.34, 1.56, 0.64, 1);
+/* hover: transform: translateY(-2px) */
+/* disabled: opacity: 0.35; cursor: not-allowed; */
+
+/* 换掉它—— B 站粉渐变 */
+background: linear-gradient(135deg, #FB7299 0%, #E85580 100%);
+box-shadow: 0 4px 16px rgba(251, 114, 153, 0.45);
+
+/* 重来一局—— 幽灵按钮 */
+background: transparent;
+border: 1.5px solid rgba(255,255,255,0.24);
+color: rgba(255,255,255,0.60);
+/* hover: border-color → rgba(251,114,153,0.50) */</div>
+
+  <!-- 4.6 hand-type-badge -->
+  <div class="sub-title">4.6 牌型徽章（hand-type-badge）</div>
+  <div style="margin-bottom:12px;display:flex;gap:12px;align-items:center">
+    <span style="background:#00A1D6;color:#fff;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;padding:5px 16px;border-radius:999px;box-shadow:0 2px 10px rgba(0,161,214,0.45)">同花顺</span>
+    <span style="background:rgba(255,255,255,0.10);color:rgba(255,255,255,0.40);font-size:12px;padding:5px 16px;border-radius:999px">（空态）请选择手牌</span>
+  </div>
+  <div class="code-block">/* 激活态 */
+background: #00A1D6;
+font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+padding: 5px 16px; border-radius: 999px;
+box-shadow: 0 2px 10px rgba(0, 161, 214, 0.45);
+
+/* 空态 */
+background: rgba(255,255,255,0.10);
+color: rgba(255,255,255,0.40);
+box-shadow: none;</div>
+
+  <!-- 4.7 Modal -->
+  <div class="sub-title">4.7 模态框（失败 / 胜利）</div>
+  <div class="code-block">/* 失败 Modal */
+background: linear-gradient(145deg, #1A0A1E 0%, #0D0510 100%);
+border: 2px solid #FB7299;
+border-radius: 24px; padding: 40px 48px;
+.lose-modal .modal-title { color: #FB7299; font-size: 32px; }
+
+/* 全通关 Modal */
+border: 2px solid var(--color-gold);
+.cleared-modal .modal-title { color: var(--color-gold); }
+.cleared-modal .modal-score { color: var(--color-gold); }
+
+/* Modal 内按钮（再战一局！）*/
+与 btn-play 相同 + width: 100%; padding: 12px 0; font-size: 15px</div>
+
+  <!-- 4.8 小丑选择卡片 -->
+  <div class="sub-title">4.8 小丑选择卡片（3 选 1）</div>
+  <div class="code-block">.joker-choice-card {
+  width: 168px;
+  background: linear-gradient(135deg, #16082A 0%, #0A1424 100%);
+  border: 2px solid rgba(251,114,153,0.22);
+  border-radius: 20px; padding: 28px 18px 22px;
+  transition: all 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.joker-choice-card:hover {
+  border-color: #FB7299;
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 48px rgba(251,114,153,0.28), 0 0 0 2px #FB7299;
+}
+
+.joker-choice-emoji {
+  font-size: 52px;
+  filter: drop-shadow(0 0 8px rgba(251,114,153,0.40));
+}
+
+.joker-choice-name  { color: #FFAAC4; font-size: 14px; }
+.joker-choice-desc  { font-size: 11px; color: rgba(255,255,255,0.48); line-height: 1.60; }
+
+/* 面板背景 */
+#joker-overlay { background: rgba(10,4,20,0.88); backdrop-filter: blur(12px); }
+.joker-panel-title { font-size: 26px; color: #FB7299; }
+.joker-panel-sub   { font-size: 13px; color: rgba(255,255,255,0.50); }</div>
+</section>
+
+<!-- ══════════════════════════════════════
+     05 · 二次元装饰元素
+══════════════════════════════════════ -->
+<section class="section section-scroll-anchor" id="s05">
+  <div class="section-title">05 · 二次元装饰元素</div>
+
+  <!-- 5.1 樱花粒子 -->
+  <div class="sub-title" style="margin-top:0">5.1 樱花粒子（胜利撒花）</div>
+  <div class="two-col">
+    <div>
+      <div class="code-block">数量：20–30 个
+尺寸：随机 12–24px
+颜色（三色随机）：
+  #FFB7C5（樱花粉）
+  #FFFFFF（白）
+  #FFDDEA（超浅粉）
+初始：x: 0–100%，y: -30px（顶部上方）
+时长：2200–2500ms（各粒子随机）
+z-index: 80（低于 Modal 的 100）</div>
+    </div>
+    <div>
+      <div class="code-block">@keyframes sakuraFall {
+  0%   { transform: translateY(-30px) translateX(0) rotate(0deg);
+          opacity: 1; }
+  20%  { transform: translateY(140px) translateX(15px) rotate(72deg); }
+  40%  { transform: translateY(280px) translateX(-10px) rotate(144deg); }
+  60%  { transform: translateY(420px) translateX(20px) rotate(216deg);
+          opacity: 0.8; }
+  80%  { transform: translateY(560px) translateX(-5px) rotate(288deg);
+          opacity: 0.4; }
+  100% { transform: translateY(720px) translateX(10px) rotate(360deg);
+          opacity: 0; }
+}</div>
+    </div>
+  </div>
+
+  <!-- 5.2 背景樱花装饰 -->
+  <div class="sub-title">5.2 背景樱花装饰圆</div>
+  <div class="code-block">.table-logo {
+  border-radius: 50%;
+  width: 240px; height: 240px;
+  border: 1px solid rgba(251,114,153,0.06);
+}
+.table-logo::after {
+  inset: 24px;
+  border: 1px solid rgba(251,114,153,0.04);
+}
+/* 可选：伪元素在 4 个方向加小樱花 🌸 字符，position absolute */</div>
+
+  <!-- 5.3 吉祥物 Chibi -->
+  <div class="sub-title">5.3 吉祥物 Chibi（小丑酱 / Joker-chan）</div>
+  <div class="two-col">
+    <div>
+      <div class="code-block">position: absolute;
+right: 16px;
+bottom: 80px;  /* action-bar 72px + 8px */
+z-index: 60;   /* 高于游戏层，低于 Modal */
+width: 80px; height: 80px;</div>
+      <div class="spec-block" style="margin-top:12px">
+        <h4>SVG 结构（双马尾元气学妹）</h4>
+        <div style="font-size:12px;color:rgba(255,255,255,0.60);line-height:1.7">
+          头部：circle cx=40 cy=32 r=22，fill: #FFD6E7<br>
+          大眼睛：开心态 / 担忧态（开关切换）<br>
+          脸红腮：两个小圆 opacity 0.6，#FFB7C5<br>
+          双马尾：path 圆角，#FF9BBD<br>
+          身体：圆角矩形，#E8D5F0（淡紫制服感）
+        </div>
+      </div>
+      <div class="spec-block">
+        <h4>表情切换触发逻辑</h4>
+        <div class="code-block" style="padding:10px 12px">弃牌次数 = 1（最后一次） → chibiState = 'worried'
+出牌后积分 < 目标 50%   → chibiState = 'worried'
+其余所有状态            → chibiState = 'happy'
+
+切换：opacity transition 0.3s ease</div>
+      </div>
+    </div>
+    <div>
+      <div class="spec-block">
+        <h4>对话气泡 CSS</h4>
+        <div class="code-block" style="padding:10px 12px">.chibi-bubble {
+  position: absolute;
+  bottom: 86px; right: 0;
+  width: 160px;
+  background: #FFFFFF;
+  border: 2px solid #FB7299;
+  border-radius: 16px;
+  padding: 8px 12px;
+  font-size: 12px; color: #1A0A1E;
+  line-height: 1.55;
+  box-shadow: 0 4px 16px rgba(251,114,153,0.20);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+/* 尾角伪元素：border-triangle，指向 chibi */
+.chibi-bubble.show {
+  opacity: 1;
+  transform: translateY(0);
+}</div>
+      </div>
+      <div class="bubble-demo" style="margin-top:12px">
+        选 1–5 张然后出牌吧~ ✨
+        <div style="position:absolute;bottom:-10px;right:20px;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:10px solid #FB7299"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5.4 弹幕条 -->
+  <div class="sub-title">5.4 弹幕条（大牌触发）</div>
+  <div class="two-col">
+    <div>
+      <div class="code-block">.danmaku-item {
+  position: absolute;
+  right: -220px;      /* 从右侧外进入 */
+  white-space: nowrap;
+  font-size: 15px; color: #FFFFFF;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000,
+               -1px 1px 0 #000, 1px 1px 0 #000;
+  animation: danmakuFly 3500ms linear forwards;
+  z-index: 70;
+  pointer-events: none; user-select: none;
+}
+
+@keyframes danmakuFly {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-100vw - 440px)); }
+  /* 建议改用 translateX(-1480px)，避免 vw 缩放问题 */
+}</div>
+    </div>
+    <div>
+      <div class="code-block">弹幕可用区高度：
+640 - 64(HUD) - 44(joker-bar) - 72(action-bar) = 460px
+
+通道分配（避免重叠，间距 ≥ 28px）：
+  通道 A: top ≈ 128px
+  通道 B: top ≈ 180px
+  通道 C: top ≈ 250px
+  通道 D: top ≈ 330px
+  通道 E: top ≈ 410px
+
+多条弹幕时序（3–5 条）：
+  第 1 条：delay 0ms
+  第 2 条：delay 200–350ms
+  第 3 条：delay 350–550ms
+  第 4 条：delay 550–750ms（如有）
+  第 5 条：delay 750–950ms（如有）
+
+颜色变体：
+  普通弹幕：白字黑边
+  日文弹幕：浅黄 #FFFACD + 黑边
+  膜拜类：浅粉 #FFAAC4 + 黑边</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     06 · 动效规范
+══════════════════════════════════════ -->
+<section class="section section-scroll-anchor" id="s06">
+  <div class="section-title">06 · 动效规范</div>
+
+  <div class="sub-title" style="margin-top:0">6.1 现有动画调整</div>
+  <table class="anim-table" style="margin-bottom:24px">
+    <thead><tr><th>动画名</th><th>新曲线</th><th>新时长</th><th>变更说明</th></tr></thead>
+    <tbody>
+      <tr><td>cardDeal</td><td class="curve">cubic-bezier(0.34, 1.56, 0.64, 1)</td><td>280ms</td><td>加入 spring 感，发牌更有弹性</td></tr>
+      <tr><td>numPop</td><td class="curve">cubic-bezier(0.34, 1.56, 0.64, 1)</td><td>320ms</td><td>数字弹出更活泼</td></tr>
+      <tr><td>toastUp</td><td class="curve">ease</td><td>1400ms</td><td>延长悬停，粉色得分更显眼</td></tr>
+      <tr><td>scoreFlash</td><td class="curve">ease</td><td>600ms</td><td>不变，背景闪色</td></tr>
+      <tr><td>Modal 弹出</td><td class="curve">cubic-bezier(0.34, 1.56, 0.64, 1)</td><td>360ms</td><td>加大弹跳幅度感</td></tr>
+    </tbody>
+  </table>
+
+  <div class="two-col">
+    <div>
+      <div class="sub-title">6.2 新增动画（A–G）</div>
+      <div class="spec-block">
+        <h4>A · 吉祥物呼吸（持续循环）</h4>
+        <div class="code-block" style="padding:10px 12px">@keyframes chibiBreath {
+  0%, 100% { transform: scaleY(1) translateY(0); }
+  50%       { transform: scaleY(0.96) translateY(1px); }
+}
+animation: chibiBreath 3s ease-in-out infinite;</div>
+      </div>
+      <div class="spec-block">
+        <h4>B · 对话气泡浮现</h4>
+        <div class="code-block" style="padding:10px 12px">transition: opacity 0.3s ease,
+  transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+/* from: opacity 0, translateY(6px) */
+/* to:   opacity 1, translateY(0)   */</div>
+      </div>
+      <div class="spec-block">
+        <h4>E · 按钮悬停光晕脉冲（可选）</h4>
+        <div class="code-block" style="padding:10px 12px">@keyframes btnGlow {
+  0%, 100% { box-shadow: 0 4px 16px rgba(0,161,214,0.50); }
+  50%       { box-shadow: 0 4px 24px rgba(0,161,214,0.80),
+                          0 0 40px rgba(0,161,214,0.30); }
+}
+.btn-play:hover:not(:disabled) {
+  animation: btnGlow 1.5s ease-in-out infinite;
+}</div>
+      </div>
+      <div class="spec-block">
+        <h4>F · 小丑选择卡片悬停震颤</h4>
+        <div class="code-block" style="padding:10px 12px">@keyframes jokerCardPop {
+  0%  { transform: translateY(0) scale(1); }
+  40% { transform: translateY(-12px) scale(1.03); }
+  60% { transform: translateY(-9px) scale(1.02); }
+  80% { transform: translateY(-11px) scale(1.025); }
+  100%{ transform: translateY(-10px) scale(1.02); }
+}
+.joker-choice-card:hover {
+  animation: jokerCardPop 300ms
+    cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}</div>
+      </div>
+      <div class="spec-block">
+        <h4>新 cardDeal keyframe</h4>
+        <div class="code-block" style="padding:10px 12px">@keyframes cardDeal {
+  0%   { opacity:0; transform:translateY(-24px)
+          scale(0.82) rotate(-3deg); }
+  60%  { opacity:1; transform:translateY(2px)
+          scale(1.03) rotate(0.5deg); }
+  100% { opacity:1; transform:translateY(0)
+          scale(1) rotate(0deg); }
+}</div>
+      </div>
+      <div class="spec-block">
+        <h4>Toast 颜色（薄荷绿 + 粉光晕）</h4>
+        <div class="code-block" style="padding:10px 12px">#score-toast {
+  color: var(--color-mint); /* #34D399 */
+  text-shadow:
+    0 0 30px rgba(52,211,153,0.65),
+    0 0 60px rgba(251,114,153,0.20),
+    0 2px 12px rgba(0,0,0,0.5);
+}</div>
+      </div>
+    </div>
+    <div>
+      <div class="sub-title">6.3 动效总结表</div>
+      <table class="anim-table">
+        <thead><tr><th>动画</th><th>曲线</th><th>时长</th><th>触发</th></tr></thead>
+        <tbody>
+          <tr><td>发牌 cardDeal</td><td class="curve">spring(0.34,1.56,0.64,1)</td><td>280ms</td><td>发牌每张</td></tr>
+          <tr><td>数字弹出 numPop</td><td class="curve">spring(0.34,1.56,0.64,1)</td><td>320ms</td><td>分数/次数变化</td></tr>
+          <tr><td>得分 Toast</td><td class="curve">ease</td><td>1400ms</td><td>出牌后</td></tr>
+          <tr><td>卡片选中</td><td class="curve">spring(0.34,1.56,0.64,1)</td><td>200ms</td><td>点击手牌</td></tr>
+          <tr><td>Modal 弹出</td><td class="curve">spring(0.34,1.56,0.64,1)</td><td>360ms</td><td>胜/负触发</td></tr>
+          <tr><td>气泡浮现</td><td class="curve">spring(0.34,1.56,0.64,1)</td><td>300ms</td><td>chibi 状态更新</td></tr>
+          <tr><td>弹幕飘过</td><td class="curve">linear</td><td>3500ms</td><td>大牌出牌</td></tr>
+          <tr><td>樱花粒子</td><td class="curve">linear</td><td>2200–2500ms</td><td>全通关</td></tr>
+          <tr><td>chibi 呼吸</td><td class="curve">ease-in-out</td><td>3000ms ∞</td><td>游戏进行中</td></tr>
+          <tr><td>按钮光晕</td><td class="curve">ease-in-out</td><td>1500ms ∞ hover</td><td>hover</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     07 · 音效设计参数
+══════════════════════════════════════ -->
+<section class="section section-scroll-anchor" id="s07">
+  <div class="section-title">07 · 音效设计（Web Audio API 合成参数）</div>
+  <div style="margin-bottom:16px">
+    <div class="note-row">
+      <span class="note-dot">·</span>
+      <span class="note-text">所有音效通过 <code>AudioContext</code> + <code>OscillatorNode</code> + <code>GainNode</code> 合成，<strong>无外部文件</strong>。<code>masterGain.value = 0.4</code>（整体音量，可接静音按钮）。</span>
+    </div>
+    <div class="note-row">
+      <span class="note-dot">·</span>
+      <span class="note-text"><strong>重要：</strong>AudioContext 必须在首次用户 click/keydown 事件后创建，存为全局单例，不要每次出牌都 new 一个。</span>
+    </div>
+  </div>
+  <div class="sfx-grid">
+    <div class="sfx-card">
+      <h5>7.1 选中手牌</h5>
+      <div class="sfx-row"><span class="sfx-key">type</span><span class="sfx-val">sine</span></div>
+      <div class="sfx-row"><span class="sfx-key">frequency</span><span class="sfx-val">880 Hz</span></div>
+      <div class="sfx-row"><span class="sfx-key">attack</span><span class="sfx-val">0.005s → gain 0.5</span></div>
+      <div class="sfx-row"><span class="sfx-key">decay</span><span class="sfx-val">0.04s → 0.0</span></div>
+      <div class="sfx-row"><span class="sfx-key">总时长</span><span class="sfx-val">~0.08s</span></div>
+    </div>
+    <div class="sfx-card">
+      <h5>7.2 取消选中</h5>
+      <div class="sfx-row"><span class="sfx-key">type</span><span class="sfx-val">sine</span></div>
+      <div class="sfx-row"><span class="sfx-key">frequency</span><span class="sfx-val">660 Hz</span></div>
+      <div class="sfx-row"><span class="sfx-key">attack</span><span class="sfx-val">0.005s → gain 0.4</span></div>
+      <div class="sfx-row"><span class="sfx-key">decay</span><span class="sfx-val">0.05s → 0.0</span></div>
+      <div class="sfx-row"><span class="sfx-key">总时长</span><span class="sfx-val">~0.08s</span></div>
+    </div>
+    <div class="sfx-card">
+      <h5>7.3 点击出牌（普通，双音上扬）</h5>
+      <div class="sfx-row"><span class="sfx-key">音符 1</span><span class="sfx-val">523 Hz（do）t=0</span></div>
+      <div class="sfx-row"><span class="sfx-key">音符 2</span><span class="sfx-val">659 Hz（mi）t=0.10s</span></div>
+      <div class="sfx-row"><span class="sfx-key">gain peak</span><span class="sfx-val">0.5</span></div>
+      <div class="sfx-row"><span class="sfx-key">总时长</span><span class="sfx-val">~0.20s</span></div>
+    </div>
+    <div class="sfx-card">
+      <h5>7.4 出大牌（触发弹幕，三连欢快）</h5>
+      <div class="sfx-row"><span class="sfx-key">音符 1</span><span class="sfx-val">523 Hz（do）t=0</span></div>
+      <div class="sfx-row"><span class="sfx-key">音符 2</span><span class="sfx-val">659 Hz（mi）t=0.13s</span></div>
+      <div class="sfx-row"><span class="sfx-key">音符 3</span><span class="sfx-val">784 Hz（sol）t=0.26s</span></div>
+      <div class="sfx-row"><span class="sfx-key">gain peak</span><span class="sfx-val">0.6 / 0.6 / 0.7</span></div>
+      <div class="sfx-row"><span class="sfx-key">总时长</span><span class="sfx-val">~0.42s</span></div>
+    </div>
+    <div class="sfx-card">
+      <h5>7.5 弃牌（下滑音）</h5>
+      <div class="sfx-row"><span class="sfx-key">type</span><span class="sfx-val">sine</span></div>
+      <div class="sfx-row"><span class="sfx-key">频率滑动</span><span class="sfx-val">440 Hz → 220 Hz</span></div>
+      <div class="sfx-row"><span class="sfx-key">ramp</span><span class="sfx-val">linearRamp 0.15s</span></div>
+      <div class="sfx-row"><span class="sfx-key">gain</span><span class="sfx-val">0.5 → 0.0</span></div>
+      <div class="sfx-row"><span class="sfx-key">总时长</span><span class="sfx-val">~0.15s</span></div>
+    </div>
+    <div class="sfx-card">
+      <h5>7.6 关卡通过（五音阶上扬）</h5>
+      <div class="sfx-row"><span class="sfx-key">音符</span><span class="sfx-val">do-re-mi-sol-la</span></div>
+      <div class="sfx-row"><span class="sfx-key">频率</span><span class="sfx-val">523/587/659/784/880 Hz</span></div>
+      <div class="sfx-row"><span class="sfx-key">间隔</span><span class="sfx-val">每 0.10–0.12s</span></div>
+      <div class="sfx-row"><span class="sfx-key">总时长</span><span class="sfx-val">~0.62s</span></div>
+    </div>
+    <div class="sfx-card">
+      <h5>7.7 全部通关（和弦 + 混响）</h5>
+      <div class="sfx-row"><span class="sfx-key">和弦</span><span class="sfx-val">523+659+784 Hz 同时</span></div>
+      <div class="sfx-row"><span class="sfx-key">gain</span><span class="sfx-val">各 0.45</span></div>
+      <div class="sfx-row"><span class="sfx-key">sustain</span><span class="sfx-val">0.70s</span></div>
+      <div class="sfx-row"><span class="sfx-key">混响</span><span class="sfx-val">DelayNode 0.08s，fb=0.25</span></div>
+      <div class="sfx-row"><span class="sfx-key">总时长</span><span class="sfx-val">~1.0s</span></div>
+    </div>
+    <div class="sfx-card">
+      <h5>7.8 游戏失败（下沉音序列）</h5>
+      <div class="sfx-row"><span class="sfx-key">音符</span><span class="sfx-val">440/370/311/200 Hz</span></div>
+      <div class="sfx-row"><span class="sfx-key">type</span><span class="sfx-val">sine 或 triangle</span></div>
+      <div class="sfx-row"><span class="sfx-key">间隔</span><span class="sfx-val">每 0.12s</span></div>
+      <div class="sfx-row"><span class="sfx-key">总时长</span><span class="sfx-val">~0.52s</span></div>
+    </div>
+    <div class="sfx-card">
+      <h5>7.9 选中小丑牌（确认音）</h5>
+      <div class="sfx-row"><span class="sfx-key">音符 1</span><span class="sfx-val">659 Hz（mi）t=0</span></div>
+      <div class="sfx-row"><span class="sfx-key">音符 2</span><span class="sfx-val">880 Hz（la）t=0.10s</span></div>
+      <div class="sfx-row"><span class="sfx-key">gain peak</span><span class="sfx-val">0.5 / 0.6</span></div>
+      <div class="sfx-row"><span class="sfx-key">总时长</span><span class="sfx-val">~0.24s</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     08 · ASCII 线框图
+══════════════════════════════════════ -->
+<section class="section section-scroll-anchor" id="s08">
+  <div class="section-title">08 · 整体页面 ASCII 线框图（1080×640）</div>
+<pre class="wireframe">
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐  1080px
+│  HUD（64px）                                                                                      │
+│  [♡ 今日目标] [✦ 已攒积分] [🃏 出牌次数] [🔄 弃牌次数] [⭐ 第 X 关]                             │
+├─────────────────────────────────────────────────────────────────────────────────────────────────┤
+│  小丑栏（44px）                                                                                   │
+│  [我的小伙伴]  [🐰 兔兔战士] [🍡 贪嘴团子] [____待召唤____]                                    │
+├─────────────────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                                   │
+│  PLAY AREA（460px 弹性高度）                       ◀ 弹幕飘动通道（全区可用）                    │
+│                                                                                                   │
+│  [刚才出的牌]                                  ← 弹幕从右飞入，飞向左侧出界                      │
+│  ┌──┐ ┌──┐ ┌──┐ ┌──┐ ┌──┐                    "牛啊牛啊！！" ─────────────────────────────>     │
+│  │  │ │  │ │  │ │  │ │  │                    "强者风范" ──────────────────────────────────>     │
+│  └──┘ └──┘ └──┘ └──┘ └──┘                    "すごい！！！" ───────────────────────────────>   │
+│                                                                                                   │
+│  ✨ 同花顺 🌟 → (100 + 35) × 8 = 1110 分！   ← play-hint（居中）                               │
+│                                                                                                   │
+│                    🌸 樱花背景装饰圆                                   ┌──────────────────┐     │
+│                   （位于区域中央，z-index:0）                          │  气泡: 选 1–5 张  │     │
+│                                                                        │  然后出牌吧~      │     │
+│                                                                        └────────┬─────────┘     │
+│  [手里的牌 · 8 张]                                                          │                   │
+│  ┌──┐ ┌──┐ ┌──┐ ┌──┐ ┌──┐ ┌──┐ ┌──┐ ┌──┐                            [chibi SVG]               │
+│  │  │ │  │ │▲ │ │  │ │  │ │  │ │  │ │  │                            80×80px                   │
+│  └──┘ └──┘ └──┘ └──┘ └──┘ └──┘ └──┘ └──┘                            右下角                    │
+│         (选中牌上移 14px)                                                                        │
+├─────────────────────────────────────────────────────────────────────────────────────────────────┤
+│  ACTION BAR（72px）                                                                               │
+│  [对子 ×2 💕]   [出牌！]（蓝色渐变）   [换掉它]（粉色渐变）   [重来一局]（幽灵按钮）           │
+└─────────────────────────────────────────────────────────────────────────────────────────────────┘
+</pre>
+
+  <div class="sub-title">图层 z-index 分布（从后到前）</div>
+<pre class="wireframe">
+  0   → .table-logo（樱花背景装饰）
+  1   → #play-area（游戏区域内容）
+  50  → #score-toast（得分浮层）
+  60  → .chibi-container（吉祥物 + 气泡）
+  70  → .danmaku-item（弹幕）
+  80  → .sakura-particle（胜利樱花粒子）
+  100 → #modal-overlay（结算弹窗）
+  200 → #joker-overlay（小丑选择）
+</pre>
+
+  <div class="sub-title">弹幕通道纵向分区示意</div>
+<pre class="wireframe">
+y=108px ┌─────── 弹幕可用区域上边界（HUD 64 + joker-bar 44）─────────┐
+        │                                                                │
+        │  通道 A: y ≈ 128px                                            │
+        │  通道 B: y ≈ 180px                                            │
+        │  通道 C: y ≈ 250px                                            │
+        │  通道 D: y ≈ 330px                                            │
+        │  通道 E: y ≈ 410px                                            │
+        │  （每条弹幕随机选 1 个通道，避免垂直重叠）                   │
+y=508px └─────── 弹幕可用区域下边界（action-bar 72px + 60px 缓冲）──┘
+</pre>
+</section>
+
+<!-- ══════════════════════════════════════
+     09 · 响应式与无障碍
+══════════════════════════════════════ -->
+<section class="section section-scroll-anchor" id="s09">
+  <div class="section-title">09 · 响应式与无障碍</div>
+  <div class="two-col">
+    <div>
+      <div class="sub-title" style="margin-top:0">9.1 Scale 缩放逻辑</div>
+      <div class="code-block">/* 视口断点建议 */
+视口宽度 ≥ 1080px  → scale(1.0)，无缩放
+视口宽度 800–1079px → scale(800/1080 ≈ 0.74)
+视口宽度 < 800px   → scale(视口宽度 / 1080)，允许纵向滚动
+
+/* chibi 与弹幕注意事项 */
+chibi 和气泡：position absolute 在 #game 内部，
+  随 game scale 自动缩放，无需额外处理。
+
+弹幕：也在 #game 内部绝对定位，
+  translateX 终点用 game 坐标系（1080px 宽），
+  不用 vw 单位（缩放后弹幕飞行距离会不一致）。
+  建议：translateX(-1480px)（固定像素）</div>
+      <div class="sub-title">9.3 无障碍范围说明</div>
+      <div class="note-row">
+        <span class="note-dot">·</span>
+        <span class="note-text">不破坏原有键盘操作（Tab/Enter）</span>
+      </div>
+      <div class="note-row">
+        <span class="note-dot">·</span>
+        <span class="note-text">chibi 和弹幕元素加 <code>pointer-events: none; aria-hidden: true</code></span>
+      </div>
+      <div class="note-row">
+        <span class="note-dot">·</span>
+        <span class="note-text">音效不作为唯一反馈通道，视觉反馈同步存在</span>
+      </div>
+    </div>
+    <div>
+      <div class="sub-title" style="margin-top:0">9.2 对比度检查</div>
+      <table class="token-table">
+        <thead><tr><th>前景</th><th>背景</th><th>对比度</th><th>WCAG AA</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="swatch" style="background:#ffffff"></span>#FFFFFF</td>
+            <td><span class="swatch" style="background:#FB7299"></span>#FB7299</td>
+            <td>~3.0:1</td>
+            <td><span class="contrast-fail">不达标</span>（接受 tradeoff）</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#1A0A1E;border:1px solid #444"></span>#1A0A1E</td>
+            <td><span class="swatch" style="background:#FB7299"></span>#FB7299</td>
+            <td>~7.2:1</td>
+            <td><span class="contrast-ok">达标</span></td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#ffffff"></span>#FFFFFF</td>
+            <td><span class="swatch" style="background:#00A1D6"></span>#00A1D6</td>
+            <td>~3.8:1</td>
+            <td><span class="contrast-warn">接近不达标</span>（700 weight 补偿）</td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#F0C040"></span>#F0C040</td>
+            <td><span class="swatch" style="background:#1A0A1E;border:1px solid #444"></span>#1A0A1E</td>
+            <td>~9.5:1</td>
+            <td><span class="contrast-ok">达标</span></td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#34D399"></span>#34D399</td>
+            <td><span class="swatch" style="background:#1A0A1E;border:1px solid #444"></span>#1A0A1E</td>
+            <td>~8.2:1</td>
+            <td><span class="contrast-ok">达标</span></td>
+          </tr>
+          <tr>
+            <td><span class="swatch" style="background:#FB7299"></span>#FB7299</td>
+            <td><span class="swatch" style="background:#1A0A1E;border:1px solid #444"></span>#1A0A1E</td>
+            <td>~5.8:1</td>
+            <td><span class="contrast-ok">达标</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note-row" style="margin-top:12px">
+        <span class="note-dot">·</span>
+        <span class="note-text"><strong>粉/蓝按钮白字对比度不足</strong>是已知 tradeoff，B 站官网本身也如此。建议加 <code>font-weight: 700</code> + 字号 ≥14px 弥补。若需严格 AA，按钮文字可改为 <code>#1A0A1E</code>（深色），但需评估是否符合萌系气质。</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     10 · Token 对照速查 + 工程交班
+══════════════════════════════════════ -->
+<section class="section section-scroll-anchor" id="s10">
+  <div class="section-title">10 · Token 对照速查 + 工程交班</div>
+
+  <div class="sub-title" style="margin-top:0">Token 对照表（开发直接替换）</div>
+  <table class="diff-table" style="margin-bottom:32px">
+    <thead><tr><th>旧变量</th><th>旧值</th><th>新变量</th><th>新值</th></tr></thead>
+    <tbody>
+      <tr><td class="diff-old">--color-table</td><td class="diff-old">#2d5a3d</td><td class="diff-new">--bg-table</td><td class="diff-new">linear-gradient(145deg, #1A0A1E 0%, #0D1A2E 100%)</td></tr>
+      <tr><td class="diff-old">--color-accent</td><td class="diff-old">#e8682a</td><td class="diff-new">--color-blue（出牌）/ --color-primary（弃牌）</td><td class="diff-new">#00A1D6 / #FB7299</td></tr>
+      <tr><td class="diff-old">--color-discard</td><td class="diff-old">#a83232</td><td class="diff-new">--color-primary</td><td class="diff-new">#FB7299</td></tr>
+      <tr><td class="diff-old">--color-gold</td><td class="diff-old">#d4a017</td><td class="diff-new">--color-gold</td><td class="diff-new">#F0C040（调亮）</td></tr>
+      <tr><td class="diff-old">--color-card-red</td><td class="diff-old">#d33f3f</td><td class="diff-new">--color-card-red</td><td class="diff-new">#E8425A</td></tr>
+      <tr><td class="diff-old">--color-card-bg</td><td class="diff-old">#fbfaf7</td><td class="diff-new">--bg-card</td><td class="diff-new">#FEFCFF（微粉白）</td></tr>
+      <tr><td class="diff-old">--color-score</td><td class="diff-old">#5dd67a</td><td class="diff-new">--color-mint</td><td class="diff-new">#34D399</td></tr>
+      <tr><td class="diff-old">--color-joker</td><td class="diff-old">#a78bfa</td><td class="diff-new">--color-purple</td><td class="diff-new">#C084FC</td></tr>
+      <tr><td class="diff-old">--radius-card</td><td class="diff-old">12px</td><td class="diff-new">--radius-card</td><td class="diff-new">14px</td></tr>
+      <tr><td class="diff-old">--ease-card</td><td class="diff-old">200ms ease</td><td class="diff-new">--ease-card</td><td class="diff-new">200ms cubic-bezier(0.34, 1.56, 0.64, 1)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="handoff">
+    <h4>给开发同事的交班备忘（容易翻车的地方）</h4>
+    <ul>
+      <li><strong>① ZCOOL KuaiLe 只有 400 字重</strong>：不要写 <code>font-weight: 700</code>，没有 700 字型文件，浏览器会伪粗体（faux bold）字形变丑。凡需醒目感，用更大字号 + 颜色区分。</li>
+      <li><strong>② 弹幕用 game 坐标系，不能用 vw</strong>：游戏被 scale 缩放后 vw 是视口单位，导致弹幕终点计算错误。所有弹幕位移改用 <code>translateX(-1480px)</code>（固定像素），配合 game 内部 1080px 坐标系。</li>
+      <li><strong>③ chibi SVG 的 filter: drop-shadow 在 iOS Safari 有性能问题</strong>：只给 chibi 容器加 <code>box-shadow</code>，SVG 内部不用 filter，避免 iOS 帧率下降。</li>
+      <li><strong>④ 樱花粒子层 z-index: 80 要比 Modal(100) 低</strong>：PRD 明确粒子层在 Modal 背后。粒子 append 到 <code>#game</code> 内部（而非 body），z-index 相对 game 内部上下文计算，不会意外覆盖 Modal。</li>
+      <li><strong>⑤ AudioContext 必须在用户交互后创建</strong>：浏览器政策禁止自动播放音频。首次 click/keydown 后才调用 <code>new AudioContext()</code>，存为全局单例，不要每次出牌都 new 一个。</li>
+      <li><strong>⑥ 渐变背景替换要保留 background-color fallback</strong>：旧代码 <code>background-color: var(--color-table)</code> 有纯色兜底，新代码换成渐变后记得保留 <code>background-color: #1A0A1E</code> 作为不支持渐变时的回退。</li>
+      <li><strong>关键 Token 速记</strong>：主色 <code>#FB7299</code>（B 站粉，超 60% 高亮/描边）· 强调蓝 <code>#00A1D6</code>（仅"出牌！"主 CTA）· 字体：ZCOOL KuaiLe 圆体 + JetBrains Mono 数字</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     11 · 像素艺术风格规范（V2.1 NEW）
+══════════════════════════════════════ -->
+<section class="section section-scroll-anchor" id="s11">
+  <div class="section-title">11 · 像素艺术风格规范 <span class="new-badge">V2.1 NEW</span></div>
+
+  <!-- 11.1 像素颗粒尺寸 -->
+  <div class="sub-title" style="margin-top:0">11.1 基础像素单位（Pixel Unit）</div>
+  <div class="decision-block">
+    <div class="decision-title">选定：4px 基础像素单位</div>
+    <div class="decision-body">
+      三个候选值的对比：<br>
+      · <strong>4px</strong>：在 1080×640 游戏窗口内 1px 网格点精确对齐，像素感清晰，星点（2×2 = 8px 渲染）刚好在视觉噪点范围之上可见；16×16 樱花 SVG viewBox 恰好对齐 4 的倍数网格；HiDPI（2x）下自然放大为 8px 物理像素，完整清晰。<br>
+      · <strong>6px</strong>：在大尺寸元素上效果好，但 1080px 无法被 6 整除，网格线位置会出现 0.5px 亚像素锯齿。<br>
+      · <strong>8px</strong>：像素块过大，星点在背景中太粗旷，与萌系细腻气质冲突。<br>
+      <br>
+      <strong>结论：统一使用 4px 为像素原子单位。</strong>所有像素层元素的尺寸、间距均为 4 的倍数（4 / 8 / 12 / 16 / 24 / 32px）。
+    </div>
+  </div>
+
+  <div class="sub-title">11.2 像素渲染属性</div>
+  <div class="two-col">
+    <div>
+      <div class="spec-block">
+        <h4>CSS image-rendering</h4>
+        <div class="code-block" style="padding:10px 12px">/* 像素星点 div（2×2px，放大显示用） */
+.pixel-star {
+  image-rendering: pixelated;   /* Chrome/Safari/Edge */
+  image-rendering: crisp-edges; /* Firefox fallback */
+}
+
+/* 何时用：任何需要"放大保持硬边"的元素 */
+/* - 像素星点 2×2px div              */
+/* - 像素樱花 SVG（内联，img 标签）  */
+/* 何时不用：                         */
+/* - chibi SVG（矢量，天然无锯齿）   */
+/* - HUD / 按钮 / 卡牌（无缩放）    */</div>
+      </div>
+    </div>
+    <div>
+      <div class="spec-block">
+        <h4>SVG shape-rendering</h4>
+        <div class="code-block" style="padding:10px 12px">/* 像素樱花 + 像素星星 SVG 根元素 */
+&lt;svg shape-rendering="crispEdges"
+     image-rendering="pixelated" ...&gt;
+
+/* crispEdges 告诉渲染引擎：
+   不对几何边缘做抗锯齿，保持像素硬边。
+   仅用于像素风 SVG，矢量 UI 图标不用 */
+
+/* 应用场景：
+   - 像素樱花 (16×16 viewBox)
+   - 像素星星 (5×5 / 7×7 viewBox)
+   - 像素爱心、音符等装饰图标        */</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11.3 像素调色板（限定 16 色） -->
+  <div class="sub-title">11.3 像素 SVG 专属调色板（≤ 16 色限定）</div>
+  <p style="font-size:12px;color:rgba(255,255,255,0.40);margin-bottom:14px">像素艺术核心约束：限定用色数量，强化复古像素感。所有像素 SVG 资源仅从以下 10 个 token 中取色，不引入新色值。</p>
+  <table class="token-table" style="margin-bottom:20px">
+    <thead>
+      <tr><th>Token</th><th>色值</th><th>色块</th><th>像素 SVG 用途</th><th>与 V2.0 关系</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="mono">--pixel-bg-deep</td>
+        <td class="mono">#0D0520</td>
+        <td><span class="swatch" style="background:#0D0520"></span></td>
+        <td>像素樱花：深暗轮廓像素块</td>
+        <td>V2.0 --neutral-900 加深</td>
+      </tr>
+      <tr>
+        <td class="mono">--pixel-neon-purple</td>
+        <td class="mono">#BF5FFF</td>
+        <td><span class="swatch" style="background:#BF5FFF"></span></td>
+        <td>像素星星：大星主色；网格地平线辉光像素</td>
+        <td>V2.0 --color-purple 近色</td>
+      </tr>
+      <tr>
+        <td class="mono">--pixel-neon-pink</td>
+        <td class="mono">#FF2D78</td>
+        <td><span class="swatch" style="background:#FF2D78"></span></td>
+        <td>像素心形主色；像素音符主色</td>
+        <td>V2.0 --color-primary 高饱</td>
+      </tr>
+      <tr>
+        <td class="mono">--pixel-grid-cyan</td>
+        <td class="mono">#00FFFF</td>
+        <td><span class="swatch" style="background:#00FFFF"></span></td>
+        <td>像素星点青色变体；全息光斑像素块</td>
+        <td>独立新增</td>
+      </tr>
+      <tr>
+        <td class="mono">--pixel-glow-bilibili</td>
+        <td class="mono">#00A1D6</td>
+        <td><span class="swatch" style="background:#00A1D6"></span></td>
+        <td>像素星星：B 站蓝变体星；大星辉光像素</td>
+        <td>复用 V2.0 --color-blue</td>
+      </tr>
+      <tr>
+        <td class="mono">--pixel-sakura-petal</td>
+        <td class="mono">#FFB7C5</td>
+        <td><span class="swatch" style="background:#FFB7C5"></span></td>
+        <td>像素樱花：花瓣主色块（4–5 个方块）</td>
+        <td>复用 V2.0 樱花粒子色</td>
+      </tr>
+      <tr>
+        <td class="mono">--pixel-sakura-light</td>
+        <td class="mono">#FFDDEA</td>
+        <td><span class="swatch" style="background:#FFDDEA"></span></td>
+        <td>像素樱花：花瓣高光像素块（1–2 个）</td>
+        <td>复用 V2.0 --color-primary-ultra</td>
+      </tr>
+      <tr>
+        <td class="mono">--pixel-star-white</td>
+        <td class="mono">#FFFFFF</td>
+        <td><span class="swatch" style="background:#FFFFFF;border:1px solid rgba(255,255,255,.15)"></span></td>
+        <td>像素星点白色变体；像素樱花白色高光</td>
+        <td>复用 V2.0 --neutral-100</td>
+      </tr>
+      <tr>
+        <td class="mono">--pixel-grid-line</td>
+        <td class="mono">#7B2FBE</td>
+        <td><span class="swatch" style="background:#7B2FBE"></span></td>
+        <td>像素网格暗色线段填充块</td>
+        <td>独立新增（--pixel-neon-purple 降亮）</td>
+      </tr>
+      <tr>
+        <td class="mono">--pixel-scanline-dark</td>
+        <td class="mono">rgba(0,0,0,0.06)</td>
+        <td><span class="swatch" style="background:rgba(0,0,0,0.06);border:1px solid rgba(255,255,255,.15)"></span></td>
+        <td>CRT 扫描线暗条（叠加层，非 SVG 内色）</td>
+        <td>独立新增</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 11.4 像素 SVG 资源清单 -->
+  <div class="sub-title">11.4 像素 SVG 资源清单（可直接内联）</div>
+
+  <div class="pixel-svg-showcase">
+    <!-- 像素樱花 16×16 -->
+    <div class="pixel-svg-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="48" height="48"
+           shape-rendering="crispEdges" image-rendering="pixelated">
+        <!-- 花瓣：5 块 #FFB7C5，高光：2 块 #FFDDEA，暗轮廓：1 块 #0D0520 -->
+        <rect x="6" y="1" width="4" height="2" fill="#FFB7C5"/>
+        <rect x="5" y="2" width="2" height="2" fill="#FFB7C5"/>
+        <rect x="9" y="2" width="2" height="2" fill="#FFB7C5"/>
+        <rect x="4" y="4" width="8" height="4" fill="#FFB7C5"/>
+        <rect x="6" y="2" width="4" height="2" fill="#FFDDEA"/>
+        <rect x="5" y="4" width="2" height="2" fill="#FFDDEA"/>
+        <rect x="3" y="6" width="2" height="2" fill="#FFB7C5"/>
+        <rect x="11" y="6" width="2" height="2" fill="#FFB7C5"/>
+        <rect x="4" y="8" width="8" height="4" fill="#FFB7C5"/>
+        <rect x="5" y="11" width="6" height="2" fill="#FFB7C5"/>
+        <rect x="7" y="13" width="2" height="2" fill="#FFDDEA"/>
+        <!-- 花蕊白色中心 -->
+        <rect x="7" y="6" width="2" height="2" fill="#FFFFFF"/>
+      </svg>
+      <div class="pixel-svg-label">像素樱花<br>viewBox="0 0 16 16"<br>渲染尺寸：16–32px<br>color: --pixel-sakura-petal<br>highlight: --pixel-sakura-light</div>
     </div>
 
+    <!-- 像素星星 5×5 -->
+    <div class="pixel-svg-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 5" width="40" height="40"
+           shape-rendering="crispEdges" image-rendering="pixelated">
+        <rect x="2" y="0" width="1" height="1" fill="#FFFFFF"/>
+        <rect x="0" y="2" width="5" height="1" fill="#FFFFFF"/>
+        <rect x="2" y="1" width="1" height="3" fill="#FFFFFF"/>
+        <rect x="1" y="1" width="1" height="1" fill="#BF5FFF"/>
+        <rect x="3" y="1" width="1" height="1" fill="#BF5FFF"/>
+        <rect x="1" y="3" width="1" height="1" fill="#BF5FFF"/>
+        <rect x="3" y="3" width="1" height="1" fill="#BF5FFF"/>
+        <rect x="2" y="4" width="1" height="1" fill="#FFFFFF"/>
+      </svg>
+      <div class="pixel-svg-label">像素星星（5×5）<br>viewBox="0 0 5 5"<br>渲染尺寸：10px（×2 倍）<br>color: --pixel-star-white<br>accent: --pixel-neon-purple</div>
+    </div>
+
+    <!-- 像素星星 7×7 -->
+    <div class="pixel-svg-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7 7" width="42" height="42"
+           shape-rendering="crispEdges" image-rendering="pixelated">
+        <rect x="3" y="0" width="1" height="2" fill="#00FFFF"/>
+        <rect x="0" y="3" width="2" height="1" fill="#00FFFF"/>
+        <rect x="5" y="3" width="2" height="1" fill="#00FFFF"/>
+        <rect x="3" y="5" width="1" height="2" fill="#00FFFF"/>
+        <rect x="1" y="1" width="1" height="1" fill="#00A1D6"/>
+        <rect x="5" y="1" width="1" height="1" fill="#00A1D6"/>
+        <rect x="1" y="5" width="1" height="1" fill="#00A1D6"/>
+        <rect x="5" y="5" width="1" height="1" fill="#00A1D6"/>
+        <rect x="2" y="2" width="3" height="3" fill="#00FFFF"/>
+        <rect x="3" y="3" width="1" height="1" fill="#FFFFFF"/>
+      </svg>
+      <div class="pixel-svg-label">像素星星（7×7）<br>viewBox="0 0 7 7"<br>渲染尺寸：14px（×2 倍）<br>color: --pixel-grid-cyan<br>center: --pixel-star-white</div>
+    </div>
+
+    <!-- 像素爱心 8×8 -->
+    <div class="pixel-svg-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="40" height="40"
+           shape-rendering="crispEdges" image-rendering="pixelated">
+        <rect x="1" y="1" width="2" height="2" fill="#FF2D78"/>
+        <rect x="5" y="1" width="2" height="2" fill="#FF2D78"/>
+        <rect x="0" y="2" width="4" height="3" fill="#FF2D78"/>
+        <rect x="4" y="2" width="4" height="3" fill="#FF2D78"/>
+        <rect x="1" y="5" width="6" height="2" fill="#FF2D78"/>
+        <rect x="2" y="7" width="4" height="1" fill="#FF2D78"/>
+        <rect x="3" y="8" width="2" height="1" fill="#FF2D78"/>
+        <rect x="1" y="2" width="1" height="1" fill="#FFB7C5"/>
+        <rect x="5" y="2" width="1" height="1" fill="#FFB7C5"/>
+      </svg>
+      <div class="pixel-svg-label">像素爱心（8×8）<br>viewBox="0 0 8 8"<br>渲染尺寸：16px<br>color: --pixel-neon-pink<br>highlight: --pixel-sakura-petal</div>
+    </div>
+
+    <!-- 像素音符 6×8 -->
+    <div class="pixel-svg-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6 8" width="30" height="40"
+           shape-rendering="crispEdges" image-rendering="pixelated">
+        <rect x="2" y="0" width="4" height="1" fill="#BF5FFF"/>
+        <rect x="2" y="1" width="4" height="1" fill="#BF5FFF"/>
+        <rect x="4" y="2" width="2" height="1" fill="#BF5FFF"/>
+        <rect x="4" y="3" width="1" height="1" fill="#BF5FFF"/>
+        <rect x="4" y="4" width="1" height="1" fill="#BF5FFF"/>
+        <rect x="2" y="1" width="1" height="5" fill="#BF5FFF"/>
+        <rect x="0" y="5" width="3" height="2" fill="#BF5FFF"/>
+        <rect x="3" y="4" width="3" height="2" fill="#BF5FFF"/>
+      </svg>
+      <div class="pixel-svg-label">像素音符（6×8）<br>viewBox="0 0 6 8"<br>渲染尺寸：12×16px<br>color: --pixel-neon-purple</div>
+    </div>
+
+    <!-- 像素闪光 8×8 -->
+    <div class="pixel-svg-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="40" height="40"
+           shape-rendering="crispEdges" image-rendering="pixelated">
+        <rect x="3" y="0" width="2" height="1" fill="#FFFFFF"/>
+        <rect x="3" y="7" width="2" height="1" fill="#FFFFFF"/>
+        <rect x="0" y="3" width="1" height="2" fill="#FFFFFF"/>
+        <rect x="7" y="3" width="1" height="2" fill="#FFFFFF"/>
+        <rect x="1" y="1" width="1" height="1" fill="#BF5FFF"/>
+        <rect x="6" y="1" width="1" height="1" fill="#BF5FFF"/>
+        <rect x="1" y="6" width="1" height="1" fill="#BF5FFF"/>
+        <rect x="6" y="6" width="1" height="1" fill="#BF5FFF"/>
+        <rect x="2" y="2" width="4" height="4" fill="#FFFFFF"/>
+        <rect x="3" y="3" width="2" height="2" fill="#00FFFF"/>
+      </svg>
+      <div class="pixel-svg-label">像素闪光（8×8）<br>viewBox="0 0 8 8"<br>渲染尺寸：16px<br>outer: --pixel-star-white<br>inner: --pixel-grid-cyan</div>
+    </div>
+  </div>
+
+  <div class="spec-block" style="margin-top:8px">
+    <h4>资源清单汇总</h4>
+    <table class="token-table">
+      <thead><tr><th>资源</th><th>viewBox</th><th>推荐渲染尺寸</th><th>用途位置</th></tr></thead>
+      <tbody>
+        <tr><td>像素樱花（pixel-sakura）</td><td class="mono">0 0 16 16</td><td>16px（背景飘落）/ 24px（胜利版）</td><td>Layer 2 飘落粒子，替代 emoji 🌸</td></tr>
+        <tr><td>像素星星 小（pixel-star-sm）</td><td class="mono">0 0 5 5</td><td>10px（实际渲染）</td><td>Layer 2 星点闪烁（20–30 个）</td></tr>
+        <tr><td>像素星星 大（pixel-star-lg）</td><td class="mono">0 0 7 7</td><td>14px（实际渲染）</td><td>Layer 2 偶发点缀（5–8 个）</td></tr>
+        <tr><td>像素爱心（pixel-heart）</td><td class="mono">0 0 8 8</td><td>16px</td><td>chibi 气泡装饰 / 大牌弹幕点缀</td></tr>
+        <tr><td>像素音符（pixel-note）</td><td class="mono">0 0 6 8</td><td>12×16px</td><td>弹幕飘字前置装饰（可选）</td></tr>
+        <tr><td>像素闪光（pixel-sparkle）</td><td class="mono">0 0 8 8</td><td>16px</td><td>大牌触发瞬时高亮</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     12 · 科技感装饰元素规范（V2.1 NEW）
+══════════════════════════════════════ -->
+<section class="section section-scroll-anchor" id="s12">
+  <div class="section-title">12 · 科技感装饰元素规范 <span class="new-badge">V2.1 NEW</span></div>
+
+  <!-- 12.1 Synthwave 透视网格 -->
+  <div class="sub-title" style="margin-top:0">12.1 Synthwave 透视网格（Layer 1 核心）</div>
+
+  <div class="decision-block">
+    <div class="decision-title">Q6 决策：选用 Canvas 2D 方案</div>
+    <div class="decision-body">
+      <strong>选型理由：Canvas 2D drawLine + requestAnimationFrame，而非 CSS perspective + rotateX。</strong><br><br>
+      CSS 方案的问题：<br>
+      · <code>perspective + rotateX</code> 变换的是平面 DOM 元素（如设置了 <code>background: repeating-linear-gradient</code> 的 div）。网格线条之间的间距在透视变换后会均匀收缩，但 CSS 渐变的间距是固定 CSS 像素，<strong>无法实现真正的透视汇聚</strong>（近大远小、近疏远密），视觉上是梯形变形而不是透视纵深。<br>
+      · 在 2K 高 DPR 屏上，CSS 渐变线在旋转后产生亚像素抗锯齿，网格线呈模糊灰边，违背像素清晰原则（PRD A16 验收项）。<br>
+      · CSS 方案的 <code>animation</code>（translateZ 或 perspective-origin）驱动的"推进感"会触发整个层的 composite，比 Canvas 单帧绘制反而更耗 GPU 层内存。<br><br>
+      Canvas 方案的优势：<br>
+      · JS 精确计算每条线的起点/终点坐标，真正实现透视数学（vanishing point 汇聚），视觉效果正确。<br>
+      · <code>ctx.lineWidth</code> 配合 <code>devicePixelRatio</code> 可在 HiDPI 下保持 1 物理像素锐利线条，满足 A16。<br>
+      · 滚动推进用 <code>requestAnimationFrame</code> 驱动 offset 变量，帧预算完全可控，可在耗时超预算时跳帧降级。<br>
+      · 无额外依赖，纯 Canvas 2D API，符合"无构建工具"约束。<br><br>
+      性能兜底：Canvas 元素设置 <code>will-change: transform</code>，浏览器将其提升为独立合成层，与 UI DOM 树的重绘完全解耦。
+    </div>
+  </div>
+
+  <div class="two-col" style="margin-top:20px">
+    <div>
+      <div class="spec-block">
+        <h4>网格视觉参数</h4>
+        <div class="code-block" style="padding:10px 12px">/* Canvas 尺寸：与游戏窗口等大 */
+width:  1080px (×devicePixelRatio)
+height:  640px (×devicePixelRatio)
+
+/* 消失点（vanishing point）*/
+vp.x = 540   /* 水平居中 */
+vp.y = 256   /* 垂直 40% 处（640×0.40）*/
+/* 地平线在画面中上方，产生从脚下
+   延伸到远方的驾驶感 */
+
+/* 纵向线（汇聚至消失点）*/
+count:     12 条
+间距:       从底部均匀分布，顶部汇聚
+线宽:       1px（ctx 实际 devicePixelRatio 倍）
+颜色:       --pixel-grid-line #7B2FBE
+           opacity: 18%（普通线）
+地平线高光: --pixel-neon-purple #BF5FFF
+           opacity: 35%
+
+/* 横向线（等间距，模拟地面进深）*/
+count:      8 条（仅绘制地平线以下部分）
+间距算法:   非线性（越接近画面底部间距越大）
+           y[i] = vp.y + (height - vp.y) * (i/n)^1.8
+颜色:       同纵向线（--pixel-grid-line）</div>
+      </div>
+    </div>
+    <div>
+      <div class="spec-block">
+        <h4>动画：网格推进</h4>
+        <div class="code-block" style="padding:10px 12px">/* 网格向玩家缓慢推进 */
+/* 通过让横向线的"地面 offset"随时间
+   递增实现无限滚动感 */
+
+动画周期: 8000ms loop
+easing:   linear（匀速推进，产生匀速行驶感）
+方向:     远景 → 近景（从消失点向画面底部）
+实现:
+  let offset = 0;
+  function tick(t) {
+    offset = (t % 8000) / 8000;  /* 0–1 */
+    drawGrid(offset);
+    requestAnimationFrame(tick);
+  }
+  /* 每条横向线的 y 坐标在
+     offset 驱动下向下平移，
+     超出底部则回到顶部（无缝循环）*/
+
+/* 网格整体 opacity */
+Canvas element opacity: 0.22
+/* 覆盖于底色渐变层之上，确保
+   UI 可读性不受影响 */</div>
+      </div>
+      <div class="spec-block">
+        <h4>Canvas 代码骨架（供工程师参考）</h4>
+        <div class="code-block" style="padding:10px 12px">const canvas = document.getElementById('bg-grid');
+const ctx = canvas.getContext('2d');
+const dpr = window.devicePixelRatio || 1;
+canvas.width  = 1080 * dpr;
+canvas.height =  640 * dpr;
+canvas.style.width  = '1080px';
+canvas.style.height =  '640px';
+ctx.scale(dpr, dpr);
+canvas.style.opacity = '0.22';
+canvas.style.willChange = 'transform';</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12.2 CRT 扫描线 -->
+  <div class="sub-title">12.2 CRT 扫描线（Layer 3 近景遮罩）</div>
+  <div class="two-col">
+    <div>
+      <div class="spec-block">
+        <h4>CSS 实现方案</h4>
+        <div class="code-block" style="padding:10px 12px">/* Layer 3 伪元素或独立 div */
+.bg-scanlines {
+  position: fixed; /* 或 absolute */
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 1px,
+    var(--pixel-scanline-dark) 1px,
+    var(--pixel-scanline-dark) 2px
+  );
+  /* 条纹周期 = 2px（1px 透明 + 1px 暗色） */
+  /* opacity 通过 rgba 颜色控制，不用 CSS opacity */
+  /* rgba(0,0,0,0.06) 已内含 6% 不透明度 */
+}
+
+/* 静态——不做滚动动画（PRD 明确排除）*/
+/* 覆盖全背景层，不覆盖 UI（z-index 3 < UI 层 10）*/</div>
+      </div>
+    </div>
+    <div>
+      <div class="spec-block">
+        <h4>参数规格</h4>
+        <table class="token-table">
+          <thead><tr><th>参数</th><th>值</th></tr></thead>
+          <tbody>
+            <tr><td>线宽</td><td class="mono">1px</td></tr>
+            <tr><td>间距（透明带）</td><td class="mono">1px</td></tr>
+            <tr><td>周期</td><td class="mono">2px</td></tr>
+            <tr><td>暗色 opacity</td><td class="mono">6%（rgba(0,0,0,0.06)）</td></tr>
+            <tr><td>是否动画</td><td>静态，不滚动</td></tr>
+            <tr><td>是否闪烁</td><td>否（PRD 要求不疲劳）</td></tr>
+            <tr><td>chibi 区域</td><td>通过 z-index 隔离，chibi z-index 60 高于此层</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12.3 霓虹辉光 -->
+  <div class="sub-title">12.3 霓虹辉光（Neon Glow）</div>
+  <div class="neon-glow-demo">
+    <div>
+      <div class="neon-sample neon-weak">弱辉光</div>
+      <div class="pixel-svg-label" style="text-align:center;margin-top:6px">--neon-glow-weak</div>
+    </div>
+    <div>
+      <div class="neon-sample neon-mid">中辉光</div>
+      <div class="pixel-svg-label" style="text-align:center;margin-top:6px">--neon-glow-mid</div>
+    </div>
+    <div>
+      <div class="neon-sample neon-strong">强辉光</div>
+      <div class="pixel-svg-label" style="text-align:center;margin-top:6px">--neon-glow-strong</div>
+    </div>
+  </div>
+
+  <div class="spec-block" style="margin-top:8px">
+    <h4>霓虹辉光 CSS Token（3 强度）</h4>
+    <div class="code-block" style="padding:10px 12px">/* 弱辉光：网格普通线边缘 / 像素星点 */
+--neon-glow-weak:
+  0 0 4px rgba(191, 95, 255, 0.40);
+
+/* 中辉光：地平线高亮线 / 像素樱花边缘 / HUD 数字（仅目标分数值） */
+--neon-glow-mid:
+  0 0 8px  rgba(191, 95, 255, 0.60),
+  0 0 16px rgba(191, 95, 255, 0.25);
+
+/* 强辉光：大牌触发瞬时高亮 / 全通关 Modal 描边（临时） */
+--neon-glow-strong:
+  0 0 8px  rgba(191, 95, 255, 0.80),
+  0 0 20px rgba(191, 95, 255, 0.50),
+  0 0 40px rgba(191, 95, 255, 0.20);
+
+/* 粉色变体（弹幕 / 出牌按钮） */
+--neon-glow-pink-mid:
+  0 0 8px  rgba(255, 45, 120, 0.55),
+  0 0 16px rgba(255, 45, 120, 0.22);
+
+/* 青色变体（全息光斑） */
+--neon-glow-cyan-mid:
+  0 0 8px  rgba(0, 255, 255, 0.50),
+  0 0 20px rgba(0, 255, 255, 0.20);</div>
+  </div>
+
+  <div class="spec-block">
+    <h4>辉光适用元素对照</h4>
+    <table class="token-table">
+      <thead><tr><th>元素</th><th>辉光 Token</th><th>属性</th></tr></thead>
+      <tbody>
+        <tr><td>透视网格普通线</td><td class="mono">--neon-glow-weak</td><td>Canvas ctx.shadowBlur / shadowColor</td></tr>
+        <tr><td>透视网格地平线</td><td class="mono">--neon-glow-mid</td><td>Canvas ctx.shadowBlur / shadowColor</td></tr>
+        <tr><td>像素樱花（背景飘落）</td><td class="mono">--neon-glow-weak</td><td>SVG filter drop-shadow（仅背景层 SVG，非 chibi）</td></tr>
+        <tr><td>HUD 目标分数值</td><td class="mono">--neon-glow-mid（金色变体）</td><td>text-shadow（仅分数数字，不用于标签）</td></tr>
+        <tr><td>弹幕飘字</td><td class="mono">--neon-glow-pink-mid</td><td>text-shadow（白字 + 粉边替代黑边）</td></tr>
+        <tr><td>大牌触发全息光斑</td><td class="mono">--neon-glow-cyan-mid</td><td>box-shadow 或 radial-gradient 叠层</td></tr>
+        <tr><td>chibi 吉祥物</td><td>不用辉光</td><td>保持清晰，防止 iOS Safari 性能问题</td></tr>
+        <tr><td>扑克牌 / HUD 面板</td><td>不用辉光</td><td>白底卡牌 + 磨砂 HUD 不与霓虹混用</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 12.4 像素噪点 -->
+  <div class="sub-title">12.4 像素噪点方案</div>
+  <div class="decision-block">
+    <div class="decision-title">选定：SVG feTurbulence filter 方案（不引入数据流字符雨）</div>
+    <div class="decision-body">
+      <strong>数据流字符雨（Matrix 风格）：不引入。</strong>原因：绿色调与 B 站粉蓝主色冲突（PRD 方案 D 已排除），且大量字符 DOM 会超出 30 元素性能预算，与萌系气质不符。<br><br>
+      <strong>像素噪点使用 SVG feTurbulence filter，通过 CSS 背景叠加实现：</strong>
+    </div>
+  </div>
+  <div class="code-block" style="margin-top:12px">/* 方法：SVG filter 定义为内联 SVG，通过 CSS filter 或 background 引用 */
+/* 内联 SVG（嵌入 HTML，不引用外部文件）*/
+
+&lt;svg width="0" height="0" style="position:absolute"&gt;
+  &lt;filter id="pixel-noise"&gt;
+    &lt;feTurbulence
+      type="fractalNoise"
+      baseFrequency="0.80"   /* 高频 = 细颗粒感，接近像素噪点 */
+      numOctaves="4"
+      stitchTiles="stitch"   /* 平铺无缝 */
+      result="noise"/&gt;
+    &lt;feColorMatrix
+      type="saturate" values="0"  /* 转为灰度 */
+      in="noise" result="grayNoise"/&gt;
+    &lt;feBlend in="SourceGraphic" in2="grayNoise"
+      mode="multiply" result="blend"/&gt;
+    &lt;feComponentTransfer&gt;
+      &lt;feFuncA type="linear" slope="0.04"/&gt;  /* opacity ≤ 4% */
+    &lt;/feComponentTransfer&gt;
+  &lt;/filter&gt;
+&lt;/svg&gt;
+
+/* Layer 3 噪点层 div */
+.bg-noise {
+  position: fixed; inset: 0;
+  z-index: 3;      /* 与扫描线同层，合并为一个元素节省层 */
+  pointer-events: none;
+  filter: url(#pixel-noise);
+  opacity: 0.04;   /* 整体不透明度 ≤ 4%，仅背景可见 */
+  background: rgba(255,255,255,0.02);  /* 微白底让 multiply 有效 */
+}</div>
+
+  <!-- 12.5 不采用元素 -->
+  <div class="sub-title">12.5 不采用的元素清单</div>
+  <ul class="reject-list">
+    <li><strong>故障艺术（Glitch）常驻效果</strong>：CSS translateX 微偏移 + R/G/B 通道分离视觉上极易干扰文字阅读，游戏中大量数字 HUD（得分、目标分、次数）若叠加 glitch 效果会使玩家误读数值。MVP 阶段排除，仅作 P2 可选项（触发时长 ≤ 0.3s）。</li>
+    <li><strong>常驻全息光斑（Holographic Flare）</strong>：多个径向渐变光斑常驻会使背景过于"满"，与前景 chibi 争夺视觉权重，且在透视网格 + 扫描线 + 噪点已有三层背景的情况下，再加光斑会造成视觉混乱。保留为大牌触发的瞬时效果（≤ 0.5s），不常驻。</li>
+    <li><strong>WebGL / Three.js 渲染</strong>：引入第三方依赖，破坏单文件纯静态约束；首屏加载时间增加 ≥ 200ms；Canvas 2D 完全可以实现所需效果。</li>
+    <li><strong>动态滚动扫描线</strong>：GPU 合成层开销较静态方案高 3–5 倍（每帧需重绘 repeating-gradient 动画），长时间观看产生视觉疲劳，PRD 明确排除。</li>
+    <li><strong>数据流字符雨</strong>：绿色调（Matrix 风格）与 B 站粉蓝色板强烈冲突；字符 DOM 数量（≥ 50 个）超出性能预算；风格与萌系二次元气质相悖。</li>
+    <li><strong>背景层 setInterval 驱动</strong>：PRD 明确要求所有背景动画使用 CSS animation 或 requestAnimationFrame，setInterval 无法与浏览器帧率同步，高刷新率屏幕（120Hz）下过度绘制，低端设备上掉帧明显。</li>
+  </ul>
+</section>
+
+<!-- ══════════════════════════════════════
+     13 · 背景层次结构与 z-index 规划（V2.1 NEW）
+══════════════════════════════════════ -->
+<section class="section section-scroll-anchor" id="s13">
+  <div class="section-title">13 · 背景层次结构与 z-index 规划 <span class="new-badge">V2.1 NEW</span></div>
+
+  <!-- 13.1 5 层叠加结构 -->
+  <div class="sub-title" style="margin-top:0">13.1 五层背景叠加规格</div>
+
+  <div class="layer-stack-card">
+    <div>
+      <div class="layer-z">0</div>
+      <div class="layer-z-label">LAYER 0</div>
+    </div>
+    <div>
+      <div class="layer-desc-title">底色渐变（保留自 V2.0，底色加深）</div>
+      <div class="layer-desc-body">
+        深空底色，从紫黑过渡到深海蓝。V2.1 底色从 V2.0 的 <code>#1A0A1E → #0D1A2E</code> 加深至 <code>#0D0520 → #0A1628</code>，使透视网格对比度更清晰，整体色调方向不变（深紫→深蓝）。不做动画，纯 CSS 渐变，固定全屏。
+      </div>
+      <div class="layer-tags">
+        <span class="layer-tag">z-index: 0</span>
+        <span class="layer-tag">position: fixed</span>
+        <span class="layer-tag">background: linear-gradient</span>
+        <span class="layer-tag">opacity: 1</span>
+        <span class="layer-tag">pointer-events: none</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer-stack-card">
+    <div>
+      <div class="layer-z">1</div>
+      <div class="layer-z-label">LAYER 1</div>
+    </div>
+    <div>
+      <div class="layer-desc-title">远景：Synthwave 透视网格（Canvas 2D）</div>
+      <div class="layer-desc-body">
+        经典 Synthwave 透视地平线网格，消失点在垂直 40% 处（y = 256px），12 条纵向汇聚线 + 8 条横向进深线。颜色 <code>--pixel-grid-line #7B2FBE</code>（普通线）/ <code>--pixel-neon-purple #BF5FFF</code>（地平线高亮）。Canvas 整体 opacity = 0.22，8s linear loop 向玩家缓慢推进。HiDPI 屏适配 devicePixelRatio。
+      </div>
+      <div class="layer-tags">
+        <span class="layer-tag">z-index: 1</span>
+        <span class="layer-tag cyan">Canvas 2D</span>
+        <span class="layer-tag">position: fixed</span>
+        <span class="layer-tag">opacity: 0.22</span>
+        <span class="layer-tag">will-change: transform</span>
+        <span class="layer-tag">pointer-events: none</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer-stack-card">
+    <div>
+      <div class="layer-z">2</div>
+      <div class="layer-z-label">LAYER 2</div>
+    </div>
+    <div>
+      <div class="layer-desc-title">中景：像素粒子（像素樱花 + 像素星点）</div>
+      <div class="layer-desc-body">
+        两类元素组合：<br>
+        ① <strong>像素星点</strong>：20–30 个 2×2px div（<code>image-rendering: pixelated</code>），随机分布于全屏（避开 HUD 64px + joker-bar 44px = 上方 108px），三色随机（白 / 青 / 粉），opacity 在 0.2→1→0.2 之间跳变（非渐变过渡），频率 0.5–1.5Hz，用 CSS animation @keyframes 驱动。<br>
+        ② <strong>像素樱花</strong>：8–12 片 16×16 内联 SVG，从顶部缓慢飘落 + 微小左右摆动，持续循环，颜色 <code>--pixel-sakura-petal</code> + <code>--pixel-sakura-light</code>。
+      </div>
+      <div class="layer-tags">
+        <span class="layer-tag">z-index: 2</span>
+        <span class="layer-tag pink">CSS animation</span>
+        <span class="layer-tag">position: fixed</span>
+        <span class="layer-tag">opacity: 0.7（各元素独立控制）</span>
+        <span class="layer-tag">pointer-events: none</span>
+        <span class="layer-tag">aria-hidden: true</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer-stack-card">
+    <div>
+      <div class="layer-z">3</div>
+      <div class="layer-z-label">LAYER 3</div>
+    </div>
+    <div>
+      <div class="layer-desc-title">近景遮罩：CRT 扫描线 + 像素噪点膜（CSS + SVG filter）</div>
+      <div class="layer-desc-body">
+        两种效果合并为同一 div（减少 DOM 层数）：<br>
+        ① <strong>扫描线</strong>：<code>repeating-linear-gradient</code>，2px 周期，暗色 opacity 6%，静态。<br>
+        ② <strong>噪点</strong>：SVG feTurbulence filter，opacity ≤ 4%，baseFrequency 0.80，覆盖全屏背景层。<br>
+        此层覆盖全屏，但 z-index = 3 低于所有 UI 层（从 z-index 10 起），确保卡牌/HUD/chibi 不受纹理影响。chibi 容器 z-index 60 高于此层，自然隔离。
+      </div>
+      <div class="layer-tags">
+        <span class="layer-tag">z-index: 3</span>
+        <span class="layer-tag">CSS only + SVG filter</span>
+        <span class="layer-tag">position: fixed</span>
+        <span class="layer-tag">opacity: 1（颜色内含透明度）</span>
+        <span class="layer-tag">pointer-events: none</span>
+        <span class="layer-tag">aria-hidden: true</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer-stack-card" style="border-color:rgba(0,161,214,0.25);background:rgba(0,22,40,0.60)">
+    <div>
+      <div class="layer-z" style="color:#00A1D6">10+</div>
+      <div class="layer-z-label" style="color:rgba(0,161,214,0.55)">UI LAYER</div>
+    </div>
+    <div>
+      <div class="layer-desc-title">UI 内容层（全部 V2.0 现有层级不变）</div>
+      <div class="layer-desc-body">
+        所有 V2.0 UI 元素 z-index 原值保持不变，背景层（0–3）仅在其下方工作。
+      </div>
+      <div class="layer-tags">
+        <span class="layer-tag blue">z-index 10+（#game 内部上下文）</span>
+        <span class="layer-tag blue">z-index 50：得分浮层</span>
+        <span class="layer-tag blue">z-index 60：chibi</span>
+        <span class="layer-tag blue">z-index 70：弹幕</span>
+        <span class="layer-tag blue">z-index 80：胜利樱花粒子</span>
+        <span class="layer-tag blue">z-index 100：Modal</span>
+        <span class="layer-tag blue">z-index 200：小丑选择</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13.2 ASCII 整体合成示意 -->
+  <div class="sub-title">13.2 整体合成示意（1080×640 ASCII 分层线框）</div>
+<pre class="wireframe">
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐  1080px
+│ ░░░░░░░░░░░░░░░░░░ LAYER 0: 底色渐变 #0D0520 → #0A1628 ░░░░░░░░░░░░░░░░░░░░░░░░░░ z:0 fixed   │
+│                                                                                                  │
+│  · · · · · · · ·  LAYER 1: Synthwave 透视网格（Canvas 2D） · · · · · · ·  z:1 opacity:0.22    │
+│          ╲       │       │       │       │       /          ← 纵向汇聚线（12条）                │
+│           ╲      │       │       │       │      /                                                │
+│            ╲─────┼───────┼───────┼───────┼─────/           ← 地平线（y=256px，#BF5FFF）         │
+│             ╲════╪═══════╪═══════╪═══════╪════/                                                 │
+│              ╲   │       │       │       │   /             ← 横向进深线（8条，非线性间距）       │
+│               ╲  │       │       │       │  /                                                   │
+│                ╲ │       │       │       │ /                                                    │
+│                 ╲│       │       │       │/                                                     │
+│─────────────────────────────────────────────────────────────────────────────────────────────────│
+│  ★ ·  🌸   ·  ★  LAYER 2: 像素粒子（CSS animation） ★  ·   🌸  ·  z:2 pointer-events:none    │
+│  ·  🌸   ·  ★   ·    像素星点×20–30  +  像素樱花×8–12   ·   ★  ·                              │
+│─────────────────────────────────────────────────────────────────────────────────────────────────│
+│ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬  LAYER 3: CRT扫描线+噪点（CSS only） ▬▬▬▬▬▬▬▬▬▬▬  z:3 opacity:≤6%            │
+│─────────────────────────────────────────────────────────────────────────────────────────────────│
+│  [♡今日目标] [✦已攒积分] [🃏出牌次数] [🔄弃牌次数] [⭐第X关]   ← HUD z:10+ 磨砂遮罩≥85%      │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│  [我的小伙伴]  [🐰兔兔战士] [🍡贪嘴团子] [____待召唤____]        ← joker-bar z:10+            │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                                  │
+│  PLAY AREA（UI内容 z:1–10）          "牛啊牛啊！！" ──────────────> ← 弹幕 z:70               │
+│  ┌──┐ ┌──┐ ┌──┐ ┌──┐ ┌──┐          "强者风范" ────────────────>                                │
+│  │  │ │  │ │  │ │  │ │  │                                                                      │
+│  └──┘ └──┘ └──┘ └──┘ └──┘                              ┌──────────────────┐                   │
+│                                                          │  气泡文字  z:60  │                   │
+│  ✨ 同花顺 🌟 → 1110 分！                                └────────┬─────────┘                  │
+│                                                               [chibi z:60]                      │
+│  ┌──┐ ┌──┐ ┌──┐ ┌──┐ ┌──┐ ┌──┐ ┌──┐ ┌──┐                   80×80px                          │
+│  │  │ │  │ │▲ │ │  │ │  │ │  │ │  │ │  │                   右下角定位                         │
+│  └──┘ └──┘ └──┘ └──┘ └──┘ └──┘ └──┘ └──┘                                                     │
+│                                                                                                  │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│  [对子×2 💕]  [出牌！]（蓝色）  [换掉它]（粉色）  [重来一局]（幽灵）  ← ACTION BAR z:10+     │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+                  640px 高
+</pre>
+
+  <div class="sub-title">13.3 完整 z-index 速查表（含 V2.1 背景层）</div>
+  <table class="token-table">
+    <thead><tr><th>z-index</th><th>层名</th><th>实现方式</th><th>V2.1 新增</th></tr></thead>
+    <tbody>
+      <tr><td class="mono" style="color:#BF5FFF">0</td><td>底色渐变</td><td>position: fixed, CSS linear-gradient</td><td>值加深（底色调整）</td></tr>
+      <tr><td class="mono" style="color:#BF5FFF">1</td><td>透视网格</td><td>position: fixed, Canvas 2D</td><td>新增</td></tr>
+      <tr><td class="mono" style="color:#BF5FFF">2</td><td>像素粒子（樱花+星点）</td><td>position: fixed, CSS animation + SVG</td><td>新增</td></tr>
+      <tr><td class="mono" style="color:#BF5FFF">3</td><td>扫描线 + 噪点遮罩</td><td>position: fixed, CSS + SVG filter</td><td>新增</td></tr>
+      <tr><td class="mono">1（游戏内）</td><td>#play-area（游戏区域）</td><td>position: relative</td><td>无变化</td></tr>
+      <tr><td class="mono">50</td><td>#score-toast（得分浮层）</td><td>position: absolute</td><td>无变化</td></tr>
+      <tr><td class="mono">60</td><td>.chibi-container（吉祥物+气泡）</td><td>position: absolute</td><td>无变化（自然高于背景层）</td></tr>
+      <tr><td class="mono">70</td><td>.danmaku-item（弹幕）</td><td>position: absolute</td><td>无变化（高于所有背景层）</td></tr>
+      <tr><td class="mono">80</td><td>.sakura-particle（胜利樱花）</td><td>position: absolute</td><td>无变化</td></tr>
+      <tr><td class="mono">100</td><td>#modal-overlay（结算弹窗）</td><td>position: fixed</td><td>无变化</td></tr>
+      <tr><td class="mono">200</td><td>#joker-overlay（小丑选择）</td><td>position: fixed</td><td>无变化</td></tr>
+    </tbody>
+  </table>
+
+  <div class="spec-block" style="margin-top:20px">
+    <h4>背景层 DOM 结构骨架</h4>
+    <div class="code-block" style="padding:10px 12px">&lt;!-- 背景层（固定全屏，低于所有 UI）--&gt;
+&lt;div class="bg-layer-0" style="position:fixed;inset:0;z-index:0;
+  background:linear-gradient(145deg, #0D0520 0%, #0A1628 100%)"&gt;&lt;/div&gt;
+
+&lt;canvas id="bg-grid" style="position:fixed;inset:0;z-index:1;
+  opacity:0.22;will-change:transform;pointer-events:none"&gt;&lt;/canvas&gt;
+
+&lt;div class="bg-layer-2" style="position:fixed;inset:0;z-index:2;
+  pointer-events:none;aria-hidden:true"&gt;
+  &lt;!-- 像素星点：20–30 个 2×2px div --&gt;
+  &lt;!-- 像素樱花：8–12 个 16×16 SVG --&gt;
+&lt;/div&gt;
+
+&lt;div class="bg-layer-3" style="position:fixed;inset:0;z-index:3;
+  pointer-events:none;aria-hidden:true;
+  background:repeating-linear-gradient(to bottom,
+    transparent 0px, transparent 1px,
+    rgba(0,0,0,0.06) 1px, rgba(0,0,0,0.06) 2px)"&gt;&lt;/div&gt;
+
+&lt;!-- 以上所有背景层均在 #game 容器之外 --&gt;
+&lt;div id="game" style="position:relative;z-index:10;..."&gt;
+  &lt;!-- 全部原有 UI：HUD / joker-bar / play-area / chibi / 弹幕 --&gt;
+&lt;/div&gt;</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     14 · 新增动效与性能预算（V2.1 NEW）
+══════════════════════════════════════ -->
+<section class="section section-scroll-anchor" id="s14">
+  <div class="section-title">14 · 新增动效与性能预算 <span class="new-badge">V2.1 NEW</span></div>
+
+  <!-- 14.1 动效清单 -->
+  <div class="sub-title" style="margin-top:0">14.1 背景层动效清单（V2.1 新增）</div>
+  <div class="three-col">
+    <div class="anim-card">
+      <h5>A · 透视网格推进</h5>
+      <div class="anim-row"><span class="anim-key">实现</span><span class="anim-val">Canvas 2D rAF</span></div>
+      <div class="anim-row"><span class="anim-key">duration</span><span class="anim-val">8000ms loop</span></div>
+      <div class="anim-row"><span class="anim-key">easing</span><span class="anim-val">linear（匀速）</span></div>
+      <div class="anim-row"><span class="anim-key">direction</span><span class="anim-val">远 → 近（纵深推进）</span></div>
+      <div class="anim-row"><span class="anim-key">cubic-bezier</span><span class="anim-val">N/A（linear）</span></div>
+      <div class="anim-row"><span class="anim-key">GPU</span><span class="anim-val">will-change: transform</span></div>
+    </div>
+    <div class="anim-card">
+      <h5>B · 像素樱花飘落</h5>
+      <div class="anim-row"><span class="anim-key">实现</span><span class="anim-val">CSS @keyframes</span></div>
+      <div class="anim-row"><span class="anim-key">duration</span><span class="anim-val">6000–9000ms（各片随机）</span></div>
+      <div class="anim-row"><span class="anim-key">easing</span><span class="anim-val">ease-in（自然重力感）</span></div>
+      <div class="anim-row"><span class="anim-key">cubic-bezier</span><span class="anim-val">cubic-bezier(0.25, 0.46, 0.45, 0.94)</span></div>
+      <div class="anim-row"><span class="anim-key">摆动</span><span class="anim-val">translateX ±8px sin 曲线</span></div>
+      <div class="anim-row"><span class="anim-key">数量</span><span class="anim-val">8–12 片（背景常驻版）</span></div>
+    </div>
+    <div class="anim-card">
+      <h5>C · 像素星点闪烁</h5>
+      <div class="anim-row"><span class="anim-key">实现</span><span class="anim-val">CSS @keyframes</span></div>
+      <div class="anim-row"><span class="anim-key">duration</span><span class="anim-val">700–2000ms（各点随机）</span></div>
+      <div class="anim-row"><span class="anim-key">easing</span><span class="anim-val">steps(1)（跳变，非渐变）</span></div>
+      <div class="anim-row"><span class="anim-key">cubic-bezier</span><span class="anim-val">steps(1, end)</span></div>
+      <div class="anim-row"><span class="anim-key">opacity</span><span class="anim-val">0.2 → 1 → 0.2（跳变）</span></div>
+      <div class="anim-row"><span class="anim-key">数量</span><span class="anim-val">20–30 个</span></div>
+    </div>
+    <div class="anim-card">
+      <h5>D · 霓虹脉冲</h5>
+      <div class="anim-row"><span class="anim-key">实现</span><span class="anim-val">CSS @keyframes（box-shadow）</span></div>
+      <div class="anim-row"><span class="anim-key">duration</span><span class="anim-val">2500ms loop</span></div>
+      <div class="anim-row"><span class="anim-key">easing</span><span class="anim-val">ease-in-out</span></div>
+      <div class="anim-row"><span class="anim-key">cubic-bezier</span><span class="anim-val">cubic-bezier(0.37, 0, 0.63, 1)</span></div>
+      <div class="anim-row"><span class="anim-key">适用</span><span class="anim-val">地平线高亮线（Canvas shadowBlur）</span></div>
+      <div class="anim-row"><span class="anim-key">强度</span><span class="anim-val">blur 4px → 16px → 4px</span></div>
+    </div>
+    <div class="anim-card">
+      <h5>E · 全息光斑扩散</h5>
+      <div class="anim-row"><span class="anim-key">实现</span><span class="anim-val">CSS @keyframes（条件触发）</span></div>
+      <div class="anim-row"><span class="anim-key">duration</span><span class="anim-val">500ms（一次性，不 loop）</span></div>
+      <div class="anim-row"><span class="anim-key">easing</span><span class="anim-val">ease-out</span></div>
+      <div class="anim-row"><span class="anim-key">cubic-bezier</span><span class="anim-val">cubic-bezier(0.0, 0.0, 0.2, 1)</span></div>
+      <div class="anim-row"><span class="anim-key">触发</span><span class="anim-val">出大牌（同弹幕同步）</span></div>
+      <div class="anim-row"><span class="anim-key">效果</span><span class="anim-val">scale(0)→scale(1.5) + opacity(0.15→0)</span></div>
+    </div>
+    <div class="anim-card">
+      <h5>F · 扫描线（静态）</h5>
+      <div class="anim-row"><span class="anim-key">实现</span><span class="anim-val">CSS background only</span></div>
+      <div class="anim-row"><span class="anim-key">duration</span><span class="anim-val">无动画</span></div>
+      <div class="anim-row"><span class="anim-key">easing</span><span class="anim-val">N/A</span></div>
+      <div class="anim-row"><span class="anim-key">cubic-bezier</span><span class="anim-val">N/A</span></div>
+      <div class="anim-row"><span class="anim-key">说明</span><span class="anim-val">PRD 明确为静态，不做滚动</span></div>
+    </div>
+  </div>
+
+  <!-- 14.2 V2.0 动效不变列表 -->
+  <div class="sub-title">14.2 V2.0 动效保留（不变）</div>
+  <div class="code-block">以下 V2.0 动效在 V2.1 中完全不变：
+
+  A · chibiBreath    → 3s ease-in-out infinite（吉祥物呼吸）
+  B · 气泡淡入        → 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)
+  C · 弹幕飞行        → 3.5s linear，translateX(-1480px)
+  D · 胜利樱花粒子    → 2200–2500ms，sakuraFall keyframe
+      （V2.1 仅将 DOM 内容从 emoji 🌸 替换为像素 SVG，动画逻辑不变）
+  E · 按钮悬停脉冲    → btnGlow 1.5s ease-in-out infinite
+  F · 小丑选择卡片    → jokerCardPop 300ms spring curve
+  G · cardDeal        → 280ms spring curve
+  H · numPop          → 320ms spring curve
+  I · Modal 弹出      → 360ms spring curve</div>
+
+  <!-- 14.3 性能预算 -->
+  <div class="sub-title">14.3 性能预算</div>
+  <div class="two-col">
+    <div>
+      <table class="perf-table">
+        <thead><tr><th>预算项</th><th>上限</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>背景层 DOM 元素总数</td><td class="perf-ok">≤ 45 个</td><td>星点 30 + 樱花 12 + 固定层 3 = 45</td></tr>
+          <tr><td>CSS animation 数量</td><td class="perf-ok">≤ 43 个</td><td>星点 30×1 + 樱花 12×1 + 霓虹脉冲 1</td></tr>
+          <tr><td>Canvas 单帧 JS 时间</td><td class="perf-ok">≤ 2ms</td><td>12+8 = 20 条线，drawLine 极轻量</td></tr>
+          <tr><td>单帧总 JS 时间预算</td><td class="perf-warn">≤ 8ms</td><td>留 60fps 帧 16ms 的一半给游戏逻辑</td></tr>
+          <tr><td>GPU 合成层数</td><td class="perf-ok">≤ 4 个</td><td>Canvas(1) + 樱花 SVG(1) + UI(1) + Modal(1)，星点不提升</td></tr>
+          <tr><td>帧率目标（PRD A13）</td><td class="perf-ok">≥ 50fps</td><td>Chrome DevTools Performance 验证</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="spec-block">
+        <h4>GPU 加速使用规则</h4>
+        <div class="code-block" style="padding:10px 12px">/* 必须提升为合成层 */
+#bg-grid       { will-change: transform; }
+/* Canvas 已是独立层 */
+
+/* 樱花 SVG 飘落——整体容器提升 */
+.bg-layer-2    { will-change: contents; }
+
+/* 禁止在星点 div 上用 will-change */
+/* 30 个 2×2px div 提升会造成
+   大量独立层，显存暴增 */
+.pixel-star    { /* 不加 will-change */ }
+/* 星点用 CSS opacity animation，
+   浏览器通常对 opacity-only 动画
+   自动 thread-composited，无需提示 */
+
+/* 全息光斑——触发时临时加，结束后移除 */
+.holo-flare.active {
+  will-change: transform, opacity;
+}
+.holo-flare {
+  will-change: auto; /* 非激活态恢复 */
+}</div>
+      </div>
+      <div class="spec-block" style="margin-top:0">
+        <h4>性能降级策略</h4>
+        <div class="code-block" style="padding:10px 12px">/* 检测低端设备：
+   如 rAF 连续 3 帧超过 20ms，
+   触发降级模式 */
+
+降级策略（按优先级）：
+  1. 减少像素星点数量：30 → 15 个
+  2. 关闭霓虹脉冲动效（保留静态辉光）
+  3. 减少背景樱花：12 → 6 片
+  4. 降低 Canvas 网格横线密度：8 → 4 条
+  5. 最后降级：Canvas 停止 rAF，
+     改为每 500ms 绘制一帧（静态感）
+
+/* prefers-reduced-motion 响应 */
+@media (prefers-reduced-motion: reduce) {
+  .bg-layer-2, .pixel-star { animation: none; }
+  #bg-grid { /* Canvas 停止推进动画 */ }
+}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 14.4 完整动效汇总 -->
+  <div class="sub-title">14.4 完整动效 cubic-bezier 速查（V2.0 + V2.1 合并）</div>
+  <table class="anim-table">
+    <thead><tr><th>动画名</th><th>时长</th><th>cubic-bezier / easing</th><th>用途</th><th>版本</th></tr></thead>
+    <tbody>
+      <tr><td>cardDeal</td><td>280ms</td><td class="curve">cubic-bezier(0.34, 1.56, 0.64, 1)</td><td>发牌弹入</td><td>V2.0</td></tr>
+      <tr><td>numPop</td><td>320ms</td><td class="curve">cubic-bezier(0.34, 1.56, 0.64, 1)</td><td>数字弹出</td><td>V2.0</td></tr>
+      <tr><td>toastUp</td><td>1400ms</td><td class="curve">ease</td><td>得分浮层</td><td>V2.0</td></tr>
+      <tr><td>Modal 弹出</td><td>360ms</td><td class="curve">cubic-bezier(0.34, 1.56, 0.64, 1)</td><td>弹窗弹入</td><td>V2.0</td></tr>
+      <tr><td>chibiBreath</td><td>3000ms ∞</td><td class="curve">ease-in-out</td><td>吉祥物呼吸</td><td>V2.0</td></tr>
+      <tr><td>气泡浮现</td><td>300ms</td><td class="curve">cubic-bezier(0.34, 1.56, 0.64, 1)</td><td>对话气泡</td><td>V2.0</td></tr>
+      <tr><td>弹幕飞行</td><td>3500ms</td><td class="curve">linear</td><td>弹幕从右到左</td><td>V2.0</td></tr>
+      <tr><td>sakuraFall</td><td>2200–2500ms</td><td class="curve">cubic-bezier(0.25, 0.46, 0.45, 0.94)</td><td>胜利樱花（V2.1 换 SVG）</td><td>V2.0/V2.1</td></tr>
+      <tr><td>jokerCardPop</td><td>300ms</td><td class="curve">cubic-bezier(0.34, 1.56, 0.64, 1)</td><td>小丑卡片悬停</td><td>V2.0</td></tr>
+      <tr><td>gridPush</td><td>8000ms ∞</td><td class="curve">linear</td><td>透视网格推进</td><td>V2.1 NEW</td></tr>
+      <tr><td>pixelSakuraFall</td><td>6000–9000ms ∞</td><td class="curve">cubic-bezier(0.25, 0.46, 0.45, 0.94)</td><td>背景像素樱花飘落</td><td>V2.1 NEW</td></tr>
+      <tr><td>pixelStarBlink</td><td>700–2000ms ∞</td><td class="curve">steps(1, end)</td><td>像素星点跳变闪烁</td><td>V2.1 NEW</td></tr>
+      <tr><td>neonPulse</td><td>2500ms ∞</td><td class="curve">cubic-bezier(0.37, 0, 0.63, 1)</td><td>地平线霓虹脉冲</td><td>V2.1 NEW</td></tr>
+      <tr><td>holoFlare</td><td>500ms × 1</td><td class="curve">cubic-bezier(0.0, 0.0, 0.2, 1)</td><td>全息光斑扩散（大牌触发）</td><td>V2.1 NEW</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 14.5 工程交班补充 -->
+  <div class="sub-title">14.5 V2.1 工程交班补充（容易翻车的地方）</div>
+  <div class="handoff">
+    <h4>给开发同事的 V2.1 新增备忘</h4>
+    <ul>
+      <li><strong>⑦ Canvas 必须处理 devicePixelRatio</strong>：不乘 dpr 在 Retina 屏（2x/3x）上网格线会模糊。正确做法：<code>canvas.width = 1080 * dpr; canvas.height = 640 * dpr; ctx.scale(dpr, dpr);</code> 之后所有 drawLine 坐标仍按 1080×640 的逻辑坐标写，浏览器自动放大。</li>
+      <li><strong>⑧ 像素星点 div 不要用 border-radius</strong>：2×2px div 加圆角会变成圆点而非方块，失去像素感。<code>border-radius: 0 !important</code>，配合 <code>image-rendering: pixelated</code>。</li>
+      <li><strong>⑨ 像素樱花 SVG 必须用 shape-rendering="crispEdges"</strong>：否则浏览器对 SVG rect 边缘做亚像素平滑，像素块变成模糊色块，像素感消失。</li>
+      <li><strong>⑩ Canvas 与 DOM 的层叠上下文</strong>：Canvas 用 <code>position: fixed</code>，它会创建新的 stacking context。注意 CSS <code>will-change</code> 也会创建 stacking context——背景层的 z-index 0/1/2/3 是相对于 <code>html</code> 根上下文的，<code>#game</code> 容器的 z-index 需明确设置（例如 <code>position: relative; z-index: 10</code>）确保高于背景层。</li>
+      <li><strong>⑪ 扫描线 + 噪点合并为一个 div</strong>：不要分两个 div。<code>background</code> 属性可以多层：<code>background: repeating-linear-gradient(...), url(#noise-filter);</code>，减少一个 DOM 层和一个合成层。</li>
+      <li><strong>⑫ 背景层禁止 setInterval</strong>：PRD 明确规定。星点闪烁用 CSS animation，樱花飘落用 CSS animation，网格推进用 rAF。不用 setInterval 驱动任何背景 DOM 操作。</li>
+      <li><strong>⑬ 胜利樱花粒子的 SVG 替换</strong>：V2.1 把胜利时的 emoji 🌸 替换为像素 SVG，但动画逻辑（sakuraFall keyframe、数量 20–30、duration 2200–2500ms）完全不变，只改 JS 中 <code>el.textContent = '🌸'</code> → <code>el.innerHTML = '&lt;svg ...&gt;...&lt;/svg&gt;'</code>，其余代码零改动。</li>
+      <li><strong>背景层核心 Token 速记（V2.1 新增部分）</strong>：网格主色 <code>#7B2FBE</code>（弱线）/ 地平线 <code>#BF5FFF</code>（高亮）· 底色起点 <code>#0D0520</code> / 终点 <code>#0A1628</code>· Canvas opacity <code>0.22</code>· 扫描线 <code>rgba(0,0,0,0.06)</code>，2px 周期，静态</li>
+    </ul>
   </div>
 </section>
 

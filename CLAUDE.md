@@ -49,3 +49,4 @@ open DESIGN.html
 - 所有代码均为纯静态，无需 Node.js / 构建工具，直接打开 HTML 即可运行。
 - `agents/` 和 `slash/` 下的 `.md` 文件是 Claude Code 的配置文件，修改后立即生效。
 - `test-screenshots/` 目录已加入 `.gitignore`，截图文件不提交到版本库。
+-  产品经理每次更新当前项目的`PRD.html`，ui设计师也是每次更新当前项目的`DESIGN.html` ，而不是新建，一定要使用HTML格式的文档
