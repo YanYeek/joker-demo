@@ -21,7 +21,11 @@ out/
 *.swp
 *.swo
 
+# Node (QA 临时依赖，不是项目依赖)
+node_modules/
+package.json
+package-lock.json
+
 # Test artifacts
-test-screenshots/*.png
-test-screenshots/*.jpg
-test-screenshots/*.webp
+test-screenshots/
+test/screenshots/
